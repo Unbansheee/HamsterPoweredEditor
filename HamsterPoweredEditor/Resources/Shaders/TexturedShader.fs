@@ -4,17 +4,11 @@ in vec3 FragColor;
 in vec2 v_TexCoord;
 
 uniform float CurrentTime;
-uniform float AlphaThreshold = 0.0;
+uniform float AlphaThreshold = 0.25f;
 uniform sampler2D Texture0;
 uniform sampler2D Texture1;
 
 out vec4 FinalColor;
-
-vec3 hueShift(vec3 color, float hue) {
-    const vec3 k = vec3(0.57735, 0.57735, 0.57735);
-    float cosAngle = cos(hue);
-    return vec3(color * cosAngle + cross(k, color) * sin(hue) + k * dot(k, color) * (1.0 - cosAngle));
-}
 
 void main()
 {

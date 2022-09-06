@@ -1,6 +1,9 @@
 ﻿#include "Quad.h"
 
+#include "imgui.h"
+#include "imgui_stdlib.h"
 #include "Core/App.h"
+#include "UI/HPImGui.h"
 
 
 Quad::Quad()
@@ -11,7 +14,7 @@ Quad::Quad()
         {ShaderDataType::Float2, "TexCoord"}
     };
 
-
+    
     
     
     vb.reset(new GLVertexBuffer(vertices, sizeof(vertices)));
@@ -25,28 +28,33 @@ Quad::Quad()
     shader.reset(new Shader("Resources/Shaders/VertexColor.vs", "Resources/Shaders/TexturedShader.fs"));
     shader->Bind();
 
-    texture.reset(new Texture("Resources/Textures/beetho.png"));
+    //texture.reset(new Texture("Resources/Textures/beetho.png"));
+    texture = Texture::CreateTexture("Resources/Textures/beetho.png");
     texture->Bind(0);
     
     vb->Unbind();
     va->Unbind();
     ib->Unbind();
     shader->Unbind();
+
+    SetRenderSettings({GL_TRIANGLES, false, true, false, true});
 }
 
 Quad::~Quad()
 {
 }
 
+
 void Quad::Draw()
 {
     texture->Bind(0);
-    Renderer::Submit(shader, va, m_transform, m_DrawMode);
+    Renderer::Submit(shader, va, m_transform, m_renderSettings);
 
 }
 
 void Quad::Update(Timestep ts)
 {
+    Actor::Update(ts);
 }
 
 void Quad::Begin()
@@ -57,7 +65,20 @@ void Quad::OnDestroy()
 {
 }
 
-void Quad::SetTexture(const std::string& path)
+Texture* Quad::SetTexture(const std::string& path)
 {
-    texture.reset(new Texture(path));
+    texture = (Texture::CreateTexture(path));
+    m_texturePath = path;
+    return texture;
+}
+
+void Quad::OnInspectorGUI()
+{
+    ImGui::InputText("Texture Path", &m_texturePath);
+    if (ImGui::Button("Load"))
+    {
+        SetTexture(m_texturePath);
+    }
+
+    ImGui::ImageScaledH(texture, 0.5f, true);
 }

@@ -131,7 +131,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\Projects\Dev\HamsterPoweredEditor\HamsterPoweredEditor\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,7 +151,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\Projects\Dev\HamsterPoweredEditor\HamsterPoweredEditor\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -165,11 +165,13 @@
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="include\imgui\imnodes.cpp" />
     <ClCompile Include="Source\Actors\Actor.cpp" />
+    <ClCompile Include="Source\Actors\AnimatedQuad.cpp" />
     <ClCompile Include="Source\Actors\Hexagon.cpp" />
     <ClCompile Include="Source\Actors\Object.cpp" />
     <ClCompile Include="Source\Actors\CameraController.cpp" />
     <ClCompile Include="Source\Actors\Quad.cpp" />
     <ClCompile Include="Source\Core\App.cpp" />
+    <ClCompile Include="Source\Core\Font.cpp" />
     <ClCompile Include="Source\Core\main.cpp" />
     <ClCompile Include="Source\Core\Scene.cpp" />
     <ClCompile Include="Source\Core\Window.cpp" />
@@ -180,6 +182,7 @@
     <ClCompile Include="Source\Rendering\OrthographicCamera.cpp" />
     <ClCompile Include="Source\Rendering\PerspectiveCamera.cpp" />
     <ClCompile Include="Source\Rendering\Renderer.cpp" />
+    <ClCompile Include="Source\Rendering\TextLabel.cpp" />
     <ClCompile Include="Source\Rendering\VertexBufferLayout.cpp" />
     <ClCompile Include="Source\Rendering\View.cpp" />
     <ClCompile Include="Source\ResourceManagement\Shader.cpp" />
@@ -210,11 +213,13 @@
     <ClInclude Include="include\imgui\imstb_truetype.h" />
     <ClInclude Include="include\stb_image\stb_image.h" />
     <ClInclude Include="Source\Actors\Actor.h" />
+    <ClInclude Include="Source\Actors\AnimatedQuad.h" />
     <ClInclude Include="Source\Actors\Hexagon.h" />
     <ClInclude Include="Source\Actors\Object.h" />
     <ClInclude Include="Source\Actors\CameraController.h" />
     <ClInclude Include="Source\Actors\Quad.h" />
     <ClInclude Include="Source\Core\App.h" />
+    <ClInclude Include="Source\Core\Font.h" />
     <ClInclude Include="Source\Core\Timestep.h" />
     <ClInclude Include="Source\Core\Scene.h" />
     <ClInclude Include="Source\Core\Window.h" />
@@ -224,11 +229,13 @@
     <ClInclude Include="Source\Rendering\OrthographicCamera.h" />
     <ClInclude Include="Source\Rendering\PerspectiveCamera.h" />
     <ClInclude Include="Source\Rendering\Renderer.h" />
+    <ClInclude Include="Source\Rendering\TextLabel.h" />
     <ClInclude Include="Source\Rendering\VertexBufferLayout.h" />
     <ClInclude Include="Source\Rendering\View.h" />
     <ClInclude Include="Source\ResourceManagement\Shader.h" />
     <ClInclude Include="Source\ResourceManagement\Texture.h" />
     <ClInclude Include="Source\UI\HierarchyPanel.h" />
+    <ClInclude Include="Source\UI\HPImGui.h" />
     <ClInclude Include="Source\UI\ImGuiLayer.h" />
     <ClInclude Include="Source\UI\InspectorPanel.h" />
     <ClInclude Include="Source\UI\NodeEditor.h" />
@@ -240,7 +247,9 @@
     <ClInclude Include="Source\UI\Viewport.h" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Resources\Shaders\AnimatedTexture.fs" />
     <Compile Include="Resources\Shaders\FixedColor.fs" />
+    <Compile Include="Resources\Shaders\Text.fs" />
     <Compile Include="Resources\Shaders\TexturedShader.fs" />
     <Compile Include="Resources\Shaders\VertexColor.fs" />
     <Compile Include="Resources\Shaders\VertexColorFade.fs" />
@@ -249,6 +258,7 @@
   <ItemGroup>
     <Content Include="Resources\Shaders\FixedTriangle.vs" />
     <Content Include="Resources\Shaders\PositionOnly.vs" />
+    <Content Include="Resources\Shaders\Text.vs" />
     <Content Include="Resources\Shaders\VertexColor.vs" />
     <Content Include="Resources\Textures\beetho.png" />
     <Content Include="Resources\Textures\Gear.png" />

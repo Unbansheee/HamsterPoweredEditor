@@ -8,7 +8,7 @@ void InspectorPanel::DrawTransformEdit(Actor* actor)
     if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
     {
         glm::vec3 pos = actor->GetPosition();
-        if (ImGui::DragFloat3("Position", &pos.x))
+        if (ImGui::DragFloat3("Position", &pos.x, 0.1f))
         {
             actor->SetPosition(pos);
         }

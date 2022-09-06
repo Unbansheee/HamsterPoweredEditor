@@ -11,21 +11,27 @@ Window::Window(std::string title, int _width, int _height) : m_Title(title), m_W
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    
+
+    //Removes default Windows decoration. Why did I decide to do this...
     glfwWindowHint(GLFW_DECORATED, GL_FALSE);
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+
+    //Instantiate glfw window
     m_Window = glfwCreateWindow(m_Width, m_Height, m_Title.c_str(), nullptr, nullptr);
     if (!m_Window)
     {
         throw std::runtime_error("Failed to create GLFW window");
     }
 
+    //Centers the window on the main monitor
     int monitor[4];
     glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &monitor[0], &monitor[1], &monitor[2], &monitor[3]);
     glfwSetWindowPos(m_Window, monitor[0] + (monitor[2] - m_Width) / 2, monitor[1] + (monitor[3] - m_Height) / 2);
     glfwGetWindowPos(m_Window, &m_PosX, &m_PosY);
     
     glfwMakeContextCurrent(m_Window);
+    
+    //Unlimit the framerate
     glfwSwapInterval(0);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {

@@ -10,13 +10,6 @@ void Renderer::Init()
     m_Width = 1280;
     m_Height = 720;
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    glFrontFace(GL_CW);
-
     m_WireShader.reset(new Shader("Resources/Shaders/VertexColor.vs", "Resources/Shaders/Wireframe.fs"));
     
     FrameBufferSpecification spec;
@@ -38,7 +31,7 @@ void Renderer::EndScene()
     m_FrameBuffer->Unbind();
 }
 
-void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform, uint32_t drawMode)
+void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform, const RenderSettings& settings)
 {
     if (m_renderMode == RenderMode::WIREFRAME)
     {
@@ -54,7 +47,7 @@ void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_p
     shader->SetUniform1f("CurrentTime", App::Instance().GetTime());
     
     
-    DrawIndexed(vertexArray, drawMode);
+    DrawIndexed(vertexArray, settings);
     drawCalls++;
 }
 
@@ -90,11 +83,56 @@ double Renderer::AspectRatio()
     return 16.f/9.f;
 }
 
-void Renderer::DrawIndexed(const std::shared_ptr<GLVertexArray>& vertexArray, uint32_t drawMode)
+void Renderer::DrawIndexed(const std::shared_ptr<GLVertexArray>& vertexArray, RenderSettings settings)
 {
     Renderer::m_FrameBuffer->Bind();
-    glDrawElements(drawMode, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+    if (settings.Blending)
+    {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+    else
+    {
+        glDisable(GL_BLEND);
+    }
+
+    if (settings.Culling)
+    {
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+        glFrontFace(GL_CCW);
+    }
+    else
+    {
+        glDisable(GL_CULL_FACE);
+        
+    }
+
+    if (settings.DepthTest)
+    {
+        glEnable(GL_DEPTH_TEST);
+    }
+    else
+    {
+        glDisable(GL_DEPTH_TEST);
+    }
+
+    if (settings.DepthWrite)
+    {
+        glEnable(GL_DEPTH_WRITEMASK);
+    }
+    else
+    {
+        glEnable(GL_DEPTH_WRITEMASK);
+    }
+    
+    glDrawElements(settings.DrawMode, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
     Renderer::m_FrameBuffer->Unbind();
+    
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
+    glDisable(GL_DEPTH_WRITEMASK);
 }
 
 

@@ -20,6 +20,7 @@ Actor::Actor(std::string name, glm::vec3 position, glm::vec3 rotation, glm::vec3
     UpdateTransform();
 }
 
+
 void Actor::Destroy()
 {
     OnDestroy();
@@ -28,6 +29,16 @@ void Actor::Destroy()
     {
         child->Destroy();
     }
+}
+
+void Actor::Update(Timestep ts)
+{
+    //Object::Update(ts);
+    if (m_updateCallback)
+    {
+        m_updateCallback();
+    }
+    
 }
 
 void Actor::SetPosition(float x, float y, float z)
@@ -84,6 +95,7 @@ void Actor::SetRotation(glm::vec3 rotation)
     m_rotation = rotation;
     UpdateTransform();
 }
+
 
 void Actor::AddRotationOffset(float x, float y, float z)
 {

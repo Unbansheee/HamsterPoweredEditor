@@ -1,5 +1,8 @@
 ﻿#include "CameraController.h"
 
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
+
 #include "imgui.h"
 #include "Rendering/PerspectiveCamera.h"
 
@@ -9,11 +12,11 @@ CameraController::CameraController(CameraType type, float aspectRatio) : m_Camer
 {
     if (type == CameraType::ORTHO)
     {
-        m_Camera = new OrthographicCamera(-aspectRatio * m_Zoom, aspectRatio * m_Zoom, -m_Zoom, -m_Zoom);
+        m_Camera = new OrthographicCamera(-m_AspectRatio * m_Zoom, m_AspectRatio * m_Zoom, -m_Zoom, m_Zoom);
     }
     else
     {
-        m_Camera = new PerspectiveCamera(45.f, aspectRatio, 0.1f, 100.0f);
+        m_Camera = new PerspectiveCamera(glm::radians(45.f), m_AspectRatio, 0.1f, 100.0f);
     }
     
 }
@@ -24,28 +27,41 @@ void CameraController::SetCameraType(CameraType type)
     m_CameraType = type;
     if (type == CameraType::ORTHO)
     {
-        m_Camera = new OrthographicCamera(-m_AspectRatio * m_Zoom, m_AspectRatio * m_Zoom, -m_Zoom, -m_Zoom);
+        m_Camera = new OrthographicCamera(-m_AspectRatio * m_Zoom, m_AspectRatio * m_Zoom, -m_Zoom, m_Zoom);
         SetRotation(0.f, 0.f, 0.f);
         SetZoom(GetZoom());
     }
     else
     {
-        m_Camera = new PerspectiveCamera(45.f, -m_AspectRatio, 0.1f, 100.0f);
-        SetRotation(0.f, 180.f, 0.f);
+        m_Camera = new PerspectiveCamera(glm::radians(45.f), m_AspectRatio, 0.1f, 100.0f);
+        SetRotation(0.f, 0.f, 0.f);
+        
     }
     
 }
 
 void CameraController::HandleMouseMovement(float x, float y)
 {
-    if (m_CameraType == CameraType::ORTHO)
+    if (abs(x) > 0 || abs(y) > 0)
     {
-        SetPosition(GetPosition() + glm::vec3(x * 0.0028f * m_Zoom, y * 0.0028f * m_Zoom, 0.f));
-    }
-    else
-    {
-        SetRotation(GetRotation().x, GetRotation().y + x, GetRotation().z + y);
-        
+        if (m_CameraType == CameraType::ORTHO)
+        {
+            SetPosition(GetPosition() + glm::vec3(x * 0.0028f * m_Zoom, y * 0.0028f * m_Zoom, 0.f));
+        }
+        else
+        {
+            auto camera = dynamic_cast<PerspectiveCamera*>(m_Camera);
+            camera->pitch += y * 0.5;
+            camera->yaw -= x * 0.5;
+
+            if(camera->pitch > 89.0f)
+                camera->pitch = 89.0f;
+            if(camera->pitch < -89.0f)
+                camera->pitch = -89.0f;
+            
+            camera->RecalculateViewMatrix();
+
+        }
     }
 }
 
@@ -71,7 +87,7 @@ void CameraController::SetZoom(float zoom)
     m_Zoom = glm::clamp(zoom, 0.1f, 100.f);
     if (m_CameraType == CameraType::ORTHO)
     {
-        static_cast<OrthographicCamera*>(m_Camera)->SetProjection(-m_AspectRatio * m_Zoom, m_AspectRatio * m_Zoom, m_Zoom, -m_Zoom);
+        static_cast<OrthographicCamera*>(m_Camera)->SetProjection(-m_AspectRatio * m_Zoom, m_AspectRatio * m_Zoom, -m_Zoom, m_Zoom);
     }
 }
 
@@ -83,9 +99,10 @@ void CameraController::Move(glm::vec3 direction)
     }
     else
     {
-        glm::vec3 forwardMotion = m_Camera->GetForwardVector() * dt * direction.x;
-        glm::vec3 rightMotion = m_Camera->GetRightVector() * dt * direction.y;
-        glm::vec3 upMotion = m_Camera->GetUpVector() * dt * direction.z;
+        auto cam = dynamic_cast<PerspectiveCamera*>(m_Camera);
+        glm::vec3 forwardMotion = cam->cameraFront * dt * -direction.x;
+        glm::vec3 rightMotion = glm::cross(cam->cameraFront, {0, 1, 0}) * dt * -direction.y;
+        glm::vec3 upMotion = m_Camera->GetUpVector() * dt * -direction.z;
         SetPosition(GetPosition() + forwardMotion + rightMotion + upMotion);
     }
     
@@ -96,7 +113,11 @@ void CameraController::Resize(float width, float height)
     m_AspectRatio = width / height;
     if (m_CameraType == CameraType::ORTHO)
     {
-        static_cast<OrthographicCamera*>(m_Camera)->SetProjection(-m_AspectRatio * m_Zoom, m_AspectRatio * m_Zoom, m_Zoom, -m_Zoom);
+        static_cast<OrthographicCamera*>(m_Camera)->SetProjection(-m_AspectRatio * m_Zoom, m_AspectRatio * m_Zoom, -m_Zoom, m_Zoom);
+    }
+    else
+    {
+        static_cast<PerspectiveCamera*>(m_Camera)->SetProjection(glm::radians(45.f), m_AspectRatio, 0.1f, 100.0f);
     }
 }
 
@@ -120,10 +141,6 @@ void CameraController::OnInspectorGUI()
 
         ImGui::Separator();
     }
-
-
-
     
 }
-
 

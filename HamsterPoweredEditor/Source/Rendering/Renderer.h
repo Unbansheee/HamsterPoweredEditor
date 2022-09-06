@@ -6,10 +6,24 @@
 #include "ResourceManagement/Shader.h"
 #include "GLFrameBuffer.h"
 #include "GLVertexArray.h"
+#include "UI/RendererSettings.h"
+
+
+struct RenderSettings
+{
+    uint32_t DrawMode = GL_TRIANGLES;
+    bool Blending = false;
+    bool DepthTest = true;
+    bool Culling = true;
+    bool DepthWrite = true;
+};
 
 class Renderer
 {
 public:
+
+
+    
     enum class RenderMode
     {
         UNLIT,
@@ -24,7 +38,7 @@ public:
     static void Init();
     static void BeginScene(View& camera);
     static void EndScene();
-    static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f), uint32_t drawMode = GL_TRIANGLES);
+    static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f), const RenderSettings& settings = RenderSettings());
     static void SetClearColor(const glm::vec4& color);
     static const glm::vec4& GetClearColor() {return clearColor;}
     static double AspectRatio();
@@ -34,7 +48,7 @@ public:
 private:
     static void Clear();
     
-    static void DrawIndexed(const std::shared_ptr<GLVertexArray>& vertexArray, uint32_t drawMode);
+    static void DrawIndexed(const std::shared_ptr<GLVertexArray>& vertexArray, RenderSettings settings);
     static void Resize(int width, int height);
     
 private:
@@ -56,5 +70,7 @@ private:
     };
 
     static SceneData* m_SceneData;
+
+
 };
 

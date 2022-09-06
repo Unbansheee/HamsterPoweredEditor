@@ -16,17 +16,17 @@ void Viewport::Update(Timestep ts)
 {
 	CameraController* cam = App::Instance().m_Camera;
 	ImGui::PopStyleVar(1);
-	ImGui::Image((void*)Renderer::m_FrameBuffer->GetColorAttachmentRendererID(), ImGui::GetContentRegionAvail());
+	ImGui::Image((void*)Renderer::m_FrameBuffer->GetColorAttachmentRendererID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
 	//check if resized
-	if (ImGui::GetContentRegionAvail().x != lastSize.x || ImGui::GetContentRegionAvail().y != lastSize.y)
+	if (ImGui::GetWindowSize().x != lastSize.x || ImGui::GetWindowSize().y != lastSize.y)
 	{
 		float width = ImGui::GetContentRegionMax().x;
 		float height = ImGui::GetContentRegionMax().y;
 		Renderer::Resize(width, height);
 		App::Instance().m_Camera->Resize(width, height);
 	}
-	lastSize = ImGui::GetContentRegionAvail();
+	lastSize = ImGui::GetWindowSize();
 
 	if (ImGui::IsMouseReleased(1))
 	{

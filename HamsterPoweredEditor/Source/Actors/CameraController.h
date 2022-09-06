@@ -2,6 +2,7 @@
 #include "Actor.h"
 #include "Rendering/OrthographicCamera.h"
 
+//Perspective camera rotation is currently broken
 class CameraController : public Actor
 {
 public:
@@ -13,7 +14,6 @@ public:
     
 public:
     CameraController(CameraType type, float aspectRatio);
-
     void SetCameraType(CameraType type);
     void HandleMouseMovement(float x, float y);
     void Update(Timestep ts) override;
@@ -30,6 +30,8 @@ public:
 protected:
     void OnInspectorGUI() override;
 private:
+    float yaw = 0.0f;
+    float pitch = 0.0f;
     CameraType m_CameraType;
     float dt = 0;
     float m_Zoom = 1.f;

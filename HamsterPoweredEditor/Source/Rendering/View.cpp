@@ -2,9 +2,9 @@
 
 glm::vec3 View::GetForwardVector()
 {
-    return {glm::sin(glm::radians(m_Rotation.y)) * glm::cos(glm::radians(m_Rotation.z)),
+    return glm::normalize(glm::vec3{glm::sin(glm::radians(m_Rotation.y)) * glm::cos(glm::radians(m_Rotation.z)),
         glm::sin(glm::radians(m_Rotation.y)) * glm::sin(glm::radians(m_Rotation.z)),
-        glm::cos(glm::radians(m_Rotation.y))};
+        glm::cos(glm::radians(m_Rotation.y))});
 }
 
 glm::vec3 View::GetUpVector()

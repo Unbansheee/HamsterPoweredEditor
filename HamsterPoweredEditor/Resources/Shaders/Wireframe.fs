@@ -13,8 +13,7 @@ out vec4 FinalColor;
 
 void main()
 {
-
-    FinalColor = vec4(1.f, 1.f, 1.f, 1.f);
+    FinalColor = vec4(FragColor, 1.f);
 }
 
 

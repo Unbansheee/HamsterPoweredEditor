@@ -1,9 +1,11 @@
 ﻿#pragma once
+#include <functional>
 #include <string>
 #include <vector>
 #include "glm/glm.hpp"
 
 #include "Object.h"
+#include "Rendering/Renderer.h"
 
 class Scene;
 
@@ -15,6 +17,8 @@ public:
     Actor(std::string name, glm::vec3 position = {0, 0, 0}, glm::vec3 rotation = {0, 0, 0}, glm::vec3 scale = {1, 1, 1});
 
     void Destroy();
+
+    void Update(Timestep ts) override;
     
     void SetPosition(float x, float y, float z = 0.0f);
     void SetPosition(glm::vec3 position);
@@ -34,6 +38,8 @@ public:
     glm::vec3 GetRotation();
     glm::vec3 GetRelativeRotation();
 
+    void SetTransparency(bool state) { m_Transparency = state; }
+    
     void SetScale(float x, float y, float z = 1.0f);
     void SetScale(glm::vec3 scale);
     void SetScale(float scale);
@@ -64,10 +70,21 @@ public:
         m_children.push_back(child);
         return child;
     }
-    
+
+    void SetUpdateCallback(std::function<void()> callback) { m_updateCallback = callback; }
 
     virtual void Draw();
+
+    void SetRenderSettings(RenderSettings settings) { m_renderSettings = settings; }
+    void SetBlending(bool state) { m_renderSettings.Blending = state; }
+    void SetDepthTest(bool state) { m_renderSettings.DepthTest = state; }
+    void SetDepthWrite(bool state) { m_renderSettings.DepthWrite = state; }
+    void SetCullFace(bool state) { m_renderSettings.Culling = state; }
+    
+
 protected:
+    RenderSettings m_renderSettings;
+    friend class CameraController;
     friend class Scene;
     void UpdateTransform();
     
@@ -83,6 +100,11 @@ protected:
     glm::vec3 m_rotation;
     glm::vec3 m_scale = glm::vec3(1.0f);
 
+    bool m_Transparency = false;
+    // function pointer for update function
+    //void(*m_updateFunction)(Actor*);
+    std::function<void()> m_updateCallback;
+    
 protected:
     friend class InspectorPanel;
     virtual void OnInspectorGUI()

@@ -15,12 +15,14 @@ public:
     Quad();
     ~Quad();
 
+    void OnInspectorGUI() override;
+    
     void Draw() override;
     void Update(Timestep ts) override;
     void Begin() override;
     void OnDestroy() override;
 
-    void SetTexture(const std::string& path);
+    virtual Texture* SetTexture(const std::string& path);
 protected:
 
 public:
@@ -41,6 +43,7 @@ public:
     std::shared_ptr<GLIndexBuffer> ib;
     std::shared_ptr<GLVertexBuffer> vb;
     std::shared_ptr<Shader> shader;
-    std::shared_ptr<Texture> texture;
-    std::shared_ptr<Texture> texture2;
+    Texture* texture;
+    Texture* texture2;
+    std::string m_texturePath;
 };
