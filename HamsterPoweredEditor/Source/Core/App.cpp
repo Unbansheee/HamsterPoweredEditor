@@ -7,6 +7,7 @@
 #include "UI/ImGuiLayer.h"
 
 #include "imgui.h"
+#include "Timer.h"
 #include "ResourceManagement/Shader.h"
 #include "ResourceManagement/Texture.h"
 #include "Window.h"
@@ -19,13 +20,14 @@
 
 void App::Begin()
 {
+
 	//Entry point of App. Initialises GLAD
 	gladLoadGL();
 
 	//Create a window context for the app
 	window = new Window("Hamster Powered Editor", 1280, 720);
 	window->PollEvents();
-
+	
 	//Initialise fonts
 	Font::LoadFont("Resources/Fonts/Roboto-Regular.ttf", 100.f);
 	Font::LoadFont("Resources/Fonts/Roboto-Bold.ttf", 100.f);
@@ -47,6 +49,7 @@ void App::Begin()
 
 	//Initialise editor. At a later point this can be skipped and the window should show the framebuffer.
 	//Currently the framebuffer is only shown in the Viewport widget, so this must be left on for now.
+	
 	EditorLayer = new ImGuiLayer(window);
 	EditorLayer->Begin();
 	
@@ -62,12 +65,13 @@ void App::Update()
 	timestep.Update(time - m_LastFrameTime);
 	m_LastFrameTime = time;
 
-	EditorLayer->BeginFrame();
+	if (EditorLayer) EditorLayer->BeginFrame();
 	
 	//UPDATE SCENE
-	m_Camera->Update(timestep);
+
 	if (m_currentScene)
 	{
+		m_Camera->Update(timestep);
 		m_currentScene->Update(timestep);
 
 		//RENDER SCENE
@@ -83,10 +87,10 @@ void App::Update()
 	if (EditorLayer)
 	{
 		EditorLayer->Update(timestep);
+		EditorLayer->EndFrame();
 	}
-
-	EditorLayer->EndFrame();
 	
+
 	window->SwapBuffers();
 	window->PollEvents();
 
@@ -102,5 +106,6 @@ void App::Quit()
 
 float App::GetTime()
 {
+
 	return CurrentTime;
 }

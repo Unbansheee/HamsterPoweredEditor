@@ -21,6 +21,7 @@
 #include "ThemeManager.h"
 #include "imnodes.h"
 #include "RendererSettings.h"
+#include "Core/Timer.h"
 
 
 ImGuiLayer::ImGuiLayer(Window* window) : window(window)
@@ -59,6 +60,7 @@ void ImGuiLayer::Begin()
 
 void ImGuiLayer::BeginFrame()
 {
+	
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
@@ -67,10 +69,12 @@ void ImGuiLayer::BeginFrame()
 void ImGuiLayer::EndFrame()
 {
 	ImGui::Render();
+	
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
+	
 	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
+
 		GLFWwindow* backup_current_context = glfwGetCurrentContext();
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();

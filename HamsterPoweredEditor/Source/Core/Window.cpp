@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "Timer.h"
+
 Window::Window(std::string title, int _width, int _height) : m_Title(title), m_Width(_width), m_Height(_height)
 {
     if (!glfwInit())

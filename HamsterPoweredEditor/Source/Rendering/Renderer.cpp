@@ -1,6 +1,7 @@
 #include "Renderer.h"
 
 #include "Core/App.h"
+#include "Core/Timer.h"
 
 
 Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData();
@@ -86,45 +87,47 @@ double Renderer::AspectRatio()
 void Renderer::DrawIndexed(const std::shared_ptr<GLVertexArray>& vertexArray, RenderSettings settings)
 {
     Renderer::m_FrameBuffer->Bind();
-    if (settings.Blending)
-    {
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    }
-    else
-    {
-        glDisable(GL_BLEND);
-    }
+    
 
-    if (settings.Culling)
-    {
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
-        glFrontFace(GL_CCW);
-    }
-    else
-    {
-        glDisable(GL_CULL_FACE);
+        if (settings.Blending)
+        {
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        }
+        else
+        {
+            glDisable(GL_BLEND);
+        }
+
+        if (settings.Culling)
+        {
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_BACK);
+            glFrontFace(GL_CCW);
+        }
+        else
+        {
+            glDisable(GL_CULL_FACE);
         
-    }
+        }
 
-    if (settings.DepthTest)
-    {
-        glEnable(GL_DEPTH_TEST);
-    }
-    else
-    {
-        glDisable(GL_DEPTH_TEST);
-    }
+        if (settings.DepthTest)
+        {
+            glEnable(GL_DEPTH_TEST);
+        }
+        else
+        {
+            glDisable(GL_DEPTH_TEST);
+        }
 
-    if (settings.DepthWrite)
-    {
-        glEnable(GL_DEPTH_WRITEMASK);
-    }
-    else
-    {
-        glEnable(GL_DEPTH_WRITEMASK);
-    }
+        if (settings.DepthWrite)
+        {
+            glEnable(GL_DEPTH_WRITEMASK);
+        }
+        else
+        {
+            glEnable(GL_DEPTH_WRITEMASK);
+        }
     
     glDrawElements(settings.DrawMode, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
     Renderer::m_FrameBuffer->Unbind();

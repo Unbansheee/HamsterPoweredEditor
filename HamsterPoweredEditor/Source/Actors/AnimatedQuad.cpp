@@ -2,6 +2,7 @@
 
 #include "imgui.h"
 #include "imgui_stdlib.h"
+#include "Core/Timer.h"
 #include "UI/HPImGui.h"
 
 
@@ -66,6 +67,7 @@ void AnimatedQuad::OnInspectorGUI()
 
 AnimatedQuad::AnimatedQuad()
 {
+
     VertexBufferLayout layout = {
         {ShaderDataType::Float3, "Position"},
         {ShaderDataType::Float3, "Color"},
@@ -107,7 +109,6 @@ void AnimatedQuad::Draw()
 void AnimatedQuad::Update(Timestep ts)
 {
     Quad::Update(ts);
-    
     //Run once per frame on the CPU instead of once per pixel on the gpu
     
     // Update the animation time

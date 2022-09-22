@@ -3,11 +3,13 @@
 #include "imgui.h"
 #include "imgui_stdlib.h"
 #include "Core/App.h"
+#include "Core/Timer.h"
 #include "UI/HPImGui.h"
 
 
 Quad::Quad()
 {
+
     VertexBufferLayout layout = {
         {ShaderDataType::Float3, "Position"},
         {ShaderDataType::Float3, "Color"},
@@ -29,9 +31,11 @@ Quad::Quad()
     shader->Bind();
 
     //texture.reset(new Texture("Resources/Textures/beetho.png"));
+    
+
     texture = Texture::CreateTexture("Resources/Textures/beetho.png");
     texture->Bind(0);
-    
+
     vb->Unbind();
     va->Unbind();
     ib->Unbind();

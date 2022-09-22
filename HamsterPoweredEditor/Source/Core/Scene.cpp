@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "Timer.h"
 #include "Actors/AnimatedQuad.h"
 #include "Actors/Hexagon.h"
 #include "Actors/Quad.h"
@@ -13,7 +14,6 @@ void Scene::Update(Timestep ts)
     {
         actor->Update(ts);
     }
-    
 }
 
 void Scene::Render()
@@ -31,6 +31,7 @@ void Scene::Begin()
         actor->Begin();
     }
 
+    
     auto floor = SpawnActor<Quad>();
     floor->SetName("Floor");
     floor->SetPosition(0, -1.5);
@@ -60,12 +61,14 @@ void Scene::Begin()
     {
         gear->AddRotationOffset(0, 0, -100 * App::Instance().timestep.GetSeconds());
     });
-    
+
+
     auto fire = SpawnActor<AnimatedQuad>();
     fire->SetName("Animated Fire");
     fire->SetPosition(-1, -0.1);
     fire->SetSpriteSheet("Resources/Textures/Fire.png", 60, 6, 10);
     fire->SetFPS(30);
+
 
     auto fire2 = SpawnActor<AnimatedQuad>();
     fire2->SetName("Animated Fire 2");

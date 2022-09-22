@@ -81,7 +81,18 @@ public:
     void SetDepthWrite(bool state) { m_renderSettings.DepthWrite = state; }
     void SetCullFace(bool state) { m_renderSettings.Culling = state; }
     
-
+    template <typename T>
+    bool Is()
+    {
+        return Cast<T>();
+    }
+    
+    template <typename T>
+    T* Cast()
+    {
+        return dynamic_cast<T*>(this);
+    }
+    
 protected:
     RenderSettings m_renderSettings;
     friend class CameraController;

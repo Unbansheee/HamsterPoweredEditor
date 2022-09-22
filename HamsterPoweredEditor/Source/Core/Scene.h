@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <list>
 #include <memory>
+
+#include "Timer.h"
 #include "Timestep.h"
 #include "Actors/Actor.h"
 class Quad;
