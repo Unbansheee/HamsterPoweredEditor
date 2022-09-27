@@ -34,8 +34,8 @@ void Renderer::EndScene()
 
 void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform, const RenderSettings& settings)
 {
-    shader->Bind();
     vertexArray->Bind();
+    shader->Bind();
     shader->SetUniform1i("Wireframe", m_renderMode == RenderMode::WIREFRAME);
     
     shader->SetUniformMat4f("u_ViewProjection", m_SceneData->ViewProjectionMatrix);

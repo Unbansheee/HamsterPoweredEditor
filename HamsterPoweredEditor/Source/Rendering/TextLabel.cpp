@@ -42,10 +42,7 @@ TextLabel::TextLabel(const std::string& text, const std::string& fontPath, float
 
     m_Initialized = true;
 
-
-    
-    
-    SetRenderSettings({GL_TRIANGLES, true, false, true, false});
+    SetRenderSettings({GL_TRIANGLES, true, false, false, false});
 }
 
 void TextLabel::SetText(const std::string& text)
@@ -89,20 +86,18 @@ void TextLabel::Update(Timestep ts)
         mousePosGLM.y > m_bounds.y && mousePosGLM.y < m_bounds.y + m_bounds.height)
     {
         SetColor({ 0.0f, 1.0f, 0.0f });
-        SetText("Hovered");
     }
     else
     {
         SetColor({ 1.0f, 0.0f, 0.0f });
-        SetText("Unhovered");
     }
 }
 
 void TextLabel::Draw()
 {
     Actor::Draw();
-
     m_VBO->Bind();
+    m_Projection = glm::ortho(0.0f, (float)App::Instance().window->GetWidth(), 0.0f, (float)App::Instance().window->GetHeight());
     m_Shader->Bind();
     m_Shader->SetUniformMat4f("ProjectionMat", m_Projection);
     m_Shader->SetUniform3f("TextColor", m_Color.x, m_Color.y, m_Color.z);
@@ -132,8 +127,6 @@ void TextLabel::Draw()
         FontCharacter.texture->Bind(0);
         m_Shader->SetUniform1i("TextTexture", 0);
         m_Shader->SetUniform1i("u_ScreenSpace", m_ScreenSpace);
-
-        //glm::mat4 transform = m_ScreenSpace ? glm::mat4(1.0f) : m_transform;
         
         Renderer::Submit(m_Shader, m_VAO, m_transform, m_renderSettings);
 
@@ -144,7 +137,8 @@ void TextLabel::Draw()
             bounds.height = Height;
 
         //update bounds width
-        bounds.width += Width;
+        if (TextCharacter != m_Text.end()-1)
+            bounds.width += Width;
     }
     m_bounds = bounds;
     m_VBO->Unbind();
