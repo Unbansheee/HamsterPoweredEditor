@@ -34,15 +34,10 @@ void Renderer::EndScene()
 
 void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform, const RenderSettings& settings)
 {
-    if (m_renderMode == RenderMode::WIREFRAME)
-    {
-        m_WireShader->Bind();
-    }
-    else
-    {
-        shader->Bind();
-    }
+    shader->Bind();
     vertexArray->Bind();
+    shader->SetUniform1i("Wireframe", m_renderMode == RenderMode::WIREFRAME);
+    
     shader->SetUniformMat4f("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
     shader->SetUniformMat4f("u_Transform", transform);
     shader->SetUniform1f("CurrentTime", App::Instance().GetTime());
@@ -128,7 +123,7 @@ void Renderer::DrawIndexed(const std::shared_ptr<GLVertexArray>& vertexArray, Re
         {
             glEnable(GL_DEPTH_WRITEMASK);
         }
-    
+
     glDrawElements(settings.DrawMode, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
     Renderer::m_FrameBuffer->Unbind();
     

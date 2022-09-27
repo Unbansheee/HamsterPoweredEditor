@@ -8,6 +8,7 @@ uniform float CurrentTime = 0.0;
 uniform float AlphaThreshold = 0.25;
 uniform sampler2D Texture0;
 uniform sampler2D Texture1;
+uniform bool Wireframe = false;
 
 uniform vec2 UVTransform;
 uniform vec2 UVScale;
@@ -23,14 +24,21 @@ vec3 hueShift(vec3 color, float hue) {
 
 void main()
 {
-
-    vec2 uv =  v_TexCoord / UVScale + UVTransform;
-    vec4 col = texture(Texture0, uv);
-    if (col.a <= AlphaThreshold) {
-        discard;
+    if (Wireframe)
+    {
+        FinalColor = vec4(1, 1, 1, 1);
     }
-    
-    FinalColor = col;
+    else
+    {
+        vec2 uv =  v_TexCoord / UVScale + UVTransform;
+        vec4 col = texture(Texture0, uv);
+        if (col.a <= AlphaThreshold) {
+            discard;
+        }
+
+        FinalColor = col;
+    }
+
 }
 
 

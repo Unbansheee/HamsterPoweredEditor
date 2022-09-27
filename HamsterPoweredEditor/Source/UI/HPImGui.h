@@ -13,6 +13,11 @@ namespace ImGui
         Image((void*)texture->rendererID, size, ImVec2{0, 1}, ImVec2{1, 0}, tint_col, border_col);
     }
 
+    inline void Image(Texture* texture, const ImVec2& size, const ImVec4& tint_col = {1, 1, 1, 1}, const ImVec4& border_col = {0, 0, 0, 0})
+    {
+        Image((void*)texture->rendererID, size, ImVec2{0, 1}, ImVec2{1, 0}, tint_col, border_col);
+    }
+
     inline void ImageScaledH(Texture* texture, float scaleFactor = 1.f, bool clampSize = false, const ImVec4& tint_col = {1, 1, 1, 1}, const ImVec4& border_col = {0, 0, 0, 0})
     {
         ImVec2 size = {ImGui::GetContentRegionAvail().x*scaleFactor, ImGui::GetContentRegionAvail().x*scaleFactor / (float)texture->GetWidth() * (float)texture->GetHeight()};

@@ -5,6 +5,7 @@
 #include "Timer.h"
 #include "Actors/AnimatedQuad.h"
 #include "Actors/Hexagon.h"
+#include "Actors/Mesh.h"
 #include "Actors/Quad.h"
 #include "Rendering/TextLabel.h"
 
@@ -31,6 +32,19 @@ void Scene::Begin()
         actor->Begin();
     }
 
+    auto empty = SpawnActor<Actor>();
+    empty->SetName("HorizontalSpinner");
+    empty->SetUpdateCallback([=]()
+    {
+       empty->AddRotationOffset(0, 100 * App::Instance().timestep.GetSeconds(), 0); 
+    });
+
+    auto empty2 = SpawnActor<Actor>();
+    empty2->SetName("VerticalSpinner");
+    empty2->SetUpdateCallback([=]()
+    {
+       empty2->AddRotationOffset(100 * App::Instance().timestep.GetSeconds(), 0, 0); 
+    });
     
     auto floor = SpawnActor<Quad>();
     floor->SetName("Floor");
@@ -83,7 +97,18 @@ void Scene::Begin()
 
     auto text = SpawnActor<TextLabel>();
     text->SetName("Text");
+    text->SetText("Hello World!");
 
+    auto cube = SpawnActor<Mesh>();
+    cube->SetName("Cube");
+    cube->SetPosition(0, 0, 2);
+    cube->SetParent(empty);
+
+    auto cube2 = SpawnActor<Mesh>();
+    cube2->SetName("Cube 2");
+    cube2->SetPosition(0, 0, 3);
+    cube2->SetParent(empty2);
+    
 
     
     

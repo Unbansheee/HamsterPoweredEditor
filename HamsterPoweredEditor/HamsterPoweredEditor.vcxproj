@@ -167,6 +167,7 @@
     <ClCompile Include="Source\Actors\Actor.cpp" />
     <ClCompile Include="Source\Actors\AnimatedQuad.cpp" />
     <ClCompile Include="Source\Actors\Hexagon.cpp" />
+    <ClCompile Include="Source\Actors\Mesh.cpp" />
     <ClCompile Include="Source\Actors\Object.cpp" />
     <ClCompile Include="Source\Actors\CameraController.cpp" />
     <ClCompile Include="Source\Actors\Quad.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="Source\Actors\Actor.h" />
     <ClInclude Include="Source\Actors\AnimatedQuad.h" />
     <ClInclude Include="Source\Actors\Hexagon.h" />
+    <ClInclude Include="Source\Actors\Mesh.h" />
     <ClInclude Include="Source\Actors\Object.h" />
     <ClInclude Include="Source\Actors\CameraController.h" />
     <ClInclude Include="Source\Actors\Quad.h" />

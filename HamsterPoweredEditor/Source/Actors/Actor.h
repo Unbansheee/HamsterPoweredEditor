@@ -80,6 +80,9 @@ public:
     void SetDepthTest(bool state) { m_renderSettings.DepthTest = state; }
     void SetDepthWrite(bool state) { m_renderSettings.DepthWrite = state; }
     void SetCullFace(bool state) { m_renderSettings.Culling = state; }
+
+    virtual void Begin() override {}
+    virtual void OnDestroy() override {}
     
     template <typename T>
     bool Is()
