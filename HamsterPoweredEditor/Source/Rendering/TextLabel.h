@@ -6,6 +6,14 @@
 #include "Core/Font.h"
 #include "ResourceManagement/Shader.h"
 
+struct Bounds
+{
+    float x;
+    float y;
+    float width;
+    float height;
+};
+
 class TextLabel : public Actor
 {
 public:
@@ -39,5 +47,6 @@ protected:
     bool m_ScreenSpace = true;
 
     bool m_Initialized = false;
+    Bounds m_bounds;
     
 };

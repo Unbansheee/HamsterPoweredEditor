@@ -42,6 +42,9 @@ TextLabel::TextLabel(const std::string& text, const std::string& fontPath, float
 
     m_Initialized = true;
 
+
+    
+    
     SetRenderSettings({GL_TRIANGLES, true, false, true, false});
 }
 
@@ -76,16 +79,38 @@ void TextLabel::OnDestroy()
 void TextLabel::Update(Timestep ts)
 {
     Actor::Update(ts);
+
+    glm::vec2 mousePosGLM = App::Instance().window->GetMousePosition();
+    mousePosGLM.y = App::Instance().window->GetHeight() - mousePosGLM.y;
+    
+    
+    //Check if mouse intersects bounds
+    if (mousePosGLM.x > m_bounds.x && mousePosGLM.x < m_bounds.x + m_bounds.width &&
+        mousePosGLM.y > m_bounds.y && mousePosGLM.y < m_bounds.y + m_bounds.height)
+    {
+        SetColor({ 0.0f, 1.0f, 0.0f });
+        SetText("Hovered");
+    }
+    else
+    {
+        SetColor({ 1.0f, 0.0f, 0.0f });
+        SetText("Unhovered");
+    }
 }
 
 void TextLabel::Draw()
 {
     Actor::Draw();
-    
+
+    m_VBO->Bind();
     m_Shader->Bind();
     m_Shader->SetUniformMat4f("ProjectionMat", m_Projection);
     m_Shader->SetUniform3f("TextColor", m_Color.x, m_Color.y, m_Color.z);
-
+    
+    Bounds bounds = {0, 0, 0, 0};
+    bounds.x = GetPosition().x;
+    bounds.y = GetPosition().y;
+    
     glm::vec3 CharacterOrigin = GetPosition();
     for (std::string::const_iterator TextCharacter = m_Text.begin(); TextCharacter != m_Text.end(); TextCharacter++)
     {
@@ -113,7 +138,16 @@ void TextLabel::Draw()
         Renderer::Submit(m_Shader, m_VAO, m_transform, m_renderSettings);
 
         CharacterOrigin.x += (FontCharacter.Advance >> 6) * GetScale().x;
+
+        //update bounds height
+        if (Height > bounds.height)
+            bounds.height = Height;
+
+        //update bounds width
+        bounds.width += Width;
     }
+    m_bounds = bounds;
+    m_VBO->Unbind();
 }
 
 void TextLabel::OnInspectorGUI()

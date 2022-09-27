@@ -6,6 +6,7 @@
 
 Mesh::Mesh()
 {
+    
     textures.resize(32, nullptr);
     texturepaths.resize(32, "");
     
@@ -29,13 +30,14 @@ Mesh::Mesh()
 
     textures[0] = Texture::CreateTexture("Resources/Textures/beetho.png");
     textures[0]->Bind(0);
-
+    
     vb->Unbind();
     va->Unbind();
     ib->Unbind();
     shader->Unbind();
 
     SetRenderSettings({GL_TRIANGLES, false, true, false, true});
+    
 }
 
 Mesh::~Mesh()
@@ -80,9 +82,12 @@ void Mesh::OnInspectorGUI()
 
 void Mesh::Draw()
 {
+    
     Actor::Draw();
     textures[0]->Bind(0);
     Renderer::Submit(shader, va, m_transform);
+    
+    
 }
 
 void Mesh::Update(Timestep ts)

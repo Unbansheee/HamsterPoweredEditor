@@ -3,6 +3,7 @@
 #include <string>
 #include <glad\glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/vec2.hpp>
 
 //Abstraction of glfw window
 class Window
@@ -20,6 +21,9 @@ public:
     void SetSize(int width, int height);
 
     void SetCursorMode(int mode);
+
+    glm::vec2 GetMousePosition() const;
+
     
     int GetPositionX() const;
     int GetPositionY() const;

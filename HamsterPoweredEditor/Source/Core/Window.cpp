@@ -156,6 +156,15 @@ void Window::SetCursorMode(int mode)
     glfwSetInputMode(m_Window, GLFW_CURSOR, mode);
 }
 
+glm::vec2 Window::GetMousePosition() const
+{
+    double x, y;
+    glfwGetCursorPos(m_Window, &x, &y);
+    return glm::vec2(x, y);
+    
+}
+
+
 void Window::SetTitle(std::string title)
 {
     m_Title = title;
