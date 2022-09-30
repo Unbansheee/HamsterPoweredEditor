@@ -19,10 +19,11 @@ public:
         auto us = std::chrono::duration_cast<std::chrono::microseconds>(m_endTime - m_startTime).count();
         auto ms = us * 0.001;
         std::cout << "--------------------\n";
-        std::cout << "Timer: " << m_name << " " << __FILE__ << std::endl;
+        std::cout << "Timer: " << m_name  << std::endl;
         std::cout << "Elapsed Time: " << us << "us (" << ms << "ms)\n";
         std::cout << "--------------------\n";
     }
+    
 
     std::chrono::time_point<std::chrono::system_clock> m_startTime;
     std::chrono::time_point<std::chrono::system_clock> m_endTime;

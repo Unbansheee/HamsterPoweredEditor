@@ -19,13 +19,13 @@ TextLabel::TextLabel(const std::string& text, const std::string& fontPath, float
         {ShaderDataType::Float2, "TexCoord"}
     };
 
-    m_Color = color;
+    m_BaseColor = color;
     m_Text = text;
     m_FontSize = fontSize;
     m_Font = Font::LoadFont(fontPath, fontSize);
     
     SetText(text);
-    SetColor(color);
+    SetCurrentColor(color);
     SetPosition(position);
 
     m_Projection = glm::ortho(0.0f, (float)App::Instance().window->GetWidth(), 0.0f, (float)App::Instance().window->GetHeight());
@@ -50,9 +50,24 @@ void TextLabel::SetText(const std::string& text)
     m_Text = text;
 }
 
-void TextLabel::SetColor(const glm::vec3& color)
+void TextLabel::SetCurrentColor(const glm::vec3& color)
 {
     m_Color = color;
+}
+
+void TextLabel::SetBaseColor(const glm::vec3& color)
+{
+    m_BaseColor = color;
+}
+
+void TextLabel::SetHoverColor(const glm::vec3& color)
+{
+    m_HoverColor = color;
+}
+
+void TextLabel::SetClickColor(const glm::vec3& color)
+{
+    m_PressedColor = color;
 }
 
 void TextLabel::SetFont(Font* font)
@@ -79,34 +94,62 @@ void TextLabel::Update(Timestep ts)
 
     glm::vec2 mousePosGLM = App::Instance().window->GetMousePosition();
     mousePosGLM.y = App::Instance().window->GetHeight() - mousePosGLM.y;
+    mousePosGLM.y -= 20;
     
     
     //Check if mouse intersects bounds
     if (mousePosGLM.x > m_bounds.x && mousePosGLM.x < m_bounds.x + m_bounds.width &&
         mousePosGLM.y > m_bounds.y && mousePosGLM.y < m_bounds.y + m_bounds.height)
     {
-        SetColor({ 0.0f, 1.0f, 0.0f });
+        mouseOverlapping = true;
+        SetCurrentColor(m_HoverColor);
+        
+        if (ImGui::IsMouseClicked(0))
+        {
+            mouseoffset = mousePosGLM - glm::vec2(m_bounds.x, m_bounds.y);
+            m_Dragging = true;
+        }
+        
     }
-    else
+    else if (mouseOverlapping)
     {
-        SetColor({ 1.0f, 0.0f, 0.0f });
+        SetCurrentColor(m_BaseColor);
+        mouseOverlapping = false;
     }
+    else SetCurrentColor(m_BaseColor);
+    
+    
+    
+    if (m_Dragging)
+    {
+        if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {SetScale(GetScale() * 1.1f); mouseoffset *= 1.1f; }
+        if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {SetScale(GetScale() * 0.9f); mouseoffset *= 0.9f; }
+        SetPosition({ mousePosGLM.x - mouseoffset.x, mousePosGLM.y - mouseoffset.y, 0.0f });
+        SetCurrentColor(m_PressedColor);
+    }
+    if (!ImGui::IsMouseDown(0) && m_Dragging)
+    {
+        m_Dragging = false;
+        SetCurrentColor(m_BaseColor);
+    }
+    
 }
 
 void TextLabel::Draw()
 {
     Actor::Draw();
     m_VBO->Bind();
-    m_Projection = glm::ortho(0.0f, (float)App::Instance().window->GetWidth(), 0.0f, (float)App::Instance().window->GetHeight());
+    m_Projection = glm::ortho(0.0f, Renderer::GetViewportSize().x, 0.0f, Renderer::GetViewportSize().y);
     m_Shader->Bind();
     m_Shader->SetUniformMat4f("ProjectionMat", m_Projection);
     m_Shader->SetUniform3f("TextColor", m_Color.x, m_Color.y, m_Color.z);
     
     Bounds bounds = {0, 0, 0, 0};
+
     bounds.x = GetPosition().x;
     bounds.y = GetPosition().y;
-    
     glm::vec3 CharacterOrigin = GetPosition();
+    
     for (std::string::const_iterator TextCharacter = m_Text.begin(); TextCharacter != m_Text.end(); TextCharacter++)
     {
         Font::FontChar FontCharacter = m_Font->GetChar(*TextCharacter);
@@ -114,13 +157,19 @@ void TextLabel::Draw()
         float PosY = CharacterOrigin.y - (FontCharacter.texture->GetHeight() - FontCharacter.Bearing.y) * GetScale().y;
         float Width = FontCharacter.texture->GetWidth() * GetScale().x;
         float Height = FontCharacter.texture->GetHeight() * GetScale().y;
-
+        
         float vertices[4][5] = {
             {PosX, PosY + Height, 0.0f, 0.0f, 0.0f},
             {PosX, PosY, 0.0f, 0.0f, 1.0f},
             {PosX + Width, PosY, 0.0f, 1.0f, 1.0f},
             {PosX + Width, PosY + Height, 0.0f, 1.0f, 0.0f}
         };
+
+        //zero out translation
+        glm::mat4 model = glm::mat4(1.0f);
+        model[3][0] = 0.0f;
+        model[3][1] = 0.0f;
+        model[3][2] = 0.0f;
         
         m_VBO->SetSubData(*vertices, sizeof(vertices), 0);
         
@@ -128,18 +177,16 @@ void TextLabel::Draw()
         m_Shader->SetUniform1i("TextTexture", 0);
         m_Shader->SetUniform1i("u_ScreenSpace", m_ScreenSpace);
         
-        Renderer::Submit(m_Shader, m_VAO, m_transform, m_renderSettings);
+        Renderer::Submit(m_Shader, m_VAO, model, m_renderSettings);
 
         CharacterOrigin.x += (FontCharacter.Advance >> 6) * GetScale().x;
 
-        //update bounds height
-        if (Height > bounds.height)
-            bounds.height = Height;
+        bounds.height = std::max(bounds.height, Height);
+        bounds.width += (FontCharacter.Advance >> 6) * GetScale().x;
 
-        //update bounds width
-        if (TextCharacter != m_Text.end()-1)
-            bounds.width += Width;
     }
+    
+
     m_bounds = bounds;
     m_VBO->Unbind();
 }
@@ -151,13 +198,25 @@ void TextLabel::OnInspectorGUI()
     {
         SetText(m_Text);
     }
-
+    
     ImGui::Checkbox("Screen Space", &m_ScreenSpace);
     
-    glm::vec3 color = m_Color;
-    if (ImGui::ColorEdit3("Color", &color[0]))
+    glm::vec3 color = m_BaseColor;
+    if (ImGui::ColorEdit3("Base Color", &color[0]))
     {
-        SetColor(color);
+        SetBaseColor(color);
+    }
+
+    glm::vec3 hovercolor = m_HoverColor;
+    if (ImGui::ColorEdit3("Hover Color", &hovercolor[0]))
+    {
+        SetHoverColor(hovercolor);
+    }
+
+    glm::vec3 pressedcolor = m_PressedColor;
+    if (ImGui::ColorEdit3("Pressed Color", &pressedcolor[0]))
+    {
+        SetClickColor(pressedcolor);
     }
 
     Font* font = m_Font;

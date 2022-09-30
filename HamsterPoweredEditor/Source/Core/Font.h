@@ -14,15 +14,17 @@ class Font
         Texture* texture;
         glm::ivec2 Bearing;
         uint32_t Advance = 0;
+        glm::vec2 Size = glm::vec2(0.0f);
     };
     
 public:
     static Font* LoadFont(const std::string& path, int size);
-    static inline std::unordered_map<std::string, Font*> fonts;
+    static inline std::map<std::pair<std::string, int>, Font*> fonts;
 
     inline FontChar GetChar(char c) { return m_FontChars[c]; };
     std::string GetName() { return m_fontName; };
     std::string GetPath() { return m_path; };
+    int GetSize() { return m_size; };
 private:
     friend class TextLabel;
     

@@ -48,7 +48,7 @@ void Scene::Begin()
     
     auto floor = SpawnActor<Quad>();
     floor->SetName("Floor");
-    floor->SetPosition(0, -1.5);
+    floor->SetPosition(0, -5);
     floor->SetScale(20);
     floor->SetTexture("Resources/Textures/Brick.jpg");
     floor->SetRotation(90, 0, 0);
@@ -94,12 +94,7 @@ void Scene::Begin()
     hex->SetName("Hexagon");
     hex->SetPosition(1, -1);
     hex->SetTexture("Resources/Textures/Brick.jpg");
-
     
-    auto text = SpawnActor<TextLabel>();
-    text->SetName("Text");
-    text->SetText("Hello World!");
-
 
     auto cube = SpawnActor<Mesh>();
     cube->SetName("Cube");
@@ -113,8 +108,16 @@ void Scene::Begin()
     cube2->SetParent(empty2);
     cube2->SetTexture("Resources/Textures/Crate.png");
 
-
+    auto text = SpawnActor<TextLabel>();
+    text->SetName("Text");
+    text->SetText("Drag Me!");
+    text->SetPosition(0, 50, 0);
     
+    auto text2 = SpawnActor<TextLabel>();
+    text2->SetName("Text");
+    text2->SetText("Use your arrow keys while dragging to change the size!");
+    text2->SetPosition(0, 5, 0);
+    text2->SetScale(0.3f);
     
 }
 

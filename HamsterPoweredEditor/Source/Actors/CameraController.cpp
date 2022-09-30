@@ -12,11 +12,11 @@ CameraController::CameraController(CameraType type, float aspectRatio) : m_Camer
 {
     if (type == CameraType::ORTHO)
     {
-        m_Camera = new OrthographicCamera(-m_AspectRatio * m_Zoom, m_AspectRatio * m_Zoom, -m_Zoom, m_Zoom);
+        m_Camera = new OrthographicCamera(-m_AspectRatio * m_OrthoZoom, m_AspectRatio * m_OrthoZoom, -m_OrthoZoom, m_OrthoZoom);
     }
     else
     {
-        m_Camera = new PerspectiveCamera(glm::radians(45.f), m_AspectRatio, 0.1f, 100.0f);
+        m_Camera = new PerspectiveCamera(glm::radians(m_Zoom), m_AspectRatio, 0.1f, 100.0f);
     }
     
 }
@@ -27,14 +27,15 @@ void CameraController::SetCameraType(CameraType type)
     m_CameraType = type;
     if (type == CameraType::ORTHO)
     {
-        m_Camera = new OrthographicCamera(-m_AspectRatio * m_Zoom, m_AspectRatio * m_Zoom, -m_Zoom, m_Zoom);
+        m_Camera = new OrthographicCamera(-m_AspectRatio * m_OrthoZoom, m_AspectRatio * m_OrthoZoom, -m_OrthoZoom, m_OrthoZoom);
         SetRotation(0.f, 0.f, 0.f);
         SetZoom(GetZoom());
     }
     else
     {
-        m_Camera = new PerspectiveCamera(glm::radians(45.f), m_AspectRatio, 0.1f, 100.0f);
+        m_Camera = new PerspectiveCamera(glm::radians(m_Zoom), m_AspectRatio, 0.1f, 100.0f);
         SetRotation(0.f, 0.f, 0.f);
+        
         
     }
     
@@ -46,7 +47,7 @@ void CameraController::HandleMouseMovement(float x, float y)
     {
         if (m_CameraType == CameraType::ORTHO)
         {
-            SetPosition(GetPosition() + glm::vec3(x * 0.0028f * m_Zoom, y * 0.0028f * m_Zoom, 0.f));
+            SetPosition(GetPosition() + glm::vec3(x * 0.0028f * m_OrthoZoom, y * 0.0028f * m_OrthoZoom, 0.f));
         }
         else
         {
@@ -84,10 +85,16 @@ void CameraController::OnDestroy()
 
 void CameraController::SetZoom(float zoom)
 {
-    m_Zoom = glm::clamp(zoom, 0.1f, 100.f);
+    
     if (m_CameraType == CameraType::ORTHO)
     {
-        static_cast<OrthographicCamera*>(m_Camera)->SetProjection(-m_AspectRatio * m_Zoom, m_AspectRatio * m_Zoom, -m_Zoom, m_Zoom);
+        m_OrthoZoom = glm::clamp(zoom, 0.1f, 100.f);
+        static_cast<OrthographicCamera*>(m_Camera)->SetProjection(-m_AspectRatio * m_OrthoZoom, m_AspectRatio * m_OrthoZoom, -m_OrthoZoom, m_OrthoZoom);
+    }
+    else
+    {
+        m_Zoom = glm::clamp(zoom, 0.1f, 140.f);
+        static_cast<PerspectiveCamera*>(m_Camera)->SetProjection(glm::radians(m_Zoom), m_AspectRatio, 0.1f, 100.0f);
     }
 }
 
@@ -103,7 +110,7 @@ void CameraController::Move(glm::vec3 direction)
         glm::vec3 forwardMotion = cam->cameraFront * dt * -direction.x;
         glm::vec3 rightMotion = glm::cross(cam->cameraFront, {0, 1, 0}) * dt * -direction.y;
         glm::vec3 upMotion = m_Camera->GetUpVector() * dt * -direction.z;
-        SetPosition(GetPosition() + forwardMotion + rightMotion + upMotion);
+        SetPosition(GetPosition() + ((forwardMotion + rightMotion + upMotion) * m_PerspMoveSpeed));
     }
     
 }
@@ -113,11 +120,11 @@ void CameraController::Resize(float width, float height)
     m_AspectRatio = width / height;
     if (m_CameraType == CameraType::ORTHO)
     {
-        static_cast<OrthographicCamera*>(m_Camera)->SetProjection(-m_AspectRatio * m_Zoom, m_AspectRatio * m_Zoom, -m_Zoom, m_Zoom);
+        static_cast<OrthographicCamera*>(m_Camera)->SetProjection(-m_AspectRatio * m_OrthoZoom, m_AspectRatio * m_OrthoZoom, -m_OrthoZoom, m_OrthoZoom);
     }
     else
     {
-        static_cast<PerspectiveCamera*>(m_Camera)->SetProjection(glm::radians(45.f), m_AspectRatio, 0.1f, 100.0f);
+        static_cast<PerspectiveCamera*>(m_Camera)->SetProjection(glm::radians(m_Zoom), m_AspectRatio, 0.1f, 100.0f);
     }
 }
 
@@ -134,9 +141,30 @@ void CameraController::OnInspectorGUI()
         {
             SetCameraType(CameraType::ORTHO);
         }
-        if (ImGui::DragFloat("Zoom", &m_Zoom))
+        switch (m_CameraType)
         {
-            SetZoom(m_Zoom);
+            case CameraType::PERSPECTIVE:
+            {
+                float z = m_Zoom;
+                if (ImGui::DragFloat("FOV", &z, 0.1f, 0.1f, 140.f))
+                {
+                    SetZoom(z);
+                }
+
+                if (ImGui::DragFloat("Move Speed", &m_PerspMoveSpeed, 0.1f, 0.1f, 20.f))
+                {
+                }
+                break;
+            }
+            case CameraType::ORTHO:
+            {
+                    float z = m_OrthoZoom;
+                    if (ImGui::DragFloat("Zoom", &z, 0.1f, 0.1f, 100.f))
+                    {
+                        SetZoom(z);
+                    }
+                break;
+            }
         }
 
         ImGui::Separator();

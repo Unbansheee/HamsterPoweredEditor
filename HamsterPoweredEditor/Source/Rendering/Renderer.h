@@ -45,11 +45,13 @@ public:
     static unsigned int GetRenderTexture() {return renderTexture;}
     static void SetRenderMode(RenderMode mode);
     static RenderMode GetRenderMode() {return m_renderMode;}
+    static glm::vec2 GetViewportSize() {return {m_Width, m_Height};}
 private:
     static void Clear();
     
     static void DrawIndexed(const std::shared_ptr<GLVertexArray>& vertexArray, RenderSettings settings);
     static void Resize(int width, int height);
+
     
 private:
     inline static unsigned int frameBuffer;

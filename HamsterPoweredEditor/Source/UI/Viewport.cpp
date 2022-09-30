@@ -41,7 +41,9 @@ void Viewport::Update(Timestep ts)
 			mouseCaptured = true;
 
 		}
-		cam->SetZoom(glm::clamp(cam->GetZoom() - (ImGui::GetIO().MouseWheel/4.f) * cam->GetZoom()/2.f, 0.1f, 100.f));
+
+		if (cam->GetCameraType() == CameraController::CameraType::ORTHO) cam->SetZoom(cam->GetZoom() - (ImGui::GetIO().MouseWheel/4.f) * cam->GetZoom()/2.f);
+		
 	}
 	if (mouseCaptured)
 	{
@@ -50,7 +52,8 @@ void Viewport::Update(Timestep ts)
 		cam->HandleMouseMovement(-ImGui::GetMouseDragDelta(1).x, ImGui::GetMouseDragDelta(1).y);
 		App::Instance().window->SetCursorMode(GLFW_CURSOR_DISABLED);
 		
-		cam->SetZoom(glm::clamp(cam->GetZoom() - (ImGui::GetIO().MouseWheel/4.f) * cam->GetZoom()/2.f, 0.1f, 100.f));
+		if (cam->GetCameraType() == CameraController::CameraType::ORTHO) cam->SetZoom(cam->GetZoom() - (ImGui::GetIO().MouseWheel/4.f) * cam->GetZoom()/2.f);
+		else cam->SetPerspSpeed(cam->GetPerspSpeed() + (ImGui::GetIO().MouseWheel/4.f) * cam->GetPerspSpeed()/2.f);
 
 		if (ImGui::IsKeyDown(ImGuiKey_W))
 		{
