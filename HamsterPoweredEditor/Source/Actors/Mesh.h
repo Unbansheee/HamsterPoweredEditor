@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <assimp/scene.h>
+
 #include "Actor.h"
 
 class Texture;
@@ -19,13 +21,14 @@ public:
     virtual Texture* SetTexture(const std::string& path, int slot = 0);
     void SetMesh(float* _vertices, uint32_t _size, uint32_t* _indices, uint32_t _isize);
 
-
+    void LoadMesh(const std::string& path);
+    aiScene scene;
     
 protected:
 
 public:
     //Default mesh is a cube
-    float vertices[8 * 4 * 6] = {
+    std::vector<float> vertices = {
         //Positions             //Vertex Colurs     //Texture Coords
         //Front Quad
         -0.5f,  0.5f, 0.5f,      0.f, 0.f, 1.f,      0.0f, 1.0f,  // top left
@@ -64,7 +67,7 @@ public:
          0.5f, -0.5f,  0.5f,    1.f, 1.f, 0.f,      1.0f, 1.0f, // top right
      };
     
-    unsigned int indices[3 * 4 * 6] = {
+    std::vector<uint32_t> indices = {
         0, 1, 2, 0, 2, 3,
         4, 5, 6, 4, 6, 7,
         8, 9, 10, 8, 10, 11,
@@ -80,4 +83,5 @@ public:
     std::shared_ptr<Shader> shader;
     std::vector<Texture*> textures;
     std::vector<std::string> texturepaths;
+    std::string meshpath;
 };

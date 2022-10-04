@@ -108,6 +108,19 @@ void Scene::Begin()
     cube2->SetParent(empty2);
     cube2->SetTexture("Resources/Textures/Crate.png");
 
+    auto testMesh = SpawnActor<Mesh>();
+    testMesh->SetName("Tent");
+    testMesh->LoadMesh("Resources/Meshes/sm_tent.fbx");
+    testMesh->SetTexture("Resources/Meshes/tent_diff128.png")->SetFilteringMode(Texture::FilteringMode::NEAREST);
+    testMesh->SetPosition(0, 0, 4);
+
+    auto campfire = SpawnActor<Mesh>();
+    campfire->SetName("Tent");
+    campfire->LoadMesh("Resources/Meshes/sm_Campfire.fbx");
+    campfire->SetTexture("Resources/Meshes/campfire_diff.png")->SetFilteringMode(Texture::FilteringMode::NEAREST);
+    campfire->SetPosition(0, 0, 5);
+    
+    
     auto text = SpawnActor<TextLabel>();
     text->SetName("Text");
     text->SetText("Drag Me!");
@@ -118,6 +131,7 @@ void Scene::Begin()
     text2->SetText("Use your arrow keys while dragging to change the size!");
     text2->SetPosition(0, 5, 0);
     text2->SetScale(0.3f);
+    
     
 }
 

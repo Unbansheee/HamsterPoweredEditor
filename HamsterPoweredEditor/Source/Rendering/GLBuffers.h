@@ -26,7 +26,7 @@ private:
 class GLIndexBuffer
 {
 public:
-    GLIndexBuffer(uint32_t* indices, uint32_t size, uint32_t drawMode = GL_STATIC_DRAW);
+    GLIndexBuffer(uint32_t* indices, uint32_t count, uint32_t drawMode = GL_STATIC_DRAW);
     virtual ~GLIndexBuffer();
 
     virtual uint32_t GetCount() const {return m_Count;}

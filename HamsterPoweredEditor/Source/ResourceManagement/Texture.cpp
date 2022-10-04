@@ -7,7 +7,7 @@
 
 void Texture::SetFilteringMode(FilteringMode mode)
 {
-    //glBindTexture(GL_TEXTURE_2D, rendererID);
+    glBindTexture(GL_TEXTURE_2D, rendererID);
     switch (mode)
     {
     case FilteringMode::NEAREST:
@@ -20,7 +20,7 @@ void Texture::SetFilteringMode(FilteringMode mode)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         break;
     }
-    //Unbind();
+    Unbind();
         
 }
 
@@ -87,8 +87,6 @@ Texture::Texture(const std::string& path, FilteringMode mode)
     glTextureStorage2D(rendererID, 1, internalFormat, width, height);
 
     SetFilteringMode(mode);
-    //glTextureParameteri(rendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //glTextureParameteri(rendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTextureParameteri(rendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTextureParameteri(rendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     
@@ -128,8 +126,6 @@ Texture::Texture(unsigned char* data, int width, int height, int bpp, FilteringM
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
 
     SetFilteringMode(mode);
-    //glTextureParameteri(rendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //glTextureParameteri(rendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTextureParameteri(rendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTextureParameteri(rendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     
