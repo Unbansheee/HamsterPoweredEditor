@@ -22,7 +22,10 @@ public:
     void SetMesh(float* _vertices, uint32_t _size, uint32_t* _indices, uint32_t _isize);
 
     void LoadMesh(const std::string& path);
-    aiScene scene;
+    const aiScene* scene;
+
+    void Deserialize(nlohmann::json& j) override;
+    nlohmann::json Serialize() override;
     
 protected:
 

@@ -26,6 +26,8 @@ public:
     void SetFont(Font* font);
     Font* GetFont() const;
 
+    
+
     void Begin() override;
     void OnDestroy() override;
     void Update(Timestep ts) override;
@@ -34,6 +36,8 @@ protected:
     void OnInspectorGUI() override;
 public:
     ~TextLabel() override;
+    nlohmann::json Serialize() override;
+    void Deserialize(nlohmann::json& j) override;
 protected:
     
     
@@ -50,6 +54,7 @@ protected:
     std::shared_ptr<GLIndexBuffer> m_IBO;
     std::shared_ptr<Shader> m_Shader;
     Font* m_Font;
+    std::string m_FontPath;
     glm::mat4 m_Projection;
     glm::mat4 m_View;
     bool m_ScreenSpace = true;

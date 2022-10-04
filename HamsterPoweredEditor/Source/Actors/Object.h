@@ -2,6 +2,7 @@
 #include <string>
 
 #include "Core/Timestep.h"
+#include "json.hpp"
 
 class Object
 {
@@ -10,6 +11,9 @@ public:
     virtual void Begin() = 0;
     virtual void Update(Timestep ts) = 0;
     virtual void OnDestroy() = 0;
+    
+    virtual nlohmann::json Serialize() = 0;
+    virtual void Deserialize(nlohmann::json& j) = 0;
 
     void SetName(std::string name);
     std::string GetName();

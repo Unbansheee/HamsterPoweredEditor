@@ -15,12 +15,15 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-
+#include <Windows.h>
 
 
 void App::Begin()
 {
 
+	directory = std::filesystem::current_path().string();
+	std::cout << directory << std::endl;
+	
 	//Entry point of App. Initialises GLAD
 	gladLoadGL();
 
@@ -37,11 +40,7 @@ void App::Begin()
 	Font::LoadFont("Resources/Fonts/Gresta.ttf", 100.f);
 	Font::LoadFont("Resources/Fonts/South Australia.ttf", 100.f);
 	
-	//Temporary editor camera. This should be moved to Scene or UI Layer later
-	m_Camera = new CameraController(CameraController::CameraType::ORTHO, (float)window->GetWidth() / (float)window->GetHeight());
-	m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 3.0f));
-	m_Camera->SetName("Editor Camera");
-	m_Camera->SetZoom(2.5f);
+
 	
 	
 	Renderer::Init();
@@ -53,7 +52,8 @@ void App::Begin()
 	EditorLayer = new ImGuiLayer(window);
 	EditorLayer->Begin();
 	
-	LoadScene<Scene>();
+	//LoadScene<Scene>();
+	LoadScene("Resources/Scenes/Default.json");
 }
 
 
@@ -71,11 +71,10 @@ void App::Update()
 
 	if (m_currentScene)
 	{
-		m_Camera->Update(timestep);
 		m_currentScene->Update(timestep);
 
 		//RENDER SCENE
-		Renderer::BeginScene(*m_Camera->GetCamera());
+		Renderer::BeginScene(*m_currentScene->m_editorCamera->GetCamera());
 		m_currentScene->Render();
 		Renderer::EndScene();
 
@@ -108,4 +107,23 @@ float App::GetTime()
 {
 
 	return CurrentTime;
+}
+
+void App::LoadScene(const std::string& path)
+{
+	//Load a scene from a file
+	EditorLayer->m_SelectedActor = nullptr;
+	delete m_currentScene;
+	m_currentScene = new Scene();
+	m_currentScene->DeserializeScene(path);
+	m_currentScene->m_filepath = path;
+	m_currentScene->Begin();
+}
+
+void App::NewScene()
+{
+	EditorLayer->m_SelectedActor = nullptr;
+	delete m_currentScene;
+	m_currentScene = new Scene();
+	m_currentScene->Begin();
 }

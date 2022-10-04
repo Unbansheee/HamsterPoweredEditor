@@ -29,8 +29,6 @@ Quad::Quad()
     
     shader.reset(new Shader("Resources/Shaders/VertexColor.vs", "Resources/Shaders/TexturedShader.fs"));
     shader->Bind();
-
-    //texture.reset(new Texture("Resources/Textures/beetho.png"));
     
 
     texture = Texture::CreateTexture("Resources/Textures/beetho.png");
@@ -74,6 +72,21 @@ Texture* Quad::SetTexture(const std::string& path)
     texture = (Texture::CreateTexture(path));
     m_texturePath = path;
     return texture;
+}
+
+nlohmann::json Quad::Serialize()
+{
+    nlohmann::json j = Actor::Serialize();
+    j["TexturePath"] = m_texturePath;
+    return j;
+}
+
+void Quad::Deserialize(nlohmann::json& j)
+{
+    Actor::Deserialize(j);
+    std::string path = j["TexturePath"];
+    if (!path.empty())
+    SetTexture(path);
 }
 
 void Quad::OnInspectorGUI()

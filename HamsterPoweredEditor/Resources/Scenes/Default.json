@@ -1,0 +1,203 @@
+{
+    "Actors": [
+        {
+            "ActorType": "Quad",
+            "TexturePath": "Resources/Textures/Brick.jpg",
+            "name": "Floor",
+            "position": [
+                0.0,
+                -5.0,
+                0.0
+            ],
+            "rotation": [
+                90.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                20.0,
+                20.0,
+                20.0
+            ]
+        },
+        {
+            "ActorType": "Quad",
+            "TexturePath": "",
+            "name": "Teetho",
+            "position": [
+                1.0,
+                0.7434872984886169,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "ActorType": "Quad",
+            "TexturePath": "Resources/Textures/Gear.png",
+            "name": "Gear",
+            "position": [
+                0.0,
+                -1.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                -365.0215148925781
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "ActorType": "AnimatedQuad",
+            "Columns": 10,
+            "FPS": 30.0,
+            "FrameCount": 60,
+            "Path": "Resources/Textures/Fire.png",
+            "Rows": 6,
+            "TexturePath": "",
+            "name": "Animated Fire",
+            "position": [
+                -1.0,
+                -0.10000000149011612,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "ActorType": "AnimatedQuad",
+            "Columns": 10,
+            "FPS": 30.0,
+            "FrameCount": 60,
+            "Path": "Resources/Textures/Fire2.png",
+            "Rows": 6,
+            "TexturePath": "",
+            "name": "Animated Fire 2",
+            "position": [
+                1.0,
+                -0.10000000149011612,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "ActorType": "Hexagon",
+            "InstancePositions": [
+                [
+                    -2.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    -2.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    -2.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    -2.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    -2.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    -2.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    -2.0,
+                    0.0,
+                    0.0
+                ]
+            ],
+            "Texture": "Resources/Textures/Brick.jpg",
+            "Texture2": "Resources/Textures/Wood.jpg",
+            "name": "Hexagon",
+            "position": [
+                1.0,
+                -1.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    ],
+    "EditorCamera": {
+        "ActorType": "CameraController",
+        "CameraType": 0,
+        "OrthoZoom": 2.4208881855010986,
+        "PerspMoveSpeed": 15.014398574829102,
+        "Pitch": -6.0,
+        "Yaw": 271.0,
+        "Zoom": 75.0,
+        "name": "Editor Camera",
+        "position": [
+            -0.12808038294315338,
+            -0.2937212586402893,
+            -9.256192207336426
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "scale": [
+            1.0,
+            1.0,
+            1.0
+        ]
+    },
+    "SceneColour": [
+        0.11053711920976639,
+        0.10131361335515976,
+        0.12871289253234863,
+        1.0
+    ]
+}

@@ -5,6 +5,9 @@
 #include "Core/App.h"
 #include "ImGuiLayer.h"
 #include "imgui_internal.h"
+#include "Actors/AnimatedQuad.h"
+#include "Actors/Mesh.h"
+#include "Rendering/TextLabel.h"
 
 void HierarchyPanel::Init()
 {
@@ -112,7 +115,7 @@ void HierarchyPanel::Update(Timestep ts)
 
     int index = 0;
 
-    RenderTree(App::Instance().m_Camera, index);
+    RenderTree(App::Instance().m_currentScene->m_editorCamera, index);
 
     ImGui::Separator();
     
@@ -128,6 +131,40 @@ void HierarchyPanel::Update(Timestep ts)
     if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(0))
     {
         m_Parent->m_SelectedActor = nullptr;
+    }
+
+    if (ImGui::BeginPopup("AddActor"))
+    {
+        ImGui::Text("Add Actor");
+        ImGui::Separator();
+        if (ImGui::MenuItem("Empty Actor"))
+        {
+            m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<Actor>();
+        }
+        if (ImGui::MenuItem("Mesh"))
+        {
+            m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<Mesh>();
+        }
+        if (ImGui::MenuItem("Sprite"))
+        {
+            m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<Quad>();
+        }
+        if (ImGui::MenuItem("Animated Sprite"))
+        {
+            m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<AnimatedQuad>();
+        }
+        if (ImGui::MenuItem("Text Label"))
+        {
+            m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<TextLabel>();
+        }
+        
+        ImGui::EndPopup();
+    }
+    
+    if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(1))
+    {
+        //Spawn context menu
+        ImGui::OpenPopup("AddActor");
     }
 
     

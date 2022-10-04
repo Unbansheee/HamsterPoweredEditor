@@ -1,0 +1,242 @@
+{
+    "Actors": [
+        {
+            "ActorType": "Quad",
+            "TexturePath": "Resources/Textures/grass.png",
+            "name": "Floor",
+            "position": [
+                0.0,
+                -5.0,
+                0.0
+            ],
+            "rotation": [
+                90.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                20.0,
+                20.0,
+                20.0
+            ]
+        },
+        {
+            "ActorType": "AnimatedQuad",
+            "Columns": 10,
+            "FPS": 30.0,
+            "FrameCount": 60,
+            "Path": "Resources/Textures/Fire.png",
+            "Rows": 6,
+            "TexturePath": "",
+            "name": "Animated Fire",
+            "position": [
+                -2.934000015258789,
+                -4.5,
+                3.8529999256134033
+            ],
+            "rotation": [
+                0.0,
+                211.5399932861328,
+                0.0
+            ],
+            "scale": [
+                0.8320000171661377,
+                0.832000195980072,
+                0.832000195980072
+            ]
+        },
+        {
+            "ActorType": "Mesh",
+            "MeshPath": "",
+            "Textures": [
+                "Resources/Textures/Crate.png",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "name": "Crate",
+            "position": [
+                -1.600000023841858,
+                -4.5,
+                6.300000190734863
+            ],
+            "rotation": [
+                0.0,
+                38.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "ActorType": "Mesh",
+            "MeshPath": "Resources/Meshes/sm_tent.fbx",
+            "Textures": [
+                "Resources/Meshes/tent_diff128.png",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "name": "Tent",
+            "position": [
+                2.0,
+                -5.0,
+                4.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.30000001192092896,
+                0.30000001192092896,
+                0.30000001192092896
+            ]
+        },
+        {
+            "ActorType": "Mesh",
+            "MeshPath": "Resources/Meshes/sm_Campfire.fbx",
+            "Textures": [
+                "Resources/Meshes/campfire_diff.png",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "name": "Campfire",
+            "position": [
+                -2.9000000953674316,
+                -5.0,
+                3.9000000953674316
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.4000000059604645,
+                0.40000006556510925,
+                0.40000006556510925
+            ]
+        }
+    ],
+    "EditorCamera": {
+        "ActorType": "CameraController",
+        "CameraType": 1,
+        "OrthoZoom": 2.5,
+        "PerspMoveSpeed": 5.36094856262207,
+        "Pitch": 0.0,
+        "Yaw": 234.0,
+        "Zoom": 41.70000076293945,
+        "name": "Editor Camera",
+        "position": [
+            -7.379628658294678,
+            -2.2085764408111572,
+            -6.118377208709717
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "scale": [
+            1.0,
+            1.0,
+            1.0
+        ]
+    },
+    "SceneColour": [
+        0.6175864934921265,
+        0.7692314982414246,
+        0.8910890817642212,
+        1.0
+    ]
+}

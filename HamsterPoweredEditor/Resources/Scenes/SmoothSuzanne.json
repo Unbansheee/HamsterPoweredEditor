@@ -1,0 +1,89 @@
+{
+    "Actors": [
+        {
+            "ActorType": "Mesh",
+            "MeshPath": "Resources/Meshes/MonkeySmooth.obj",
+            "Textures": [
+                "Resources/Textures/Wood.jpg",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "name": "Mesh",
+            "position": [
+                1.5,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                3.0,
+                3.000000238418579,
+                3.000000238418579
+            ]
+        }
+    ],
+    "EditorCamera": {
+        "ActorType": "CameraController",
+        "CameraType": 1,
+        "OrthoZoom": 5.068216323852539,
+        "PerspMoveSpeed": 2.564093589782715,
+        "Pitch": 10.0,
+        "Yaw": 484.5,
+        "Zoom": 75.0,
+        "name": "Editor Camera",
+        "position": [
+            -2.311666488647461,
+            1.0120478868484497,
+            5.903924942016602
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "scale": [
+            1.0,
+            1.0,
+            1.0
+        ]
+    },
+    "SceneColour": [
+        0.11386138200759888,
+        0.0428389348089695,
+        0.0428389348089695,
+        1.0
+    ]
+}

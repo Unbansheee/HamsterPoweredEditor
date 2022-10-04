@@ -22,6 +22,8 @@ public:
 	void Quit();
 	float GetTime();
 
+	static std::string GetDirectory() {return directory;};
+	
 	template<typename T>
 	void LoadScene()
 		{
@@ -33,6 +35,9 @@ public:
 			m_currentScene = new T();
 			m_currentScene->Begin();
 		}
+
+	void LoadScene(const std::string& path);
+	void NewScene();
 	
 private:
 	App(){}
@@ -43,7 +48,6 @@ private:
 	friend class Quad;
 	friend class HierarchyPanel;
 public:
-	CameraController* m_Camera;
 	static App& Instance()
 	{
 		static App instance; // Guaranteed to be destroyed.
@@ -61,7 +65,7 @@ public:
 
 	Scene* m_currentScene;
 	std::shared_ptr<GLFrameBuffer> m_FrameBuffer;
-
+	inline static std::string directory;
 	
 	
 };

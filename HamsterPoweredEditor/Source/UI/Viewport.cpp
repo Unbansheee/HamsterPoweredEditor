@@ -14,7 +14,7 @@ void Viewport::Init()
 
 void Viewport::Update(Timestep ts)
 {
-	CameraController* cam = App::Instance().m_Camera;
+	CameraController* cam = App::Instance().m_currentScene->m_editorCamera;
 	ImGui::PopStyleVar(1);
 	ImGui::Image((void*)Renderer::m_FrameBuffer->GetColorAttachmentRendererID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
@@ -24,7 +24,7 @@ void Viewport::Update(Timestep ts)
 		float width = ImGui::GetContentRegionMax().x;
 		float height = ImGui::GetContentRegionMax().y;
 		Renderer::Resize(width, height);
-		App::Instance().m_Camera->Resize(width, height);
+		App::Instance().m_currentScene->m_editorCamera->Resize(width, height);
 	}
 	lastSize = ImGui::GetWindowSize();
 

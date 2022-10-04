@@ -109,3 +109,28 @@ void Hexagon::OnInspectorGUI()
         ImGui::Separator();
     }
 }
+
+nlohmann::json Hexagon::Serialize()
+{
+    auto j = Actor::Serialize();
+    j["Texture"] = texture->GetPath();
+    j["Texture2"] = texture2->GetPath();
+    //serialize instance positions
+    j["InstancePositions"] = nlohmann::json::array();
+    for (const auto& vec : m_InstancePositions)
+    {
+        j["InstancePositions"].push_back(vec);
+    }
+    return j;
+}
+
+void Hexagon::Deserialize(nlohmann::json& json)
+{
+    Actor::Deserialize(json);
+    texture = (Texture::CreateTexture(json["Texture"]));
+    texture2 = (Texture::CreateTexture(json["Texture2"]));
+    for (const auto& vec : json["InstancePositions"])
+    {
+        m_InstancePositions.push_back(vec.get<glm::vec3>());
+    }
+}

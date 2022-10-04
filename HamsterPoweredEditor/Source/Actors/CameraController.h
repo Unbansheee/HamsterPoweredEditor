@@ -32,6 +32,9 @@ public:
 
 protected:
     void OnInspectorGUI() override;
+public:
+    nlohmann::json Serialize() override;
+    void Deserialize(nlohmann::json& j) override;
 private:
     float yaw = 0.0f;
     float pitch = 0.0f;

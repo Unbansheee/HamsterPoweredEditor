@@ -14,8 +14,11 @@ public:
     void OnDestroy() override;
     
     
+    
     void SetFPS(float fps);
     Texture* SetSpriteSheet(std::string path, int frameCount, int rows, int columns);
+    nlohmann::json Serialize() override;
+    void Deserialize(nlohmann::json& j) override;
 
 private:
     float m_fps = 30.f;

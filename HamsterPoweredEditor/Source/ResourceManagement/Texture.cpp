@@ -59,7 +59,7 @@ Texture::Texture(const std::string& path, FilteringMode mode)
     localBuffer = stbi_load(path.c_str(), &width, &height, &bpp, 0);
     if (localBuffer == NULL)
     {
-        std::cout << "Failed to load texture" << std::endl;
+        std::cout << "Failed to load texture: " << path << std::endl;
     }
 
     GLenum internalFormat = 0, dataFormat = 0;

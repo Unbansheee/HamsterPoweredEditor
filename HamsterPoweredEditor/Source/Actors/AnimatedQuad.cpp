@@ -172,3 +172,23 @@ Texture* AnimatedQuad::SetSpriteSheet(std::string path, int frameCount, int rows
     this->m_frameCount = frameCount;
     return texture;
 }
+
+nlohmann::json AnimatedQuad::Serialize()
+{
+    nlohmann::json j = Quad::Serialize();
+    j["FPS"] = m_fps;
+    j["Path"] = m_Path;
+    j["FrameCount"] = m_frameCount;
+    j["Rows"] = m_rows;
+    j["Columns"] = m_columns;
+    return j;
+}
+
+void AnimatedQuad::Deserialize(nlohmann::json& j)
+{
+    Quad::Deserialize(j);
+    SetFPS(j["FPS"]);
+    SetSpriteSheet(j["Path"], j["FrameCount"], j["Rows"], j["Columns"]);
+    
+    
+}

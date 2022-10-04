@@ -1,5 +1,6 @@
 ﻿#include "RendererSettings.h"
 
+#include "Core/App.h"
 #include "Rendering/Renderer.h"
 
 void RendererSettings::Init()
@@ -19,7 +20,7 @@ void RendererSettings::Update(Timestep ts)
     glm::vec4 colour = Renderer::GetClearColor();
     if (ImGui::ColorEdit4("Scene Colour", &colour.r))
     {
-        Renderer::SetClearColor(colour);
+        App::Instance().m_currentScene->SetColour(colour);
     }
 
     //rendermode combobox

@@ -22,6 +22,7 @@ TextLabel::TextLabel(const std::string& text, const std::string& fontPath, float
     m_BaseColor = color;
     m_Text = text;
     m_FontSize = fontSize;
+    m_FontPath = fontPath;
     m_Font = Font::LoadFont(fontPath, fontSize);
     
     SetText(text);
@@ -229,4 +230,30 @@ void TextLabel::OnInspectorGUI()
 
 TextLabel::~TextLabel()
 {
+}
+
+nlohmann::json TextLabel::Serialize()
+{
+    auto json = Actor::Serialize();
+    json["Text"] = m_Text;
+    json["FontPath"] = m_FontPath;
+    json["ScreenSpace"] = m_ScreenSpace;
+    json["BaseColor"] = m_BaseColor;
+    json["HoverColor"] = m_HoverColor;
+    json["PressedColor"] = m_PressedColor;
+    return json;
+}
+
+void TextLabel::Deserialize(nlohmann::json& j)
+{
+    Actor::Deserialize(j);
+    m_Text = j["Text"];
+    SetText(m_Text);
+    m_FontPath = j["FontPath"];
+    SetFont(Font::LoadFont(m_FontPath, 100));
+    m_ScreenSpace = j["ScreenSpace"];
+    m_BaseColor = j["BaseColor"];
+    m_HoverColor = j["HoverColor"];
+    m_PressedColor = j["PressedColor"];
+    
 }

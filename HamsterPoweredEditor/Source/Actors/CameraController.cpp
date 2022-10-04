@@ -59,6 +59,9 @@ void CameraController::HandleMouseMovement(float x, float y)
                 camera->pitch = 89.0f;
             if(camera->pitch < -89.0f)
                 camera->pitch = -89.0f;
+
+            yaw = camera->yaw;
+            pitch = camera->pitch;
             
             camera->RecalculateViewMatrix();
 
@@ -170,5 +173,38 @@ void CameraController::OnInspectorGUI()
         ImGui::Separator();
     }
     
+}
+
+nlohmann::json CameraController::Serialize()
+{
+    nlohmann::json j =  Actor::Serialize();
+    j["CameraType"] = m_CameraType;
+    j["Zoom"] = m_Zoom;
+    j["OrthoZoom"] = m_OrthoZoom;
+    j["PerspMoveSpeed"] = m_PerspMoveSpeed;
+    j["Yaw"] = yaw;
+    j["Pitch"] = pitch;
+    return j;
+}
+
+void CameraController::Deserialize(nlohmann::json& j)
+{
+    Actor::Deserialize(j);
+    m_Zoom = j["Zoom"];
+    m_OrthoZoom = j["OrthoZoom"];
+    m_PerspMoveSpeed = j["PerspMoveSpeed"];
+
+    SetCameraType(j["CameraType"]);
+    if (m_CameraType == CameraType::ORTHO)
+    {
+        SetZoom(m_OrthoZoom);
+    }
+    else
+    {
+        SetZoom(m_Zoom);
+        dynamic_cast<PerspectiveCamera*>(m_Camera)->yaw = j["Yaw"];
+        dynamic_cast<PerspectiveCamera*>(m_Camera)->pitch = j["Pitch"];
+    }
+    Resize(Renderer::GetViewportSize().x, Renderer::GetViewportSize().y);
 }
 

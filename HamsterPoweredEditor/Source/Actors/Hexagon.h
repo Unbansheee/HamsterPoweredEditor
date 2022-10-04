@@ -20,6 +20,9 @@ public:
     void SetTexture(const std::string& path, const std::string& path2);
     void OnInspectorGUI() override;
 
+    nlohmann::json Serialize() override;
+    void Deserialize(nlohmann::json& json) override;
+
     float vertices[8 * 7] = {
         //Positions             //Vertex Colurs     //Texture Coords
         0.0f,  0.0f, 0.0f,      0.f, 0.f, 1.f,      0.5f, 0.5f,  // center

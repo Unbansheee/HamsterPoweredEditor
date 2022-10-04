@@ -141,14 +141,14 @@ ShaderProgramSource Shader::CreateShaderSource(const std::string& vertexPath, co
     std::ifstream vin(vertexPath);
     if (!vin)
     {
-        std::cout << "Vertex shader file not found\n";
+        std::cout << "Vertex shader file not found: " << vertexPath << std::endl;
     }
     source.VertexSource = std::string((std::istreambuf_iterator<char>(vin)), std::istreambuf_iterator<char>());
 
     std::ifstream fin(fragmentPath);
     if (!fin)
     {
-        std::cout << "Fragment shader file not found\n";
+        std::cout << "Fragment shader file not found: " << fragmentPath << std::endl;
     }
     source.FragmentSource = std::string((std::istreambuf_iterator<char>(fin)), std::istreambuf_iterator<char>());
 

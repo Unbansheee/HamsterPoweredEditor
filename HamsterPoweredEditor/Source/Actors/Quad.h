@@ -23,6 +23,8 @@ public:
     void OnDestroy() override;
 
     virtual Texture* SetTexture(const std::string& path);
+    nlohmann::json Serialize() override;
+    void Deserialize(nlohmann::json& j) override;
 protected:
 
 public:

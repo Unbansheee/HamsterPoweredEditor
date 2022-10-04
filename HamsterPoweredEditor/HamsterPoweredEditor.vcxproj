@@ -173,6 +173,7 @@
     <ClCompile Include="Source\Actors\Quad.cpp" />
     <ClCompile Include="Source\Core\App.cpp" />
     <ClCompile Include="Source\Core\Font.cpp" />
+    <ClCompile Include="Source\Core\Input.cpp" />
     <ClCompile Include="Source\Core\main.cpp" />
     <ClCompile Include="Source\Core\Scene.cpp" />
     <ClCompile Include="Source\Core\Timer.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="Source\Actors\Quad.h" />
     <ClInclude Include="Source\Core\App.h" />
     <ClInclude Include="Source\Core\Font.h" />
+    <ClInclude Include="Source\Core\Input.h" />
     <ClInclude Include="Source\Core\Timer.h" />
     <ClInclude Include="Source\Core\Timestep.h" />
     <ClInclude Include="Source\Core\Scene.h" />

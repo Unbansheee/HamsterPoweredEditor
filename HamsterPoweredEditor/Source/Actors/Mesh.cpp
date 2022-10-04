@@ -45,6 +45,8 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
+    
+    
 }
 
 void Mesh::OnInspectorGUI()
@@ -138,26 +140,27 @@ void Mesh::LoadMesh(const std::string& path)
 {
     
     Assimp::Importer importer;
-    scene = *importer.ReadFile(path, aiProcess_Triangulate);
+    scene = importer.ReadFile(path, aiProcess_Triangulate);
+    if (!scene)
+    {
+        std::cout << "Error loading mesh" << std::endl;
+        return;
+    }
 
-
-    if (!scene.mMeshes[0])
+    if (!scene->mMeshes[0])
     {
         std::cout << "Error loading mesh" << std::endl;
         return;
     }
 
     meshpath = path;
-
-
     
-
     vertices.clear();
     indices.clear();
     
-    for (int index = 0; index < sizeof(scene.mMeshes) / sizeof(scene.mMeshes[0]); index++)
+    for (int index = 0; index < sizeof(scene->mMeshes) / sizeof(scene->mMeshes[0]); index++)
     {
-        aiMesh* mesh = scene.mMeshes[index];
+        aiMesh* mesh = scene->mMeshes[index];
         for (int i = 0; i < mesh->mNumVertices; i++)
         {
             vertices.push_back(mesh->mVertices[i].x);
@@ -198,7 +201,31 @@ void Mesh::LoadMesh(const std::string& path)
     ib->Unbind();
     shader->Unbind();
     
+    
     importer.FreeScene();
     
+}
+
+void Mesh::Deserialize(nlohmann::json& j)
+{
+    Actor::Deserialize(j);
+    meshpath = j["MeshPath"];
+    if (!meshpath.empty()) LoadMesh(meshpath);
+    
+    for (int i = 0; i < j["Textures"].size(); i++)
+    {
+        texturepaths[i] = j["Textures"][i];
+        if (!texturepaths[i].empty()) SetTexture(texturepaths[i], i);
+    }
+    
+    
+}
+
+nlohmann::json Mesh::Serialize()
+{
+    auto j = Actor::Serialize();
+    j["MeshPath"] = meshpath;
+    j["Textures"] = texturepaths;
+    return j;
 }
 

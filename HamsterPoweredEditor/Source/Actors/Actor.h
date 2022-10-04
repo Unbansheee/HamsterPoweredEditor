@@ -6,8 +6,45 @@
 
 #include "Object.h"
 #include "Rendering/Renderer.h"
+#include "json.hpp"
 
 class Scene;
+
+namespace nlohmann
+{
+    template <>
+    struct adl_serializer<glm::vec3>
+    {
+        static void to_json(json& j, const glm::vec3& vec)
+        {
+            j = json{ vec.x, vec.y, vec.z };
+        }
+
+        static void from_json(const json& j, glm::vec3& vec)
+        {
+            vec.x = j[0];
+            vec.y = j[1];
+            vec.z = j[2];
+        }
+    };
+
+    template <>
+    struct adl_serializer<glm::vec4>
+    {
+        static void to_json(json& j, const glm::vec4& vec)
+        {
+            j = json{ vec.x, vec.y, vec.z, vec.w };
+        }
+
+        static void from_json(const json& j, glm::vec4& vec)
+        {
+            vec.x = j[0];
+            vec.y = j[1];
+            vec.z = j[2];
+            vec.w = j[3];
+        }
+    };
+}
 
 class Actor : public Object
 {
@@ -95,6 +132,9 @@ public:
     {
         return dynamic_cast<T*>(this);
     }
+
+    nlohmann::json Serialize() override;
+    void Deserialize(nlohmann::json& j) override;
     
 protected:
     RenderSettings m_renderSettings;
@@ -115,8 +155,7 @@ protected:
     glm::vec3 m_scale = glm::vec3(1.0f);
 
     bool m_Transparency = false;
-    // function pointer for update function
-    //void(*m_updateFunction)(Actor*);
+
     std::function<void()> m_updateCallback;
     
 protected:

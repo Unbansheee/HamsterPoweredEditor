@@ -22,6 +22,8 @@
 #include "imnodes.h"
 #include "RendererSettings.h"
 #include "Core/Timer.h"
+#include <windows.h>
+#include <atlstr.h>
 
 
 ImGuiLayer::ImGuiLayer(Window* window) : window(window)
@@ -322,17 +324,25 @@ void ImGuiLayer::Update(Timestep ts)
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::BeginMenu("File"))
 			{
-				if (ImGui::MenuItem("Save"))
+				if (ImGui::MenuItem("New", "Ctrl+N"))
 				{
+					App::Instance().NewScene();
+				}
+
+				ImGui::Separator();
+				
+				if (ImGui::MenuItem("Save", "Ctrl+S"))
+				{
+					Save();
+				}
+				if (ImGui::MenuItem("Save As", "Ctrl+Shift+S"))
+				{
+					SaveAs();
 					
 				}
-				if (ImGui::MenuItem("Save As"))
+				if (ImGui::MenuItem("Load", "Ctrl+O"))
 				{
-					
-				}
-				if (ImGui::MenuItem("Load"))
-				{
-					
+					Load();
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("Exit"))
@@ -387,7 +397,8 @@ void ImGuiLayer::Update(Timestep ts)
 
 	if (ImGui::BeginViewportSideBar("##MainStatusBar", viewport, ImGuiDir_Down, height, window_flags)) {
 		if (ImGui::BeginMenuBar()) {
-			ImGui::Text("Status: Happy	|	FPS: %.1f", 1000.f / App::Instance().timestep.GetMilliseconds());
+			std::string status = "Scene: " + App::Instance().m_currentScene->GetPath() + " | FPS: " + std::to_string(1000.f / App::Instance().timestep.GetMilliseconds());
+			ImGui::Text(status.c_str());
 			ImGui::EndMenuBar();
 		}
 		ImGui::End();
@@ -412,4 +423,70 @@ void ImGuiLayer::Update(Timestep ts)
 
 
 
+}
+
+void ImGuiLayer::SaveAs()
+{
+	//open windows file dialog
+	OPENFILENAME ofn;
+	WCHAR szFile[260] = {0};
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = NULL;
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = sizeof(szFile);
+	ofn.lpstrFilter = LPCWSTR(L"JSON Files\0*.json\0");
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = L"Resources/Scenes";
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+	if (GetSaveFileName(&ofn) == TRUE)
+	{
+		std::string dir = App::GetDirectory();
+		std::wstring stemp = std::wstring(dir.begin(), dir.end());
+		LPCWSTR appDir = stemp.c_str();
+		SetCurrentDirectory(appDir);
+						
+		std::string path = std::string(CW2A(ofn.lpstrFile));
+		//add .json if it is not already there
+		if (path.substr(path.length() - 5, 5) != ".json")
+		{
+			path += ".json";
+		}
+						
+		App::Instance().m_currentScene->SerializeScene(path);
+		App::Instance().m_currentScene->m_filepath = std::string(CW2A(ofn.lpstrFile));
+	}
+}
+
+void ImGuiLayer::Save()
+{
+	if (App::Instance().m_currentScene->m_filepath.empty()) SaveAs();
+	else App::Instance().m_currentScene->SerializeScene(App::Instance().m_currentScene->m_filepath);
+}
+
+void ImGuiLayer::Load()
+{
+	OPENFILENAME ofn;
+	WCHAR szFile[260] = { 0 };
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = NULL;
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = sizeof(szFile);
+	ofn.lpstrFilter = LPCWSTR(L"JSON Files\0*.json\0");
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = L"Resources/Scenes";
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+	if (GetOpenFileName(&ofn) == TRUE)
+	{
+		std::string dir = App::GetDirectory();
+		std::wstring stemp = std::wstring(dir.begin(), dir.end());
+		LPCWSTR appDir = stemp.c_str();
+		SetCurrentDirectory(appDir);
+		App::Instance().LoadScene(std::string(CW2A(ofn.lpstrFile)));
+	}
 }

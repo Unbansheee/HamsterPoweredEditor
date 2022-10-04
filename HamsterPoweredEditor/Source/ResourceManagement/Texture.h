@@ -18,7 +18,7 @@ public:
     
     unsigned int rendererID;
     
-    
+    std::string GetPath() const { return filePath; }
 
     void Bind(unsigned int slot = 0) const;
     void Unbind();

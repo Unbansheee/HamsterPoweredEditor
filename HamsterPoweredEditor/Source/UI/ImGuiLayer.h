@@ -34,6 +34,10 @@ public:
 	void EndFrame();
 	void Update(Timestep ts);
 
+	void SaveAs();
+	void Save();
+	void Load();
+
 	template <typename T>
 	T* CreateWidget();
 

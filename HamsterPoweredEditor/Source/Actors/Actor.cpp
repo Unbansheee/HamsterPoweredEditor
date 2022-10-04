@@ -252,6 +252,55 @@ void Actor::Draw()
 {
 }
 
+nlohmann::json Actor::Serialize()
+{
+    nlohmann::json json;
+
+    std::string type = typeid(*this).name();
+
+    if (type.find("class ") == 0)
+    {
+        type = type.substr(6);
+    }
+    else if (type.find("struct ") == 0)
+    {
+        type = type.substr(7);
+    }
+    
+    json["ActorType"] = type;
+    json["name"] = GetName();
+    
+    json["position"] = GetPosition();
+    json["rotation"] = GetRotation();
+    json["scale"] = GetScale();
+    
+
+    return json;
+    
+}
+
+void Actor::Deserialize(nlohmann::json& j)
+{
+    SetName(j["name"] );
+    
+    if (j.contains("position"))
+    {
+        SetPosition(j["position"]);
+    }
+    if (j.contains("rotation"))
+    {
+        SetRotation(j["rotation"]);
+    }
+    if (j.contains("scale"))
+    {
+        SetScale(glm::vec3(j["scale"]));
+    }
+    UpdateTransform();
+
+
+    
+}
+
 void Actor::UpdateTransform()
 {
     //get coordinate space of m_parent
