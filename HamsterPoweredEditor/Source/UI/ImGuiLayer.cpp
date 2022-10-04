@@ -330,7 +330,11 @@ void ImGuiLayer::Update(Timestep ts)
 				}
 
 				ImGui::Separator();
-				
+
+				if (ImGui::MenuItem("Open", "Ctrl+O"))
+				{
+					Load();
+				}
 				if (ImGui::MenuItem("Save", "Ctrl+S"))
 				{
 					Save();
@@ -340,10 +344,7 @@ void ImGuiLayer::Update(Timestep ts)
 					SaveAs();
 					
 				}
-				if (ImGui::MenuItem("Load", "Ctrl+O"))
-				{
-					Load();
-				}
+
 				ImGui::Separator();
 				if (ImGui::MenuItem("Exit"))
 				{

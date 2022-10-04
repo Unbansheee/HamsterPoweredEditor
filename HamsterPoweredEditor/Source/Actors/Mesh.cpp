@@ -143,13 +143,13 @@ void Mesh::LoadMesh(const std::string& path)
     scene = importer.ReadFile(path, aiProcess_Triangulate);
     if (!scene)
     {
-        std::cout << "Error loading mesh" << std::endl;
+        std::cout << "Error loading mesh. File not found: " << path << std::endl;
         return;
     }
 
     if (!scene->mMeshes[0])
     {
-        std::cout << "Error loading mesh" << std::endl;
+        std::cout << "Error loading mesh. No meshes found: " << path << std::endl;
         return;
     }
 
@@ -161,6 +161,7 @@ void Mesh::LoadMesh(const std::string& path)
     for (int index = 0; index < sizeof(scene->mMeshes) / sizeof(scene->mMeshes[0]); index++)
     {
         aiMesh* mesh = scene->mMeshes[index];
+        
         for (int i = 0; i < mesh->mNumVertices; i++)
         {
             vertices.push_back(mesh->mVertices[i].x);
@@ -185,8 +186,8 @@ void Mesh::LoadMesh(const std::string& path)
         {ShaderDataType::Float3, "Color"},
         {ShaderDataType::Float2, "TexCoord"}
     };
-
-
+    
+    
     vb.reset(new GLVertexBuffer(vertices.data(), vertices.size() * sizeof(float)));
     va.reset(new GLVertexArray());
     ib.reset(new GLIndexBuffer(indices.data(), indices.size()));
@@ -203,6 +204,7 @@ void Mesh::LoadMesh(const std::string& path)
     
     
     importer.FreeScene();
+    UpdateTransform();
     
 }
 

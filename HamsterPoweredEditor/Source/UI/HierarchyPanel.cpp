@@ -117,7 +117,15 @@ void HierarchyPanel::Update(Timestep ts)
 
     RenderTree(App::Instance().m_currentScene->m_editorCamera, index);
 
+
+
     ImGui::Separator();
+    
+    if (ImGui::Button("Add Actor"))
+    {
+        //Spawn context menu
+        ImGui::OpenPopup("AddActor");
+    }
     
     for (auto& i : App::Instance().m_currentScene->GetActors())
     {
@@ -161,11 +169,7 @@ void HierarchyPanel::Update(Timestep ts)
         ImGui::EndPopup();
     }
     
-    if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(1))
-    {
-        //Spawn context menu
-        ImGui::OpenPopup("AddActor");
-    }
+
 
     
     if (ImGui::IsMouseReleased(0) && ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem) && !ImGui::IsDragDropPayloadBeingAccepted())
