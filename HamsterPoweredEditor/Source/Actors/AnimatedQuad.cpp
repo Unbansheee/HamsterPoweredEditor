@@ -71,7 +71,8 @@ AnimatedQuad::AnimatedQuad()
     VertexBufferLayout layout = {
         {ShaderDataType::Float3, "Position"},
         {ShaderDataType::Float3, "Color"},
-        {ShaderDataType::Float2, "TexCoord"}
+        {ShaderDataType::Float2, "TexCoord"},
+        {ShaderDataType::Float3, "Normal"}
     };
 
     vb.reset(new GLVertexBuffer(vertices, sizeof(vertices)));

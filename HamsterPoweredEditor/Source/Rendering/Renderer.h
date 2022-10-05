@@ -6,8 +6,10 @@
 #include "ResourceManagement/Shader.h"
 #include "GLFrameBuffer.h"
 #include "GLVertexArray.h"
+#include "Lights.h"
 #include "UI/RendererSettings.h"
 
+class Texture;
 
 struct RenderSettings
 {
@@ -16,6 +18,15 @@ struct RenderSettings
     bool DepthTest = true;
     bool Culling = true;
     bool DepthWrite = true;
+};
+
+struct RenderObject
+{
+    const std::shared_ptr<Shader>& shader;
+    const std::shared_ptr<GLVertexArray>& vertexArray;
+    const glm::mat4 transform;
+    const RenderSettings settings;
+    std::vector<Texture*> textures;
 };
 
 class Renderer
@@ -27,18 +38,23 @@ public:
     enum class RenderMode
     {
         UNLIT,
-        WIREFRAME
+        WIREFRAME,
+        LIT
     };
     
     friend class OpenGLRendererAPI;
+    friend class RendererSettings;
     friend class RendererAPI;
     friend class Viewport;
     friend class Stats;
+    friend class Scene;
     
     static void Init();
     static void BeginScene(View& camera);
     static void EndScene();
-    static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f), const RenderSettings& settings = RenderSettings());
+    static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f), const std::vector<Texture*>& textures = {}, const RenderSettings& settings = RenderSettings());
+    static void Submit(const PointLightData& light);
+    static void Submit(const DirectionalLightData& light);
     static void SetClearColor(const glm::vec4& color);
     static const glm::vec4& GetClearColor() {return clearColor;}
     static double AspectRatio();
@@ -46,6 +62,7 @@ public:
     static void SetRenderMode(RenderMode mode);
     static RenderMode GetRenderMode() {return m_renderMode;}
     static glm::vec2 GetViewportSize() {return {m_Width, m_Height};}
+    static void Render();
 private:
     static void Clear();
     
@@ -65,6 +82,12 @@ private:
     inline static glm::vec4 clearColor;
     inline static RenderMode m_renderMode;
     inline static std::shared_ptr<Shader> m_WireShader;
+
+    inline static std::vector<RenderObject> m_RenderObjects;
+    inline static std::vector<PointLightData> m_PointLights;
+    inline static std::vector<DirectionalLightData> m_DirectionalLights;
+
+    inline static float m_AmbientLightStrength = 0.2f;
     
     struct SceneData
     {

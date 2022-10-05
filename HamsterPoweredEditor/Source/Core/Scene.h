@@ -29,6 +29,7 @@ public:
     {
         T* actor = new T(args...);
         actor->m_scene = this;
+        actor->UpdateTransform();
         m_actors.emplace_back(actor);
         return actor;
     }

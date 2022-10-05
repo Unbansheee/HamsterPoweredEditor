@@ -3,12 +3,15 @@
 
 in vec3 FragColor;
 in vec2 v_TexCoord;
+in vec3 v_Normal;
 
 uniform float CurrentTime = 0.0;
 uniform float AlphaThreshold = 0.25;
 uniform sampler2D Texture0;
 uniform sampler2D Texture1;
 uniform bool Wireframe = false;
+uniform vec3 AmbientColour;
+uniform float AmbientStrength;
 
 uniform vec2 UVTransform;
 uniform vec2 UVScale;

@@ -12,6 +12,9 @@
 #include "Rendering/TextLabel.h"
 #include "Actors/Mesh.h"
 #include "json.hpp"
+#include "Actors/DirectionalLight.h"
+#include "Actors/PointLight.h"
+#include "Actors/Spinner.h"
 
 Scene::Scene()
 {
@@ -50,6 +53,7 @@ void Scene::Render()
     {
         actor->Draw();
     }
+
 }
 
 void Scene::Begin()
@@ -82,6 +86,8 @@ void Scene::SerializeScene(const std::string& filepath)
     j["EditorCamera"] = m_editorCamera->Serialize();
 
     j["SceneColour"] = m_sceneColour;
+    j["AmbientIntensity"] = Renderer::m_AmbientLightStrength;
+    j["RenderMode"] = Renderer::GetRenderMode();
     
     j["Actors"] = nlohmann::json::array();
     for (Actor* actor : m_actors)
@@ -112,8 +118,18 @@ void Scene::DeserializeScene(const std::string& filepath)
         m_sceneColour = j["SceneColour"];
         Renderer::SetClearColor(m_sceneColour);
     }
+
+    if (j.contains("RenderMode"))
+    {
+        Renderer::SetRenderMode(j["RenderMode"]);
+    }
+
+    if (j.contains("AmbientIntensity"))
+    {
+        Renderer::m_AmbientLightStrength = j["AmbientIntensity"];
+    }
     
-    //iterate through all the actors in the json file
+
      for (auto& actorJson : j["Actors"])
     {
         std::string actorType = actorJson["ActorType"];
@@ -142,6 +158,19 @@ void Scene::DeserializeScene(const std::string& filepath)
         {
             actor = SpawnActor<TextLabel>();
         }
+         else if (actorType == "DirLight")
+         {
+             actor = SpawnActor<DirLight>();
+         }
+         else if (actorType == "PointLight")
+         {
+             actor = SpawnActor<PointLight>();
+         }
+         else if (actorType == "Spinner")
+         {
+             actor = SpawnActor<Spinner>();
+         }
+
         else
         {
             std::cout << "Unknown actor type: {0}" << actorType << std::endl;

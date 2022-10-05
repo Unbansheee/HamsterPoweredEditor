@@ -166,17 +166,94 @@
     <ClCompile Include="include\imgui\imnodes.cpp" />
     <ClCompile Include="Source\Actors\Actor.cpp" />
     <ClCompile Include="Source\Actors\AnimatedQuad.cpp" />
+    <ClCompile Include="Source\Actors\DirectionalLight.cpp" />
     <ClCompile Include="Source\Actors\Hexagon.cpp" />
     <ClCompile Include="Source\Actors\Mesh.cpp" />
     <ClCompile Include="Source\Actors\Object.cpp" />
     <ClCompile Include="Source\Actors\CameraController.cpp" />
+    <ClCompile Include="Source\Actors\PointLight.cpp" />
     <ClCompile Include="Source\Actors\Quad.cpp" />
+    <ClCompile Include="Source\Actors\Spinner.cpp" />
     <ClCompile Include="Source\Core\App.cpp" />
     <ClCompile Include="Source\Core\Font.cpp" />
     <ClCompile Include="Source\Core\Input.cpp" />
     <ClCompile Include="Source\Core\main.cpp" />
     <ClCompile Include="Source\Core\Scene.cpp" />
     <ClCompile Include="Source\Core\Timer.cpp" />
+    <ClCompile Include="Source\Core\HPUUID.cpp">
+      <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>x64\Debug\</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>x64\Debug\</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <ConformanceMode>true</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>x64\Debug\</ModuleDependenciesFile>
+      <ModuleOutputFile>x64\Debug\</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>x64\Debug\</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>x64\Debug\vc143.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>x64\Debug\HamsterPoweredEditor.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>x64\Debug\</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>x64\Debug\HamsterP.20a66900.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>x64\Debug\</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_UNICODE;UNICODE;</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>D:\Projects\Dev\HamsterPoweredEditor\HamsterPoweredEditor\Source\;D:\Projects\Dev\HamsterPoweredEditor\HamsterPoweredEditor\include\imgui\;D:\Projects\Dev\HamsterPoweredEditor\HamsterPoweredEditor\include\;D:\Projects\Dev\HamsterPoweredEditor\HamsterPoweredEditor\vendor\;</AdditionalIncludeDirectories>
+      <LinkCompiled>true</LinkCompiled>
+    </ClCompile>
     <ClCompile Include="Source\Core\Window.cpp" />
     <ClCompile Include="Source\Rendering\glad.c" />
     <ClCompile Include="Source\Rendering\GLFrameBuffer.cpp" />
@@ -217,23 +294,28 @@
     <ClInclude Include="include\stb_image\stb_image.h" />
     <ClInclude Include="Source\Actors\Actor.h" />
     <ClInclude Include="Source\Actors\AnimatedQuad.h" />
+    <ClInclude Include="Source\Actors\DirectionalLight.h" />
     <ClInclude Include="Source\Actors\Hexagon.h" />
     <ClInclude Include="Source\Actors\Mesh.h" />
     <ClInclude Include="Source\Actors\Object.h" />
     <ClInclude Include="Source\Actors\CameraController.h" />
+    <ClInclude Include="Source\Actors\PointLight.h" />
     <ClInclude Include="Source\Actors\Quad.h" />
+    <ClInclude Include="Source\Actors\Spinner.h" />
     <ClInclude Include="Source\Core\App.h" />
     <ClInclude Include="Source\Core\Font.h" />
     <ClInclude Include="Source\Core\Input.h" />
     <ClInclude Include="Source\Core\Timer.h" />
     <ClInclude Include="Source\Core\Timestep.h" />
     <ClInclude Include="Source\Core\Scene.h" />
+    <ClInclude Include="Source\Core\HPUUID.h" />
     <ClInclude Include="Source\Core\Window.h" />
     <ClInclude Include="Source\Rendering\GLFrameBuffer.h" />
     <ClInclude Include="Source\Rendering\GLBuffers.h" />
     <ClInclude Include="Source\Rendering\GLVertexArray.h" />
     <ClInclude Include="Source\Rendering\OrthographicCamera.h" />
     <ClInclude Include="Source\Rendering\PerspectiveCamera.h" />
+    <ClInclude Include="Source\Rendering\Lights.h" />
     <ClInclude Include="Source\Rendering\Renderer.h" />
     <ClInclude Include="Source\Rendering\TextLabel.h" />
     <ClInclude Include="Source\Rendering\VertexBufferLayout.h" />
@@ -262,6 +344,7 @@
     <Compile Include="Resources\Shaders\Wireframe.fs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Shaders\Common.glsl" />
     <Content Include="Resources\Shaders\FixedTriangle.vs" />
     <Content Include="Resources\Shaders\PositionOnly.vs" />
     <Content Include="Resources\Shaders\Text.vs" />

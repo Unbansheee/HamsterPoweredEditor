@@ -6,7 +6,10 @@
 #include "ImGuiLayer.h"
 #include "imgui_internal.h"
 #include "Actors/AnimatedQuad.h"
+#include "Actors/DirectionalLight.h"
 #include "Actors/Mesh.h"
+#include "Actors/PointLight.h"
+#include "Actors/Spinner.h"
 #include "Rendering/TextLabel.h"
 
 void HierarchyPanel::Init()
@@ -153,18 +156,47 @@ void HierarchyPanel::Update(Timestep ts)
         {
             m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<Mesh>();
         }
-        if (ImGui::MenuItem("Sprite"))
-        {
-            m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<Quad>();
-        }
-        if (ImGui::MenuItem("Animated Sprite"))
-        {
-            m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<AnimatedQuad>();
-        }
+
         if (ImGui::MenuItem("Text Label"))
         {
             m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<TextLabel>();
         }
+
+        if (ImGui::BeginMenu("Utility"))
+        {
+            if (ImGui::MenuItem("Spinner"))
+            {
+                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<Spinner>();
+            }
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Sprites"))
+        {
+            if (ImGui::MenuItem("Sprite"))
+            {
+                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<Quad>();
+            }
+            if (ImGui::MenuItem("Animated Sprite"))
+            {
+                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<AnimatedQuad>();
+            }
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Lights"))
+        {
+            if (ImGui::MenuItem("Directional Light"))
+            {
+                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<DirLight>();
+            }
+            if (ImGui::MenuItem("Point Light"))
+            {
+                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<PointLight>();
+            }
+            ImGui::EndMenu();
+        }
+
         
         ImGui::EndPopup();
     }

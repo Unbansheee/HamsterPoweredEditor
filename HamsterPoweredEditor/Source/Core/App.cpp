@@ -76,6 +76,7 @@ void App::Update()
 		//RENDER SCENE
 		Renderer::BeginScene(*m_currentScene->m_editorCamera->GetCamera());
 		m_currentScene->Render();
+		Renderer::Render();
 		Renderer::EndScene();
 
 		//Destroy queued items as not to break references in the update loop

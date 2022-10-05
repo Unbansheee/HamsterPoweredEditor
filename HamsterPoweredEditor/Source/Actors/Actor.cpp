@@ -4,6 +4,7 @@
 
 Actor::Actor()
 {
+    
 }
 
 Actor::Actor(std::string name)
@@ -266,6 +267,8 @@ nlohmann::json Actor::Serialize()
     {
         type = type.substr(7);
     }
+
+    json["ID"] = m_id.Get();
     
     json["ActorType"] = type;
     json["name"] = GetName();
@@ -282,6 +285,11 @@ nlohmann::json Actor::Serialize()
 void Actor::Deserialize(nlohmann::json& j)
 {
     SetName(j["name"] );
+
+    if (j.contains("ID"))
+    {
+        m_id.SetID(j["ID"]);
+    }
     
     if (j.contains("position"))
     {

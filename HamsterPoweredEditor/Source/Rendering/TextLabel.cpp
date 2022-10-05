@@ -178,7 +178,7 @@ void TextLabel::Draw()
         m_Shader->SetUniform1i("TextTexture", 0);
         m_Shader->SetUniform1i("u_ScreenSpace", m_ScreenSpace);
         
-        Renderer::Submit(m_Shader, m_VAO, model, m_renderSettings);
+        Renderer::Submit(m_Shader, m_VAO, model, {FontCharacter.texture}, m_renderSettings);
 
         CharacterOrigin.x += (FontCharacter.Advance >> 6) * GetScale().x;
 

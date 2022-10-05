@@ -13,7 +13,8 @@ Quad::Quad()
     VertexBufferLayout layout = {
         {ShaderDataType::Float3, "Position"},
         {ShaderDataType::Float3, "Color"},
-        {ShaderDataType::Float2, "TexCoord"}
+        {ShaderDataType::Float2, "TexCoord"},
+        {ShaderDataType::Float3, "Normal"},
     };
 
     
@@ -50,7 +51,7 @@ Quad::~Quad()
 void Quad::Draw()
 {
     texture->Bind(0);
-    Renderer::Submit(shader, va, m_transform, m_renderSettings);
+    Renderer::Submit(shader, va, m_transform, {texture}, m_renderSettings);
 
 }
 

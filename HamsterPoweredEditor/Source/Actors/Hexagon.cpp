@@ -48,15 +48,11 @@ void Hexagon::Draw()
 {
     Actor::Draw();
     shader->Bind();
-    texture->Bind(0);
-    texture2->Bind(1);
-    shader->SetUniform1i("Texture0", 0);
-    shader->SetUniform1i("Texture1", 1);
-    Renderer::Submit(shader, va, m_transform, m_renderSettings);
+    Renderer::Submit(shader, va, m_transform, {texture, texture2}, m_renderSettings);
     for (const auto& vec : m_InstancePositions)
     {
         glm::mat4 duplicate = glm::translate(m_transform, vec);
-        Renderer::Submit(shader, va, duplicate, m_renderSettings);
+        Renderer::Submit(shader, va, duplicate, {texture, texture2}, m_renderSettings);
     }
 
 }

@@ -28,12 +28,12 @@ public:
 protected:
 
 public:
-    float vertices[8 * 4] = {
-        //Positions             //Vertex Colurs     //Texture Coords
-       -0.5f,  0.5f, 0.0f,      0.f, 0.f, 1.f,      0.0f, 1.0f,  // top left
-       -0.5f, -0.5f, 0.0f,      0.f, 1.f, 1.f,      0.0f, 0.0f, // bottom left
-        0.5f, -0.5f, 0.0f,      1.f, 1.f, 0.f,      1.0f, 0.0f, // bottom right
-        0.5f,  0.5f, 0.0f,      1.f, 0.f, 1.f,      1.0f, 1.0f // top right
+    float vertices[11 * 4] = {
+        //Positions             //Vertex Colurs     //Texture Coords    //Normals
+       -0.5f,  0.5f, 0.0f,      0.f, 0.f, 1.f,      0.0f, 1.0f,     0.0f, 0.0f, -1.0f,// top left
+       -0.5f, -0.5f, 0.0f,      0.f, 1.f, 1.f,      0.0f, 0.0f,     0.0f, 0.0f, -1.0f,// bottom left
+        0.5f, -0.5f, 0.0f,      1.f, 1.f, 0.f,      1.0f, 0.0f,     0.0f, 0.0f, -1.0f,// bottom right
+        0.5f,  0.5f, 0.0f,      1.f, 0.f, 1.f,      1.0f, 1.0f,     0.0f, 0.0f, -1.0f // top right
     };
     unsigned int indices[3 * 2] = {
         0, 1, 2,   // first triangle

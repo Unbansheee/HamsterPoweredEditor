@@ -7,6 +7,7 @@
 #include "Object.h"
 #include "Rendering/Renderer.h"
 #include "json.hpp"
+#include "Core/HPUUID.h"
 
 class Scene;
 
@@ -135,6 +136,8 @@ public:
 
     nlohmann::json Serialize() override;
     void Deserialize(nlohmann::json& j) override;
+
+    const std::string& GetID() { return m_id.Get(); }
     
 protected:
     RenderSettings m_renderSettings;
@@ -157,6 +160,10 @@ protected:
     bool m_Transparency = false;
 
     std::function<void()> m_updateCallback;
+
+    HPUUID m_id;
+
+    void SetID(const std::string id) { m_id.SetID(id); }
     
 protected:
     friend class InspectorPanel;

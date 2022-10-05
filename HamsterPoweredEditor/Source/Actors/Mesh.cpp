@@ -16,7 +16,8 @@ Mesh::Mesh()
     VertexBufferLayout layout = {
         {ShaderDataType::Float3, "Position"},
         {ShaderDataType::Float3, "Color"},
-        {ShaderDataType::Float2, "TexCoord"}
+        {ShaderDataType::Float2, "TexCoord"},
+        {ShaderDataType::Float3, "Normal"}
     };
     
     vb.reset(new GLVertexBuffer(vertices.data(), vertices.size() * sizeof(float)));
@@ -96,8 +97,7 @@ void Mesh::Draw()
 {
     
     Actor::Draw();
-    textures[0]->Bind(0);
-    Renderer::Submit(shader, va, m_transform);
+    Renderer::Submit(shader, va, m_transform, textures);
     
     
 }
@@ -172,6 +172,9 @@ void Mesh::LoadMesh(const std::string& path)
             vertices.push_back(1.0f);
             vertices.push_back(mesh->mTextureCoords[0][i].x);
             vertices.push_back(mesh->mTextureCoords[0][i].y);
+            vertices.push_back(mesh->mNormals[i].x);
+            vertices.push_back(mesh->mNormals[i].y);
+            vertices.push_back(mesh->mNormals[i].z);
         }
 
         for (int i = 0; i < mesh->mNumFaces; i++)
@@ -184,7 +187,8 @@ void Mesh::LoadMesh(const std::string& path)
     VertexBufferLayout layout = {
         {ShaderDataType::Float3, "Position"},
         {ShaderDataType::Float3, "Color"},
-        {ShaderDataType::Float2, "TexCoord"}
+        {ShaderDataType::Float2, "TexCoord"},
+        {ShaderDataType::Float3, "Normal"},
     };
     
     

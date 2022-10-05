@@ -32,42 +32,42 @@ protected:
 public:
     //Default mesh is a cube
     std::vector<float> vertices = {
-        //Positions             //Vertex Colurs     //Texture Coords
+        //Positions             //Vertex Colurs     //Texture Coords    //Normals   
         //Front Quad
-        -0.5f,  0.5f, 0.5f,      0.f, 0.f, 1.f,      0.0f, 1.0f,  // top left
-        -0.5f, -0.5f, 0.5f,      0.f, 1.f, 1.f,      0.0f, 0.0f, // bottom left
-         0.5f, -0.5f, 0.5f,      1.f, 1.f, 0.f,      1.0f, 0.0f, // bottom right
-         0.5f,  0.5f, 0.5f,      1.f, 0.f, 1.f,      1.0f, 1.0f, // top right
+        -0.5f,  0.5f, 0.5f,      0.f, 0.f, 1.f,      0.0f, 1.0f,        0.0f, 0.0f,  1.0f, // top left
+        -0.5f, -0.5f, 0.5f,      0.f, 1.f, 1.f,      0.0f, 0.0f,        0.0f, 0.0f,  1.0f, // bottom left
+         0.5f, -0.5f, 0.5f,      1.f, 1.f, 0.f,      1.0f, 0.0f,        0.0f, 0.0f,  1.0f, // bottom right
+         0.5f,  0.5f, 0.5f,      1.f, 0.f, 1.f,      1.0f, 1.0f,        0.0f, 0.0f,  1.0f, // top right
 
-        //Back Quad
-         0.5f,  0.5f, -0.5f,     1.f, 0.f, 0.f,      0.0f, 1.0f, // top left
-         0.5f, -0.5f, -0.5f,     1.f, 1.f, 0.f,      0.0f, 0.0f, // bottom left
-        -0.5f, -0.5f, -0.5f,     0.f, 1.f, 1.f,      1.0f, 0.0f, // bottom right
-        -0.5f,  0.5f, -0.5f,     0.f, 0.f, 1.f,      1.0f, 1.0f, // top right
-        
-        //Right Quad
-        0.5f,  0.5f,  0.5f,     1.f, 0.f, 1.f,      0.0f, 1.0f, // top left
-        0.5f, -0.5f,  0.5f,     1.f, 1.f, 0.f,      0.0f, 0.0f, // bottom left
-        0.5f, -0.5f, -0.5f,     1.f, 1.f, 0.f,      1.0f, 0.0f, // bottom right
-        0.5f,  0.5f, -0.5f,     1.f, 0.f, 0.f,      1.0f, 1.0f, // top right
+        //Back Quad    
+         0.5f,  0.5f, -0.5f,     1.f, 0.f, 0.f,      0.0f, 1.0f,        0.0f, 0.0f,  -1.0f, // top left
+         0.5f, -0.5f, -0.5f,     1.f, 1.f, 0.f,      0.0f, 0.0f,        0.0f, 0.0f,  -1.0f, // bottom left
+        -0.5f, -0.5f, -0.5f,     0.f, 1.f, 1.f,      1.0f, 0.0f,        0.0f, 0.0f,  -1.0f, // bottom right
+        -0.5f,  0.5f, -0.5f,     0.f, 0.f, 1.f,      1.0f, 1.0f,        0.0f, 0.0f,  -1.0f, // top right
+ 
+        //Right Quad        
+        0.5f,  0.5f,  0.5f,     1.f, 0.f, 1.f,      0.0f, 1.0f,         1.0f, 0.0f, 0.0f, // top left
+        0.5f, -0.5f,  0.5f,     1.f, 1.f, 0.f,      0.0f, 0.0f,         1.0f, 0.0f, 0.0f, // bottom left
+        0.5f, -0.5f, -0.5f,     1.f, 1.f, 0.f,      1.0f, 0.0f,         1.0f, 0.0f, 0.0f, // bottom right
+        0.5f,  0.5f, -0.5f,     1.f, 0.f, 0.f,      1.0f, 1.0f,         1.0f, 0.0f, 0.0f, // top right
 
-        //Left Quad
-        -0.5f,  0.5f, -0.5f,    0.f, 0.f, 1.f,      0.0f, 1.0f, // top left
-        -0.5f, -0.5f, -0.5f,    0.f, 1.f, 1.f,      0.0f, 0.0f, // bottom left
-        -0.5f, -0.5f,  0.5f,    0.f, 1.f, 1.f,      1.0f, 0.0f, // bottom right
-        -0.5f,  0.5f,  0.5f,    0.f, 0.f, 1.f,      1.0f, 1.0f, // top right
+        //Left Quad     
+        -0.5f,  0.5f, -0.5f,    0.f, 0.f, 1.f,      0.0f, 1.0f,         -1.0f, 0.0f, 0.0f, // top left
+        -0.5f, -0.5f, -0.5f,    0.f, 1.f, 1.f,      0.0f, 0.0f,         -1.0f, 0.0f, 0.0f, // bottom left
+        -0.5f, -0.5f,  0.5f,    0.f, 1.f, 1.f,      1.0f, 0.0f,         -1.0f, 0.0f, 0.0f, // bottom right
+        -0.5f,  0.5f,  0.5f,    0.f, 0.f, 1.f,      1.0f, 1.0f,         -1.0f, 0.0f, 0.0f, // top right
 
-        //Top Quad
-        -0.5f,  0.5f, -0.5f,    0.f, 0.f, 1.f,      0.0f, 1.0f, // top left
-        -0.5f,  0.5f,  0.5f,    0.f, 0.f, 1.f,      0.0f, 0.0f, // bottom left
-         0.5f,  0.5f,  0.5f,    1.f, 0.f, 1.f,      1.0f, 0.0f, // bottom right
-         0.5f,  0.5f, -0.5f,    1.f, 0.f, 0.f,      1.0f, 1.0f, // top right
+        //Top Quad      
+        -0.5f,  0.5f, -0.5f,    0.f, 0.f, 1.f,      0.0f, 1.0f,         0.0f, 1.0f, 0.0f, // top left
+        -0.5f,  0.5f,  0.5f,    0.f, 0.f, 1.f,      0.0f, 0.0f,         0.0f, 1.0f, 0.0f, // bottom left
+         0.5f,  0.5f,  0.5f,    1.f, 0.f, 1.f,      1.0f, 0.0f,         0.0f, 1.0f, 0.0f, // bottom right
+         0.5f,  0.5f, -0.5f,    1.f, 0.f, 0.f,      1.0f, 1.0f,         0.0f, 1.0f, 0.0f, // top right
 
-        //Bottom Quad
-        -0.5f, -0.5f,  0.5f,    0.f, 1.f, 1.f,      0.0f, 1.0f, // top left
-        -0.5f, -0.5f, -0.5f,    0.f, 1.f, 1.f,      0.0f, 0.0f, // bottom left
-         0.5f, -0.5f, -0.5f,    1.f, 1.f, 0.f,      1.0f, 0.0f, // bottom right
-         0.5f, -0.5f,  0.5f,    1.f, 1.f, 0.f,      1.0f, 1.0f, // top right
+        //Bottom Quad       
+        -0.5f, -0.5f,  0.5f,    0.f, 1.f, 1.f,      0.0f, 1.0f,         0.0f, -1.0f, 0.0f, // top left
+        -0.5f, -0.5f, -0.5f,    0.f, 1.f, 1.f,      0.0f, 0.0f,         0.0f, -1.0f, 0.0f, // bottom left
+         0.5f, -0.5f, -0.5f,    1.f, 1.f, 0.f,      1.0f, 0.0f,         0.0f, -1.0f, 0.0f, // bottom right
+         0.5f, -0.5f,  0.5f,    1.f, 1.f, 0.f,      1.0f, 1.0f,         0.0f, -1.0f, 0.0f // top right
      };
     
     std::vector<uint32_t> indices = {

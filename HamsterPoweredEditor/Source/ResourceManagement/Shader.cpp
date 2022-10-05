@@ -59,6 +59,7 @@ void Shader::SetUniformMat4f(const std::string& name, const glm::mat4& value)
     
 }
 
+
 int Shader::GetUniformLocation(const std::string& name)
 {
     if (uniformLocationCache.find(name) != uniformLocationCache.end())

@@ -13,10 +13,12 @@ Window::Window(std::string title, int _width, int _height) : m_Title(title), m_W
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_SAMPLES, 4);
 
     //Removes default Windows decoration. Why did I decide to do this...
     glfwWindowHint(GLFW_DECORATED, GL_FALSE);
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+    
 
     //Instantiate glfw window
     m_Window = glfwCreateWindow(m_Width, m_Height, m_Title.c_str(), nullptr, nullptr);
@@ -32,6 +34,8 @@ Window::Window(std::string title, int _width, int _height) : m_Title(title), m_W
     glfwGetWindowPos(m_Window, &m_PosX, &m_PosY);
     
     glfwMakeContextCurrent(m_Window);
+
+
     
     //Unlimit the framerate
     glfwSwapInterval(0);
