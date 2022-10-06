@@ -394,12 +394,12 @@
         {
             "ActorType": "DirLight",
             "Color": [
-                0.8516812324523926,
-                0.932884693145752,
-                0.9504950642585754
+                0.0,
+                0.8217825889587402,
+                1.0
             ],
             "ID": "f2657f3a-52cc-4c0f-b144-45eedbccab1f",
-            "Intensity": 0.08299999684095383,
+            "Intensity": 0.18299999833106995,
             "children": null,
             "name": "Sun",
             "position": [
@@ -475,7 +475,7 @@
             ]
         }
     ],
-    "AmbientIntensity": 1.100000023841858,
+    "AmbientIntensity": 0.10000000149011612,
     "EditorCamera": {
         "ActorType": "CameraController",
         "CameraType": 1,

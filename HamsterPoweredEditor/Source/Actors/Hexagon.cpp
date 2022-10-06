@@ -10,7 +10,8 @@ Hexagon::Hexagon()
     VertexBufferLayout layout = {
         {ShaderDataType::Float3, "Position"},
         {ShaderDataType::Float3, "Color"},
-        {ShaderDataType::Float2, "TexCoord"}
+        {ShaderDataType::Float2, "TexCoord"},
+        {ShaderDataType::Float3, "Normal"}
     };
 
 
@@ -92,7 +93,7 @@ void Hexagon::OnInspectorGUI()
         int index = 0;
         for (auto& i : m_InstancePositions)
         {
-            if (ImGui::Button("x"))
+            if (ImGui::Button(("x##" + std::to_string(index)).c_str()))
             {
                 m_InstancePositions.erase(m_InstancePositions.begin() + index);
             }
@@ -113,12 +114,7 @@ nlohmann::json Hexagon::Serialize()
     auto j = Actor::Serialize();
     j["Texture"] = texture->GetPath();
     j["Texture2"] = texture2->GetPath();
-    //serialize instance positions
-    j["InstancePositions"] = nlohmann::json::array();
-    for (const auto& vec : m_InstancePositions)
-    {
-        j["InstancePositions"].push_back(vec);
-    }
+    j["InstancePositions"] = m_InstancePositions;
     return j;
 }
 
@@ -127,8 +123,6 @@ void Hexagon::Deserialize(nlohmann::json& json)
     Actor::Deserialize(json);
     texture = (Texture::CreateTexture(json["Texture"]));
     texture2 = (Texture::CreateTexture(json["Texture2"]));
-    for (const auto& vec : json["InstancePositions"])
-    {
-        m_InstancePositions.push_back(vec.get<glm::vec3>());
-    }
+    m_InstancePositions = json["InstancePositions"];
+
 }

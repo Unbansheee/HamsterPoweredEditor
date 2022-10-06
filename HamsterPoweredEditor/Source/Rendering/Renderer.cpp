@@ -147,7 +147,7 @@ void Renderer::SetClearColor(const glm::vec4& color)
 
 double Renderer::AspectRatio()
 {
-    return 16.f/9.f;
+    return GetViewportSize().x / GetViewportSize().y;
 }
 
 void Renderer::DrawIndexed(const std::shared_ptr<GLVertexArray>& vertexArray, RenderSettings settings)
@@ -197,11 +197,7 @@ void Renderer::DrawIndexed(const std::shared_ptr<GLVertexArray>& vertexArray, Re
     
     glDrawElements(settings.DrawMode, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
     Renderer::m_FrameBuffer->Unbind();
-    
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_BLEND);
-    glDisable(GL_DEPTH_WRITEMASK);
+
 }
 
 
