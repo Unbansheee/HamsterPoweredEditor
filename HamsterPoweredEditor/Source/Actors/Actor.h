@@ -7,9 +7,11 @@
 #include "Object.h"
 #include "Rendering/Renderer.h"
 #include "json.hpp"
-#include "Core/HPUUID.h"
+#include "Core/UUID.h"
 
 class Scene;
+
+
 
 namespace nlohmann
 {
@@ -137,7 +139,7 @@ public:
     nlohmann::json Serialize() override;
     void Deserialize(nlohmann::json& j) override;
 
-    const std::string& GetID() { return m_id.Get(); }
+    const HP::UUID& GetID() { return m_id; }
     
 protected:
     RenderSettings m_renderSettings;
@@ -161,9 +163,9 @@ protected:
 
     std::function<void()> m_updateCallback;
 
-    HPUUID m_id;
+    HP::UUID m_id;
 
-    void SetID(const std::string id) { m_id.SetID(id); }
+    void SetID(const std::string& id) { m_id.SetID(id); }
     
 protected:
     friend class InspectorPanel;

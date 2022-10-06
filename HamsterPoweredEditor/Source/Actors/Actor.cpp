@@ -1,6 +1,7 @@
 ﻿#include "Actors/Actor.h"
 #include "Core/Scene.h"
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 Actor::Actor()
 {
@@ -268,10 +269,17 @@ nlohmann::json Actor::Serialize()
         type = type.substr(7);
     }
 
-    json["ID"] = m_id.Get();
+    json["ID"] = m_id.GetAsString();
     
     json["ActorType"] = type;
     json["name"] = GetName();
+
+    nlohmann::json children;
+    for (auto child : m_children)
+    {
+        children.push_back(child->GetID().GetAsString());
+    }
+    json["children"] = children;
     
     json["position"] = GetPosition();
     json["rotation"] = GetRotation();
@@ -288,7 +296,7 @@ void Actor::Deserialize(nlohmann::json& j)
 
     if (j.contains("ID"))
     {
-        m_id.SetID(j["ID"]);
+        if (!j["ID"].empty()) m_id.SetID(j["ID"]);
     }
     
     if (j.contains("position"))
@@ -303,6 +311,13 @@ void Actor::Deserialize(nlohmann::json& j)
     {
         SetScale(glm::vec3(j["scale"]));
     }
+    if (j.contains("children"))
+    {
+        for (std::string child : j["children"])
+        {
+            m_scene->SetParentChild(GetID(), HP::UUID(child));
+        }
+    }
     UpdateTransform();
 
 
@@ -311,7 +326,7 @@ void Actor::Deserialize(nlohmann::json& j)
 
 void Actor::UpdateTransform()
 {
-    //get coordinate space of m_parent
+
     glm::mat4 parentTransform = glm::mat4(1.0f);
     if (m_parent)
     {
@@ -326,6 +341,7 @@ void Actor::UpdateTransform()
     glm::mat4 t = glm::translate(parentTransform, m_position);
     
     m_transform = t * r * s;
+    
 
     for (auto child : m_children)
     {

@@ -11,7 +11,7 @@ unsigned int indices[3 * 2] = {
     0, 2, 3    // second triangle
 };  
 
-TextLabel::TextLabel(const std::string& text, const std::string& fontPath, float fontSize, const glm::vec3& color,
+TextLabel::TextLabel(const std::string& text, const std::string& fontPath, int fontSize, const glm::vec3& color,
                      const glm::vec3& position)
 {
     VertexBufferLayout layout = {

@@ -18,18 +18,20 @@ void AnimatedQuad::OnInspectorGUI()
         ImGui::Text("Frame: %d", m_currentFrame);
         ImGui::DragFloat("FPS", &m_fps, 1.f, 1.f);
 
-        ImGui::InputText("SpriteSheet", &m_Path);
-        if (ImGui::Button("Load"))
+        if (ImGui::OpenFilePath("Spritesheet", m_texturePath, "Load Spritesheet", "Image File (*.png;*.jpg;*.jpeg){.png,.jpg,.jpeg},.*", "Resources/Textures"))
         {
-            SetTexture(m_Path);
+            SetTexture(m_texturePath);
         }
+        ImGui::TextureFilteringSelector("Filtering Mode", texture);
 
         
         if (ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_DefaultOpen))
         {
+            
             ImVec2 imageStart = ImGui::GetCursorScreenPos();
-            ImVec2 imageSize = ImVec2(ImGui::GetContentRegionAvail().x * 0.5, (ImGui::GetContentRegionAvail().x*0.5 / texture->GetWidth()) * texture->GetHeight());
-            ImVec2 spriteSize = ImVec2(imageSize.x / m_columns, imageSize.y / m_rows);
+            ImVec2 imageSize = ImVec2(ImGui::GetContentRegionAvail().x * 0.5f, (ImGui::GetContentRegionAvail().x * 0.5f / (float)texture->GetWidth()) * (float)texture->GetHeight());
+            ImVec2 spriteSize = ImVec2(imageSize.x / (float)m_columns, imageSize.y / (float)m_rows);
+
             
             ImGui::ImageScaledH(texture, 0.5f, false);
         
@@ -54,9 +56,9 @@ void AnimatedQuad::OnInspectorGUI()
         }
         
         
-        ImGui::DragInt("Columns", &m_columns, 1.f, 1.f);
-        ImGui::DragInt("Rows", &m_rows, 1.f, 1.f);
-        ImGui::DragInt("Total Frames", &m_frameCount, 1.f, 1.f);
+        ImGui::DragInt("Columns", &m_columns, 1.f, 1);
+        ImGui::DragInt("Rows", &m_rows, 1.f, 1);
+        ImGui::DragInt("Total Frames", &m_frameCount, 1.f, 1);
 
         if (m_columns < 1) m_columns = 1;
         if (m_rows < 1) m_rows = 1;
@@ -129,10 +131,10 @@ void AnimatedQuad::Update(Timestep ts)
 
     //Find current frame in the texture atlas
     int SpriteX = m_currentFrame % m_columns;
-    int SpriteY = (m_rows - 1) - glm::floor(m_currentFrame / m_columns);
+    int SpriteY = (m_rows - 1) - (int)glm::floor(m_currentFrame / m_columns);
 
-    int SpritePositionX = glm::floor(SpriteX * m_spriteWidth);
-    int SpritePositionY = glm::floor(SpriteY * m_spriteHeight);
+    int SpritePositionX = (int)glm::floor(SpriteX * m_spriteWidth);
+    int SpritePositionY = (int)glm::floor(SpriteY * m_spriteHeight);
 
     // normalized texture coordinates
     float uv_x = (float)SpritePositionX / (float)texture->GetWidth();
@@ -140,7 +142,7 @@ void AnimatedQuad::Update(Timestep ts)
     
     shader->Bind();
     shader->SetUniform2f("UVTransform", uv_x, uv_y);
-    shader->SetUniform2f("UVScale", m_columns, m_rows);
+    shader->SetUniform2f("UVScale", (float)m_columns, (float)m_rows);
     shader->Unbind();
     
     
@@ -171,6 +173,7 @@ Texture* AnimatedQuad::SetSpriteSheet(std::string path, int frameCount, int rows
     this->m_spriteWidth = texture->GetWidth() / columns;
     this->m_spriteHeight = texture->GetHeight() / rows;
     this->m_frameCount = frameCount;
+    this->m_texturePath = path;
     return texture;
 }
 

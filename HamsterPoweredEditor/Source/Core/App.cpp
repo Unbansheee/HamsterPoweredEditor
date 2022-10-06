@@ -15,14 +15,35 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include <Windows.h>
+
+#include "UI/ImFileDialog.h"
 
 
 void App::Begin()
 {
-
 	directory = std::filesystem::current_path().string();
 	std::cout << directory << std::endl;
+
+	ifd::FileDialog::Instance().CreateTexture = [](uint8_t* data, int w, int h, char fmt) -> void* {
+		GLuint tex;
+		
+		glGenTextures(1, &tex);
+		glBindTexture(GL_TEXTURE_2D, tex);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, (fmt == 0) ? GL_BGRA : GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		return (void*)(uint64_t)tex;
+	};
+
+	ifd::FileDialog::Instance().DeleteTexture = [](void* tex) -> void {
+		GLuint texID = (GLuint)((uintptr_t)tex);
+		glDeleteTextures(1, &texID);
+	};
 	
 	//Entry point of App. Initialises GLAD
 	gladLoadGL();
@@ -32,13 +53,13 @@ void App::Begin()
 	window->PollEvents();
 	
 	//Initialise fonts
-	Font::LoadFont("Resources/Fonts/Roboto-Regular.ttf", 100.f);
-	Font::LoadFont("Resources/Fonts/Roboto-Bold.ttf", 100.f);
-	Font::LoadFont("Resources/Fonts/Roboto-Italic.ttf", 100.f);
-	Font::LoadFont("Resources/Fonts/ARIAL.TTF", 100.f);
-	Font::LoadFont("Resources/Fonts/VERDANA.TTF", 100.f);
-	Font::LoadFont("Resources/Fonts/Gresta.ttf", 100.f);
-	Font::LoadFont("Resources/Fonts/South Australia.ttf", 100.f);
+	Font::LoadFont("Resources/Fonts/Roboto-Regular.ttf", 100);
+	Font::LoadFont("Resources/Fonts/Roboto-Bold.ttf", 100);
+	Font::LoadFont("Resources/Fonts/Roboto-Italic.ttf", 100);
+	Font::LoadFont("Resources/Fonts/ARIAL.TTF", 100);
+	Font::LoadFont("Resources/Fonts/VERDANA.TTF", 100);
+	Font::LoadFont("Resources/Fonts/Gresta.ttf", 100);
+	Font::LoadFont("Resources/Fonts/South Australia.ttf", 100);
 	
 
 	

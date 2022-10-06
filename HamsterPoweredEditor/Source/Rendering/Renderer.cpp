@@ -2,7 +2,8 @@
 
 #include "Core/App.h"
 #include "Core/Timer.h"
-
+#include "ResourceManagement/Texture.h"
+#include "ResourceManagement/Shader.h"
 
 Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData();
 
@@ -114,7 +115,7 @@ void Renderer::Render()
             shader->SetUniform1f("PointLights[" + std::to_string(i) + "].Intensity", m_PointLights[i].intensity);
             shader->SetUniform1f("PointLights[" + std::to_string(i) + "].Radius", m_PointLights[i].radius);
         }
-        shader->SetUniform1i("PointLightCount", m_PointLights.size());
+        shader->SetUniform1i("PointLightCount", (int)m_PointLights.size());
 
         for (int i = 0; i < m_DirectionalLights.size() && i < 8; i++)
         {
@@ -122,7 +123,7 @@ void Renderer::Render()
             shader->SetUniform3f("DirLights[" + std::to_string(i) + "].Color", m_DirectionalLights[i].color.x, m_DirectionalLights[i].color.y, m_DirectionalLights[i].color.z);
             shader->SetUniform1f("DirLights[" + std::to_string(i) + "].Intensity", m_DirectionalLights[i].intensity);
         }
-        shader->SetUniform1i("DirLightCount", m_DirectionalLights.size());
+        shader->SetUniform1i("DirLightCount", (int)m_DirectionalLights.size());
         
             
         DrawIndexed(vertexArray, settings);

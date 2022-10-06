@@ -35,7 +35,7 @@ void GLVertexArray::AddVertexBuffer(const std::shared_ptr<GLVertexBuffer>& verte
     for (const auto& element : layout)
     {
         glEnableVertexAttribArray(index);
-        glVertexAttribPointer(index, element.GetComponentCount(), ShaderDataTypeToGL(element.Type), element.Normalized ? GL_TRUE : GL_FALSE, layout.GetStride(), (const void*)element.Offset);
+        glVertexAttribPointer(index, (GLint)element.GetComponentCount(), ShaderDataTypeToGL(element.Type), element.Normalized ? GL_TRUE : GL_FALSE, (GLint)layout.GetStride(), (const void*)(uint64_t)element.Offset);
         index++;
     }
 

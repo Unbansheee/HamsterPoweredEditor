@@ -79,6 +79,7 @@ nlohmann::json Quad::Serialize()
 {
     nlohmann::json j = Actor::Serialize();
     j["TexturePath"] = m_texturePath;
+    j["TextureFiltering"] = texture->GetFilteringMode();
     return j;
 }
 
@@ -88,15 +89,19 @@ void Quad::Deserialize(nlohmann::json& j)
     std::string path = j["TexturePath"];
     if (!path.empty())
     SetTexture(path);
+    if (j.contains("TextureFiltering"))
+        texture->SetFilteringMode(j["TextureFiltering"]);
 }
 
 void Quad::OnInspectorGUI()
 {
-    ImGui::InputText("Texture Path", &m_texturePath);
-    if (ImGui::Button("Load"))
+    if (ImGui::OpenFilePath("Texture", m_texturePath, "Load Texture", "Image File (*.png;*.jpg;*.jpeg){.png,.jpg,.jpeg},.*", "Resources/Textures"))
     {
         SetTexture(m_texturePath);
     }
+
+    ImGui::TextureFilteringSelector("Filtering Mode", texture);
+    
 
     ImGui::ImageScaledH(texture, 0.5f, true);
 }

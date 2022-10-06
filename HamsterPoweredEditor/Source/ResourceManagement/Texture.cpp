@@ -8,6 +8,7 @@
 void Texture::SetFilteringMode(FilteringMode mode)
 {
     glBindTexture(GL_TEXTURE_2D, rendererID);
+    filteringMode = mode;
     switch (mode)
     {
     case FilteringMode::NEAREST:
@@ -22,6 +23,11 @@ void Texture::SetFilteringMode(FilteringMode mode)
     }
     Unbind();
         
+}
+
+Texture::FilteringMode Texture::GetFilteringMode() const
+{
+    return filteringMode;
 }
 
 Texture* Texture::CreateTexture(const std::string& path, FilteringMode mode)
@@ -48,6 +54,27 @@ Texture* Texture::CreateTexture(unsigned char* data, int _width, int _height, in
 {
     Texture* texture = new Texture(data, _width, _height, channels, mode);
     return texture;
+}
+
+void Texture::DeleteTextureID(uint32_t id)
+{
+    glDeleteTextures(1, &id);
+  
+    for (auto it = m_textureCache.begin(); it != m_textureCache.end(); it++)
+    {
+        if (it->second->rendererID == id)
+        {
+            DeleteTexture(it->second);
+            m_textureCache.erase(it);
+            break;
+        }
+    }
+}
+
+void Texture::DeleteTexture(Texture* texture)
+{
+    delete texture;
+    texture = nullptr;
 }
 
 Texture::Texture(const std::string& path, FilteringMode mode)

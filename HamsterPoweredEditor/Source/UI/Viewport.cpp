@@ -3,6 +3,8 @@
 #include <iostream>
 
 #include "Core/App.h"
+#include "Core/Scene.h"
+#include "Core/Window.h"
 #include "imgui_internal.h"
 
 void Viewport::Init()
@@ -16,14 +18,14 @@ void Viewport::Update(Timestep ts)
 {
 	CameraController* cam = App::Instance().m_currentScene->m_editorCamera;
 	ImGui::PopStyleVar(1);
-	ImGui::Image((void*)Renderer::m_FrameBuffer->GetColorAttachmentRendererID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::Image((void*)(uint64_t)Renderer::m_FrameBuffer->GetColorAttachmentRendererID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
 	//check if resized
 	if (ImGui::GetWindowSize().x != lastSize.x || ImGui::GetWindowSize().y != lastSize.y)
 	{
 		float width = ImGui::GetContentRegionMax().x;
 		float height = ImGui::GetContentRegionMax().y;
-		Renderer::Resize(width, height);
+		Renderer::Resize((int)width, (int)height);
 		App::Instance().m_currentScene->m_editorCamera->Resize(width, height);
 	}
 	lastSize = ImGui::GetWindowSize();

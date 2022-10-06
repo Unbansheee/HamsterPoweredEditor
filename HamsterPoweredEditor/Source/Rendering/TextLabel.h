@@ -17,7 +17,7 @@ struct Bounds
 class TextLabel : public Actor
 {
 public:
-    TextLabel(const std::string& text = "Text Label", const std::string& fontPath = "Resources/Fonts/Roboto-Regular.ttf", float fontSize = 100.f, const glm::vec3& color = {0, 1, 1}, const glm::vec3& position = {0, 0, 0});
+    TextLabel(const std::string& text = "Text Label", const std::string& fontPath = "Resources/Fonts/Roboto-Regular.ttf", int fontSize = 100, const glm::vec3& color = {0, 1, 1}, const glm::vec3& position = {0, 0, 0});
     void SetText(const std::string& text);
     void SetCurrentColor(const glm::vec3& color);
     void SetBaseColor(const glm::vec3& color);

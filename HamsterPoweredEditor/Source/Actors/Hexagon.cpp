@@ -3,6 +3,7 @@
 #include <glm/ext/matrix_transform.hpp>
 
 #include "imgui.h"
+#include "UI/HPImGui.h"
 
 Hexagon::Hexagon()
 {
@@ -85,6 +86,7 @@ void Hexagon::SetTexture(const std::string& path, const std::string& path2)
 void Hexagon::OnInspectorGUI()
 {
     Actor::OnInspectorGUI();
+    
     if (ImGui::CollapsingHeader("Hexagon Instances"))
     {
         int index = 0;

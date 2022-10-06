@@ -1,12 +1,12 @@
 ﻿#include "Mesh.h"
 #include "ResourceManagement/Texture.h"
 #include <iostream>
-#include <assimp/Importer.hpp>
 
-#include "assimp/Importer.hpp"
-#include "assimp/scene.h"
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
 #include "UI/HPImGui.h"
-#include "assimp/postprocess.h"
+#include <assimp/postprocess.h>
 
 Mesh::Mesh()
 {
@@ -20,9 +20,9 @@ Mesh::Mesh()
         {ShaderDataType::Float3, "Normal"}
     };
     
-    vb.reset(new GLVertexBuffer(vertices.data(), vertices.size() * sizeof(float)));
+    vb.reset(new GLVertexBuffer(vertices.data(), (uint32_t)vertices.size() * sizeof(float)));
     va.reset(new GLVertexArray());
-    ib.reset(new GLIndexBuffer(indices.data(), indices.size()));
+    ib.reset(new GLIndexBuffer(indices.data(), (int)indices.size()));
     
     vb->SetLayout(layout);
     va->AddVertexBuffer(vb);
@@ -54,9 +54,8 @@ void Mesh::OnInspectorGUI()
 {
     Actor::OnInspectorGUI();
 
-    ImGui::InputText("Mesh", &meshpath);
-    ImGui::SameLine();
-    if (ImGui::Button("Load##Mesh"))
+
+    if (ImGui::OpenFilePath("Mesh", meshpath, "Load Mesh", "3D Mesh File (*.obj;*.fbx){.obj,.fbx},.*", "Resources/Meshes"))
     {
         LoadMesh(meshpath);
     }
@@ -77,14 +76,14 @@ void Mesh::OnInspectorGUI()
             }
             if (textureOpen)
             {
-                ImGui::InputText((std::string("Path##") + std::to_string(i)).c_str(), &texturepaths[i]);
-                ImGui::SameLine();
-                if (ImGui::Button((std::string("Load##") + std::to_string(i)).c_str()))
+                if (ImGui::OpenFilePath(("Path##" + std::to_string(i)).c_str(), texturepaths[i], "Load Texture (Slot " + std::to_string(i) + ")", "Image File (*.png;*.jpg;*.jpeg){.png,.jpg,.jpeg},.*", "Resources/Textures"))
                 {
                     SetTexture(texturepaths[i], i);
                 }
+                
                 if (textures[i])
                 {
+                    ImGui::TextureFilteringSelector("Filtering Mode", textures[i]);
                     ImGui::ImageScaledH(textures[i], 0.25f);
                 }
             }
@@ -158,11 +157,11 @@ void Mesh::LoadMesh(const std::string& path)
     vertices.clear();
     indices.clear();
     
-    for (int index = 0; index < sizeof(scene->mMeshes) / sizeof(scene->mMeshes[0]); index++)
+    for (unsigned index = 0; index < sizeof(scene->mMeshes) / sizeof(scene->mMeshes[0]); index++)
     {
         aiMesh* mesh = scene->mMeshes[index];
         
-        for (int i = 0; i < mesh->mNumVertices; i++)
+        for (unsigned i = 0; i < mesh->mNumVertices; i++)
         {
             vertices.push_back(mesh->mVertices[i].x);
             vertices.push_back(mesh->mVertices[i].y);
@@ -177,7 +176,7 @@ void Mesh::LoadMesh(const std::string& path)
             vertices.push_back(mesh->mNormals[i].z);
         }
 
-        for (int i = 0; i < mesh->mNumFaces; i++)
+        for (unsigned i = 0; i < mesh->mNumFaces; i++)
         {
             indices.push_back(mesh->mFaces[i].mIndices[0]);
             indices.push_back(mesh->mFaces[i].mIndices[1]);
@@ -192,9 +191,9 @@ void Mesh::LoadMesh(const std::string& path)
     };
     
     
-    vb.reset(new GLVertexBuffer(vertices.data(), vertices.size() * sizeof(float)));
+    vb.reset(new GLVertexBuffer(vertices.data(), (uint32_t)vertices.size() * sizeof(float)));
     va.reset(new GLVertexArray());
-    ib.reset(new GLIndexBuffer(indices.data(), indices.size()));
+    ib.reset(new GLIndexBuffer(indices.data(), (int)indices.size()));
     
     vb->SetLayout(layout);
     va->AddVertexBuffer(vb);

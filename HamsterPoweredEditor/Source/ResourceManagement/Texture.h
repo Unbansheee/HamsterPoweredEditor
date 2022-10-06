@@ -27,6 +27,7 @@ public:
     inline int GetHeight() const {return height;}
 
     void SetFilteringMode(FilteringMode mode);
+    FilteringMode GetFilteringMode() const;
 
     //Factory function to ensure each texture only gets loaded once. Stored in a cache and will return a pointer to an already existing texture if the same path is used.
     //Constructor is private to ensure only the cache is used.
@@ -38,7 +39,11 @@ public:
 
     //This is not managed by the cache and the user is responsible for deleting the texture.
     static Texture* CreateTexture(unsigned char* data, int _width, int _height, int channels, FilteringMode mode = LINEAR);
+
+    static void DeleteTextureID(uint32_t id);
+    static void DeleteTexture(Texture* texture);
 private:
+    FilteringMode filteringMode = LINEAR;
     inline static std::unordered_map<std::string, Texture*> m_textureCache;
     Texture(const std::string& path, FilteringMode mode = LINEAR);
     Texture(unsigned char* data, int width, int height, int bpp = 4, FilteringMode mode = LINEAR);

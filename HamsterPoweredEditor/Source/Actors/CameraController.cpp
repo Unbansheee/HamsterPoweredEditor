@@ -52,8 +52,8 @@ void CameraController::HandleMouseMovement(float x, float y)
         else
         {
             auto camera = dynamic_cast<PerspectiveCamera*>(m_Camera);
-            camera->pitch += y * 0.5;
-            camera->yaw -= x * 0.5;
+            camera->pitch += y * 0.5f;
+            camera->yaw -= x * 0.5f;
 
             if(camera->pitch > 89.0f)
                 camera->pitch = 89.0f;
@@ -157,6 +157,20 @@ void CameraController::OnInspectorGUI()
                 if (ImGui::DragFloat("Move Speed", &m_PerspMoveSpeed, 0.1f, 0.1f, 20.f))
                 {
                 }
+
+                if (ImGui::DragFloat("Yaw", &yaw, 1.f))
+                {
+                    auto camera = dynamic_cast<PerspectiveCamera*>(m_Camera);
+                    camera->yaw = yaw;
+                    camera->RecalculateViewMatrix();
+                }
+
+                if (ImGui::DragFloat("Pitch", &pitch, 0.1f, -89.f, 89.f))
+                {
+                    auto camera = dynamic_cast<PerspectiveCamera*>(m_Camera);
+                    camera->pitch = pitch;
+                    camera->RecalculateViewMatrix();
+                }
                 break;
             }
             case CameraType::ORTHO:
@@ -204,6 +218,8 @@ void CameraController::Deserialize(nlohmann::json& j)
         SetZoom(m_Zoom);
         dynamic_cast<PerspectiveCamera*>(m_Camera)->yaw = j["Yaw"];
         dynamic_cast<PerspectiveCamera*>(m_Camera)->pitch = j["Pitch"];
+        yaw = j["Yaw"];
+        pitch = j["Pitch"];
     }
     Resize(Renderer::GetViewportSize().x, Renderer::GetViewportSize().y);
 }

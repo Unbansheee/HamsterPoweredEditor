@@ -21,9 +21,8 @@
 #include "ThemeManager.h"
 #include "imnodes.h"
 #include "RendererSettings.h"
-#include "Core/Timer.h"
-#include <windows.h>
-#include <atlstr.h>
+
+#include "HPImGui.h"
 
 
 ImGuiLayer::ImGuiLayer(Window* window) : window(window)
@@ -256,7 +255,7 @@ void ImGuiLayer::Update(Timestep ts)
 				
 				window->Restore();
 				
-				window->SetPosition((int)ImGui::GetMousePos().x - (int)window->GetWidth() * xPercent, (int)ImGui::GetMousePos().y - 10);
+				window->SetPosition((int)(ImGui::GetMousePos().x - (float)window->GetWidth() * xPercent), (int)ImGui::GetMousePos().y - 10);
 				
 				mouseRel[0] = (int)ImGui::GetMousePos().x - window->GetPositionX();
 				mouseRel[1] = (int)ImGui::GetMousePos().y - window->GetPositionY();
@@ -321,7 +320,8 @@ void ImGuiLayer::Update(Timestep ts)
 	//Code for a secondary menu bar
 	
 	if (ImGui::BeginViewportSideBar("##SecondaryMenuBar", viewport, ImGuiDir_Up, height, window_flags)) {
-		if (ImGui::BeginMenuBar()) {
+		if (ImGui::BeginMenuBar())
+		{
 			if (ImGui::BeginMenu("File"))
 			{
 				if (ImGui::MenuItem("New", "Ctrl+N"))
@@ -390,6 +390,28 @@ void ImGuiLayer::Update(Timestep ts)
 			}
 			
 			ImGui::EndMenuBar();
+
+			if (ifd::FileDialog::Instance().IsDone("OpenScene"))
+			{
+				if (ifd::FileDialog::Instance().HasResult()) {
+					std::string result = ifd::FileDialog::Instance().GetResult().u8string();
+					std::replace(result.begin(), result.end(), '\\', '/');
+					App::Instance().LoadScene(result);
+				}
+				ifd::FileDialog::Instance().Close();
+			}
+
+			if (ifd::FileDialog::Instance().IsDone("SaveScene"))
+			{
+				if (ifd::FileDialog::Instance().HasResult()) {
+					std::string result = ifd::FileDialog::Instance().GetResult().u8string();
+					std::replace(result.begin(), result.end(), '\\', '/');
+					App::Instance().m_currentScene->SerializeScene(result);
+					App::Instance().m_currentScene->m_filepath = result;
+				}
+				ifd::FileDialog::Instance().Close();
+			}
+			
 		}
 		ImGui::End();
 	}
@@ -428,37 +450,7 @@ void ImGuiLayer::Update(Timestep ts)
 
 void ImGuiLayer::SaveAs()
 {
-	//open windows file dialog
-	OPENFILENAME ofn;
-	WCHAR szFile[260] = {0};
-	ZeroMemory(&ofn, sizeof(ofn));
-	ofn.lStructSize = sizeof(ofn);
-	ofn.hwndOwner = NULL;
-	ofn.lpstrFile = szFile;
-	ofn.nMaxFile = sizeof(szFile);
-	ofn.lpstrFilter = LPCWSTR(L"JSON Files\0*.json\0");
-	ofn.nFilterIndex = 1;
-	ofn.lpstrFileTitle = NULL;
-	ofn.nMaxFileTitle = 0;
-	ofn.lpstrInitialDir = L"Resources/Scenes";
-	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-	if (GetSaveFileName(&ofn) == TRUE)
-	{
-		std::string dir = App::GetDirectory();
-		std::wstring stemp = std::wstring(dir.begin(), dir.end());
-		LPCWSTR appDir = stemp.c_str();
-		SetCurrentDirectory(appDir);
-						
-		std::string path = std::string(CW2A(ofn.lpstrFile));
-		//add .json if it is not already there
-		if (path.substr(path.length() - 5, 5) != ".json")
-		{
-			path += ".json";
-		}
-						
-		App::Instance().m_currentScene->SerializeScene(path);
-		App::Instance().m_currentScene->m_filepath = std::string(CW2A(ofn.lpstrFile));
-	}
+	ifd::FileDialog::Instance().Save("SaveScene", "Save Scene", "Scene (*.json;*.scene){.json,.scene}", "Resources/Scenes");
 }
 
 void ImGuiLayer::Save()
@@ -469,25 +461,5 @@ void ImGuiLayer::Save()
 
 void ImGuiLayer::Load()
 {
-	OPENFILENAME ofn;
-	WCHAR szFile[260] = { 0 };
-	ZeroMemory(&ofn, sizeof(ofn));
-	ofn.lStructSize = sizeof(ofn);
-	ofn.hwndOwner = NULL;
-	ofn.lpstrFile = szFile;
-	ofn.nMaxFile = sizeof(szFile);
-	ofn.lpstrFilter = LPCWSTR(L"JSON Files\0*.json\0");
-	ofn.nFilterIndex = 1;
-	ofn.lpstrFileTitle = NULL;
-	ofn.nMaxFileTitle = 0;
-	ofn.lpstrInitialDir = L"Resources/Scenes";
-	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-	if (GetOpenFileName(&ofn) == TRUE)
-	{
-		std::string dir = App::GetDirectory();
-		std::wstring stemp = std::wstring(dir.begin(), dir.end());
-		LPCWSTR appDir = stemp.c_str();
-		SetCurrentDirectory(appDir);
-		App::Instance().LoadScene(std::string(CW2A(ofn.lpstrFile)));
-	}
+	ifd::FileDialog::Instance().Open("OpenScene", "Open Scene", "Scene (*.json;*.scene){.json,.scene}", false, "Resources/Scenes");
 }

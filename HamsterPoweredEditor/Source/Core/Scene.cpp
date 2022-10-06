@@ -178,8 +178,40 @@ void Scene::DeserializeScene(const std::string& filepath)
         }
         actor->Deserialize(actorJson);
     }
+
+    
+    while (m_parentChildQueue.size() > 0)
+    {
+        Actor* parent = GetActorByID(m_parentChildQueue.front().first);
+        Actor* child = GetActorByID(m_parentChildQueue.front().second);
+        if (parent && child)
+        {
+            parent->AddChild(child);
+        }
+        m_parentChildQueue.pop();
+    }
+    
     
 }
+
+Actor* Scene::GetActorByID(const HP::UUID& id)
+{
+    for (Actor* actor : m_actors)
+    {
+        if (actor->GetID() == id)
+        {
+            return actor;
+        }
+    }
+    return nullptr;
+}
+
+
+void Scene::SetParentChild(const HP::UUID& parentID, const HP::UUID& childID)
+{
+    m_parentChildQueue.push({ parentID, childID });
+}
+
 
 void Scene::DeferredDestroy()
 {

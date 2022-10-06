@@ -2,16 +2,18 @@
 #include <memory>
 #include <vector>
 
-#include "Scene.h"
+
 #include "Rendering/OrthographicCamera.h"
-#include "Actors/Quad.h"
 #include "Rendering/Renderer.h"
-#include "Window.h"
+//#include "Window.h"
 #include "Timestep.h"
 #include "Rendering/GLFrameBuffer.h"
 #include "Actors/CameraController.h"
+#include "Core/Scene.h"
 
 struct GLFWwindow;
+class Window;
+class Scene;
 
 class ImGuiLayer;
 class App

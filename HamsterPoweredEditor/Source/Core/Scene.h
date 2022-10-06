@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <list>
 #include <memory>
+#include <queue>
 
 #include "Timer.h"
 #include "Timestep.h"
@@ -36,6 +37,9 @@ public:
 
     void SerializeScene(const std::string& filepath);
     void DeserializeScene(const std::string& filepath);
+
+    Actor* GetActorByID(const HP::UUID& id);
+    void SetParentChild(const HP::UUID& parentID, const HP::UUID& childID);
     
 private:
     friend class App;
@@ -51,6 +55,7 @@ private:
     std::string m_filepath;
     CameraController* m_editorCamera;
     glm::vec4 m_sceneColour = { 0.1f, 0.1f, 0.1f, 1.0f };
+    std::queue<std::pair<HP::UUID, HP::UUID>> m_parentChildQueue;
     
     std::shared_ptr<Quad> quad1;
     std::shared_ptr<Quad> quad2;

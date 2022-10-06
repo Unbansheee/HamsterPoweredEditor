@@ -3,7 +3,7 @@
 void PointLight::Update(Timestep ts)
 {
     Actor::Update(ts);
-    m_Light.position = GetPosition();
+    m_Light.position = m_transform[3];
 }
 
 void PointLight::Draw()

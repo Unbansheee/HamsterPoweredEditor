@@ -2,6 +2,7 @@
     "Actors": [
         {
             "ActorType": "Mesh",
+            "ID": "5700ede8-fd97-4ae4-8361-86ff767cff88",
             "MeshPath": "Resources/Meshes/MonkeySmooth.obj",
             "Textures": [
                 "Resources/Textures/Wood.jpg",
@@ -37,6 +38,7 @@
                 "",
                 ""
             ],
+            "children": null,
             "name": "Mesh",
             "position": [
                 1.5,
@@ -57,11 +59,13 @@
         {
             "ActorType": "DirLight",
             "Color": [
-                1.0,
-                1.0,
+                0.9241739511489868,
+                0.4108911156654358,
                 1.0
             ],
-            "Intensity": 1.0920000076293945,
+            "ID": "d0a4a1c2-8029-4683-8547-00402a1ef1ce",
+            "Intensity": 0.9300000071525574,
+            "children": null,
             "name": "Light",
             "position": [
                 0.0,
@@ -69,9 +73,9 @@
                 0.0
             ],
             "rotation": [
-                221.0,
-                21.0,
-                53.0
+                243.0,
+                -24.0,
+                94.0
             ],
             "scale": [
                 1.0,
@@ -82,11 +86,13 @@
         {
             "ActorType": "DirLight",
             "Color": [
-                0.6237623691558838,
                 0.0,
-                0.38907963037490845
+                0.06793446093797684,
+                0.6237623691558838
             ],
-            "Intensity": 1.399999976158142,
+            "ID": "70204a8f-40c5-44d1-b5dc-79589214dbe1",
+            "Intensity": 2.9000000953674316,
+            "children": null,
             "name": "RimLight",
             "position": [
                 0.0,
@@ -111,7 +117,9 @@
                 0.6732673645019531,
                 0.593275249004364
             ],
+            "ID": "56c1a591-11c5-454a-ad7d-35e026735652",
             "Intensity": 1.100000023841858,
+            "children": null,
             "name": "UnderLight",
             "position": [
                 0.0,
@@ -130,20 +138,22 @@
             ]
         }
     ],
-    "AmbientIntensity": 0.30000001192092896,
+    "AmbientIntensity": 0.10000000149011612,
     "EditorCamera": {
         "ActorType": "CameraController",
         "CameraType": 1,
+        "ID": "897aed97-97dc-4900-a397-c7704d5fd158",
         "OrthoZoom": 5.068216323852539,
-        "PerspMoveSpeed": 6.8408403396606445,
-        "Pitch": 6.0,
-        "Yaw": 2275.0,
-        "Zoom": 82.69999694824219,
+        "PerspMoveSpeed": 1.5747005939483643,
+        "Pitch": 6.5,
+        "Yaw": 2282.0,
+        "Zoom": 30.0,
+        "children": null,
         "name": "Editor Camera",
         "position": [
-            -1.6047035455703735,
-            0.91493159532547,
-            5.682459354400635
+            -7.077015399932861,
+            1.5725690126419067,
+            13.547405242919922
         ],
         "rotation": [
             0.0,
@@ -158,9 +168,9 @@
     },
     "RenderMode": 2,
     "SceneColour": [
-        0.11386138200759888,
-        0.0428389348089695,
-        0.0428389348089695,
+        0.047348298132419586,
+        0.05519552156329155,
+        0.10396039485931396,
         1.0
     ]
 }
