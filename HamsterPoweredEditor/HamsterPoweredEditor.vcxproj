@@ -192,6 +192,7 @@
     <ClCompile Include="Source\Rendering\GLVertexArray.cpp" />
     <ClCompile Include="Source\Rendering\OrthographicCamera.cpp" />
     <ClCompile Include="Source\Rendering\PerspectiveCamera.cpp" />
+    <ClCompile Include="Source\Rendering\GLRenderBuffer.cpp" />
     <ClCompile Include="Source\Rendering\Renderer.cpp" />
     <ClCompile Include="Source\Rendering\TextLabel.cpp" />
     <ClCompile Include="Source\Rendering\VertexBufferLayout.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="Source\Rendering\OrthographicCamera.h" />
     <ClInclude Include="Source\Rendering\PerspectiveCamera.h" />
     <ClInclude Include="Source\Rendering\Lights.h" />
+    <ClInclude Include="Source\Rendering\GLRenderBuffer.h" />
     <ClInclude Include="Source\Rendering\Renderer.h" />
     <ClInclude Include="Source\Rendering\TextLabel.h" />
     <ClInclude Include="Source\Rendering\VertexBufferLayout.h" />

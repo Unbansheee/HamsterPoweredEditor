@@ -44,8 +44,9 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
     // specular shading
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+
+    vec3 HalfwayVector = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normal, HalfwayVector), 0.0), 500.0f);
     
     return (diff * light.Color + spec * light.Color) * light.Intensity;
 }
@@ -55,10 +56,12 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, f
     vec3 lightDir = normalize(light.Position - fragPos);
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
-    // specular shading
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    // blinn-phong specular shading
     
+    vec3 HalfwayVector = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normal, HalfwayVector), 0.0), 500.0f);
+
+
     // attenuation
     float distance = length(light.Position - fragPos);
     float attenuation = 1.0 - distance / radius;
@@ -89,25 +92,26 @@ void main()
     else
     {
         vec3 ambient = AmbientColour * AmbientStrength;
-        vec3 norm = normalize(v_TransformedNormal);
+        vec3 normal = normalize(v_TransformedNormal);
         vec3 viewDir = normalize(CameraPosition - v_Position);
         
+        
         vec3 DirectionalLight = vec3(0, 0, 0);
+        vec3 PointLight = vec3(0, 0, 0);
+        
         for (int i = 0; i < DirLightCount; i++)
         {
-            DirectionalLight += CalcDirLight(DirLights[i], norm, viewDir);
+            DirectionalLight += CalcDirLight(DirLights[i], normal, viewDir);
         }
         
-        vec3 PointLight = vec3(0, 0, 0);
+        
         for (int i = 0; i < PointLightCount; i++)
         {
-            PointLight += CalcPointLight(PointLights[i], norm, v_Position, viewDir, PointLights[i].Radius);
+            PointLight += CalcPointLight(PointLights[i], normal, v_Position, viewDir, PointLights[i].Radius);
         }
         
 
-        
-        
-        
+
         vec3 result = (ambient + DirectionalLight + PointLight) * mixed.rgb;
 
         

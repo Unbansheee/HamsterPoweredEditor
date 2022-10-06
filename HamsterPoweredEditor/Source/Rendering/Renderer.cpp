@@ -17,6 +17,7 @@ void Renderer::Init()
     FrameBufferSpecification spec;
     spec.Width = m_Width;
     spec.Height = m_Height;
+    spec.Samples = m_MSAASamples;
     m_FrameBuffer.reset(new GLFrameBuffer(spec));
 
     glEnable(GL_MULTISAMPLE);
@@ -25,8 +26,10 @@ void Renderer::Init()
 void Renderer::BeginScene(View& camera)
 {
     Clear();
-    m_FrameBuffer->Bind();
+    if (!m_FrameBuffer->IsValid()) m_DeferredTasks.push([](){m_FrameBuffer->Invalidate();});
+    m_FrameBuffer->BindMSAABuffer();
     m_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
+    m_SceneData->CameraPosition = camera.GetPosition();
     drawCalls = 0;
 }
 
@@ -74,6 +77,20 @@ void Renderer::SetRenderMode(RenderMode mode)
     }
 }
 
+void Renderer::SetMSAASamples(int samples)
+{
+    m_MSAASamples = samples;
+    m_DeferredTasks.push([]()
+    {
+        FrameBufferSpecification spec;
+        spec.Width = m_Width;
+        spec.Height = m_Height;
+        spec.Samples = m_MSAASamples;
+        m_FrameBuffer.reset(new GLFrameBuffer(spec));
+    });
+    
+}
+
 void Renderer::Render()
 {
     for (auto object : m_RenderObjects)
@@ -101,8 +118,9 @@ void Renderer::Render()
         
         shader->SetUniform1f("AmbientStrength", m_AmbientLightStrength);
         shader->SetUniform3f("AmbientColour", clearColor.x, clearColor.y, clearColor.z);
-        
-        shader->SetUniform3f("CameraPosition", m_SceneData->ViewProjectionMatrix[3].x, m_SceneData->ViewProjectionMatrix[3].y, m_SceneData->ViewProjectionMatrix[3].z);
+
+        glm::vec3 cameraPos = m_SceneData->CameraPosition;
+        shader->SetUniform3f("CameraPosition", cameraPos.x, cameraPos.y, cameraPos.z);
         
         shader->SetUniformMat4f("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
         shader->SetUniformMat4f("u_Transform", transform);
@@ -130,11 +148,22 @@ void Renderer::Render()
         vertexArray->Unbind();
         drawCalls++;
     }
+    
+    m_FrameBuffer->BlitToScreen();
+}
+
+void Renderer::DeferredUpdate()
+{
+    while (!m_DeferredTasks.empty())
+    {
+        m_DeferredTasks.front()();
+        m_DeferredTasks.pop();
+    }
 }
 
 void Renderer::Clear()
 {
-    Renderer::m_FrameBuffer->Bind();
+    Renderer::m_FrameBuffer->BindMSAABuffer();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     Renderer::m_FrameBuffer->Unbind();
 }
@@ -152,7 +181,7 @@ double Renderer::AspectRatio()
 
 void Renderer::DrawIndexed(const std::shared_ptr<GLVertexArray>& vertexArray, RenderSettings settings)
 {
-    Renderer::m_FrameBuffer->Bind();
+    Renderer::m_FrameBuffer->BindMSAABuffer();
     
 
         if (settings.Blending)
@@ -206,7 +235,16 @@ void Renderer::Resize(int width, int height)
     m_Width = width;
     m_Height = height;
 
-    Renderer::m_FrameBuffer->Resize(width, height);
+    m_DeferredTasks.push([=]()
+    {
+        FrameBufferSpecification spec;
+        spec.Width = m_Width;
+        spec.Height = m_Height;
+        spec.Samples = m_MSAASamples;
+        m_FrameBuffer.reset(new GLFrameBuffer(spec));
+    });
+
+
 }
 
 

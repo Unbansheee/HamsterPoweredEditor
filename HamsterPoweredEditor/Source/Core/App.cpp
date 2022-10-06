@@ -115,6 +115,8 @@ void App::Update()
 	window->SwapBuffers();
 	window->PollEvents();
 
+	Renderer::DeferredUpdate();
+
 	ImGui::ResetMouseDragDelta(1);
 }
 

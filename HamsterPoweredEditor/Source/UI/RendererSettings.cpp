@@ -24,11 +24,17 @@ void RendererSettings::Update(Timestep ts)
     }
     ImGui::DragFloat("Ambient Strength", &Renderer::m_AmbientLightStrength, 0.1f, 0.0f);
 
-    //rendermode combobox
+    
     int rendermode = (int)Renderer::GetRenderMode();
     if (ImGui::Combo("Render Mode", &rendermode, "Unlit\0Wireframe\0Lit\0"))
     {
         Renderer::SetRenderMode((Renderer::RenderMode)rendermode);
+    }
+
+    int samples = Renderer::GetMSAASamples();
+    if (ImGui::DragInt("MSAA Samples", &samples, 1, 0, 16))
+    {
+        Renderer::SetMSAASamples(samples);
     }
     
 }

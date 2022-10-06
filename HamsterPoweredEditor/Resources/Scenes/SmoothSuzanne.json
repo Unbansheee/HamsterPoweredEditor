@@ -59,12 +59,12 @@
         {
             "ActorType": "DirLight",
             "Color": [
-                0.9241739511489868,
-                0.4108911156654358,
-                1.0
+                0.5119978785514832,
+                0.19108419120311737,
+                0.5594059228897095
             ],
             "ID": "d0a4a1c2-8029-4683-8547-00402a1ef1ce",
-            "Intensity": 0.9300000071525574,
+            "Intensity": 1.899999976158142,
             "children": null,
             "name": "Light",
             "position": [
@@ -163,22 +163,22 @@
             ]
         }
     ],
-    "AmbientIntensity": 0.10000000149011612,
+    "AmbientIntensity": 0.5929999947547913,
     "EditorCamera": {
         "ActorType": "CameraController",
         "CameraType": 1,
         "ID": "897aed97-97dc-4900-a397-c7704d5fd158",
         "OrthoZoom": 5.068216323852539,
-        "PerspMoveSpeed": 11.662479400634766,
-        "Pitch": 6.5,
-        "Yaw": 2284.5,
+        "PerspMoveSpeed": 5.981790542602539,
+        "Pitch": 7.5,
+        "Yaw": 2645.5,
         "Zoom": 30.0,
         "children": null,
         "name": "Editor Camera",
         "position": [
-            -7.478196144104004,
-            1.7808609008789063,
-            13.459222793579102
+            -7.7179718017578125,
+            2.1286187171936035,
+            13.2576265335083
         ],
         "rotation": [
             0.0,

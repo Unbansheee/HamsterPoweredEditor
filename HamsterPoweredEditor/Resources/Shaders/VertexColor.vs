@@ -24,7 +24,7 @@
 		v_TexCoord = TexCoord;
 		v_Normal = Normal;
 
-		v_TransformedNormal = vec3(u_Transform * vec4(Normal, 0.0f));
+		v_TransformedNormal = mat3(transpose(inverse(u_Transform))) * Normal;
 		
 		v_Position = vec3(u_Transform * vec4(Position, 1.0f));
 	}

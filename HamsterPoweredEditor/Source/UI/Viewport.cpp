@@ -18,7 +18,7 @@ void Viewport::Update(Timestep ts)
 {
 	CameraController* cam = App::Instance().m_currentScene->m_editorCamera;
 	ImGui::PopStyleVar(1);
-	ImGui::Image((void*)(uint64_t)Renderer::m_FrameBuffer->GetColorAttachmentRendererID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::Image((void*)(uint64_t)Renderer::m_FrameBuffer->GetFinalFrameColorID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
 	//check if resized
 	if (ImGui::GetWindowSize().x != lastSize.x || ImGui::GetWindowSize().y != lastSize.y)

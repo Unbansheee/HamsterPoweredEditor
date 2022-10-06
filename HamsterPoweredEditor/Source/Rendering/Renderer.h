@@ -1,4 +1,6 @@
 #pragma once
+#include <functional>
+#include <queue>
 #include <glad/glad.h>
 
 #include "OrthographicCamera.h"
@@ -62,7 +64,10 @@ public:
     static void SetRenderMode(RenderMode mode);
     static RenderMode GetRenderMode() {return m_renderMode;}
     static glm::vec2 GetViewportSize() {return {m_Width, m_Height};}
+    static void SetMSAASamples(int samples);
+    static int GetMSAASamples() {return m_MSAASamples;}
     static void Render();
+    static void DeferredUpdate(); // Called after the scene is rendered and the texture is shown on the screen
 private:
     static void Clear();
     
@@ -82,16 +87,19 @@ private:
     inline static glm::vec4 clearColor;
     inline static RenderMode m_renderMode;
     inline static std::shared_ptr<Shader> m_WireShader;
+    inline static int m_MSAASamples = 4;
 
     inline static std::vector<RenderObject> m_RenderObjects;
     inline static std::vector<PointLightData> m_PointLights;
     inline static std::vector<DirectionalLightData> m_DirectionalLights;
 
     inline static float m_AmbientLightStrength = 0.2f;
+    inline static std::queue<std::function<void()>> m_DeferredTasks;
     
     struct SceneData
     {
         glm::mat4 ViewProjectionMatrix;
+        glm::vec3 CameraPosition;
     };
 
     static SceneData* m_SceneData;
