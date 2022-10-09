@@ -47,6 +47,9 @@ TextLabel::TextLabel(const std::string& text, const std::string& fontPath, int f
 
     SetRenderSettings({GL_TRIANGLES, true, false, false, false});
 
+    m_VAO->Unbind();
+    m_VBO->Unbind();
+    m_IBO->Unbind();
 }
 
 void TextLabel::SetText(const std::string& text)
@@ -165,10 +168,11 @@ void TextLabel::Draw()
     
     if (!m_Dragging && mouseOverlapping && m_scaleBounce)
     {
-        //move pivot to center
-        scaleTransform = glm::translate(scaleTransform, glm::vec3(m_bounds.width / 2, m_bounds.height / 2, 0.0f));
-        scaleTransform = glm::scale(scaleTransform, m_scaleBounceDelta * glm::vec3(1, 1, 1));
-        scaleTransform = glm::translate(scaleTransform, glm::vec3(-m_bounds.width / 2, -m_bounds.height / 2, 0.0f));
+
+        scaleTransform = glm::translate(scaleTransform, glm::vec3(m_unscaledBounds.width / 2.f, m_unscaledBounds.height / 2.f, 0.0f));
+        scaleTransform = glm::scale(scaleTransform, m_scaleBounceDelta * glm::vec3(1, 1, 0));
+        scaleTransform = glm::translate(scaleTransform, glm::vec3(-m_unscaledBounds.width / 2.f, -m_unscaledBounds.height / 2.f, 0.0f));
+        
     }
     
     Renderer::Submit(m_Shader, m_VAO, scaleTransform, textures, m_renderSettings);
@@ -219,6 +223,9 @@ void TextLabel::UpdateBuffers()
     float maxwidth = 0.f, maxheight = 0.f;
     glm::vec3 CharacterOrigin = {0, 0, 0};
     textures.clear();
+
+    m_IBO->Bind();
+    m_VBO->Bind();
     
     int index = 0;
     for (std::string::const_iterator TextCharacter = m_Text.begin(); TextCharacter != m_Text.end(); TextCharacter++)
@@ -268,6 +275,10 @@ void TextLabel::UpdateBuffers()
         maxwidth += (FontCharacter.Advance >> 6);
         index++;
     }
+    //m_VBO->Unbind();
+   // m_IBO->Unbind();
+    
+    
     m_unscaledBounds.height = maxheight;
     m_unscaledBounds.width = maxwidth;
 }

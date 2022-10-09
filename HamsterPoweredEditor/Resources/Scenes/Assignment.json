@@ -19,7 +19,7 @@
             ],
             "rotation": [
                 0.0,
-                54277.6953125,
+                96996.140625,
                 0.0
             ],
             "scale": [
@@ -46,7 +46,7 @@
                 0.0
             ],
             "rotation": [
-                54338.7734375,
+                97057.328125,
                 0.0,
                 0.0
             ],
@@ -187,13 +187,14 @@
                 0.0,
                 1.0
             ],
+            "ScaleBounce": true,
             "ScreenSpace": true,
             "Text": "Drag Me!",
             "children": null,
             "name": "DragText",
             "position": [
-                169.045166015625,
-                70.0859375,
+                170.045166015625,
+                72.0859375,
                 0.0
             ],
             "rotation": [
@@ -226,13 +227,14 @@
                 0.2161552757024765,
                 0.0
             ],
+            "ScaleBounce": true,
             "ScreenSpace": true,
-            "Text": "You can use your arrow keys while dragging to change size!",
+            "Text": "Press the up and down arrows while dragging!",
             "children": null,
             "name": "ArrowText",
             "position": [
-                82.31170654296875,
-                24.878524780273438,
+                165.59649658203125,
+                30.389881134033203,
                 0.0
             ],
             "rotation": [
@@ -241,9 +243,9 @@
                 0.0
             ],
             "scale": [
-                0.3138104975223541,
-                0.3138104975223541,
-                0.3138104975223541
+                0.312373548746109,
+                0.312373548746109,
+                0.312373548746109
             ]
         },
         {
@@ -313,7 +315,7 @@
                 ""
             ],
             "children": null,
-            "name": "Object",
+            "name": "Suzanne",
             "position": [
                 0.0,
                 0.0,
@@ -334,19 +336,19 @@
     "AmbientIntensity": 2.200000047683716,
     "EditorCamera": {
         "ActorType": "CameraController",
-        "CameraType": 0,
+        "CameraType": 1,
         "ID": "9857134b-306d-4003-9160-dfd8d06f00bc",
         "OrthoZoom": 2.745934247970581,
         "PerspMoveSpeed": 1.0,
-        "Pitch": 0.5,
-        "Yaw": 85.0,
-        "Zoom": 75.0,
+        "Pitch": 1.5,
+        "Yaw": 88.5,
+        "Zoom": 76.69999694824219,
         "children": null,
         "name": "Editor Camera",
         "position": [
-            -0.3429071307182312,
-            -0.1682186871767044,
-            3.0
+            -0.030880112200975418,
+            0.06587306410074234,
+            4.241613864898682
         ],
         "rotation": [
             0.0,
@@ -361,9 +363,9 @@
     },
     "RenderMode": 2,
     "SceneColour": [
-        0.0901636928319931,
-        0.06379276514053345,
-        0.09405940771102905,
+        0.05470053106546402,
+        0.07691733539104462,
+        0.11881190538406372,
         1.0
     ]
 }
