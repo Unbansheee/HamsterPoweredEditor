@@ -223,7 +223,8 @@ void Renderer::DrawIndexed(const std::shared_ptr<GLVertexArray>& vertexArray, Re
         {
             glEnable(GL_DEPTH_WRITEMASK);
         }
-    
+
+    int count = vertexArray->GetIndexBuffer()->GetCount();
     glDrawElements(settings.DrawMode, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
     Renderer::m_FrameBuffer->Unbind();
 

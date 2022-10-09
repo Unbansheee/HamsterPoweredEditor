@@ -46,7 +46,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     // specular shading
 
     vec3 HalfwayVector = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(normal, HalfwayVector), 0.0), 500.0f);
+    float spec = pow(max(dot(normal, HalfwayVector), 0.0), 128.0f);
     
     return (diff * light.Color + spec * light.Color) * light.Intensity;
 }
@@ -59,7 +59,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, f
     // blinn-phong specular shading
     
     vec3 HalfwayVector = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(normal, HalfwayVector), 0.0), 500.0f);
+    float spec = pow(max(dot(normal, HalfwayVector), 0.0), 128.0f);
 
 
     // attenuation

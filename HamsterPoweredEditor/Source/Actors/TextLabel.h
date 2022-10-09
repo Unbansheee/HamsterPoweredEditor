@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <map>
 
-#include "GLVertexArray.h"
+#include "Rendering/GLVertexArray.h"
 #include "Actors/Actor.h"
 #include "Core/Font.h"
 #include "ResourceManagement/Shader.h"
@@ -34,6 +34,7 @@ public:
     void Draw() override;
 protected:
     void OnInspectorGUI() override;
+    virtual void UpdateBuffers();
 public:
     ~TextLabel() override;
     nlohmann::json Serialize() override;
@@ -62,5 +63,10 @@ protected:
     bool m_Dragging = false;
     bool m_Initialized = false;
     Bounds m_bounds;
+    Bounds m_unscaledBounds;
+    std::vector<Texture*> textures;
+
+    bool m_scaleBounce = false;
+    float m_scaleBounceDelta = 0.0f;
     
 };

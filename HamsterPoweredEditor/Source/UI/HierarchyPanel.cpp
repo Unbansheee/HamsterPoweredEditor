@@ -10,7 +10,7 @@
 #include "Actors/Mesh.h"
 #include "Actors/PointLight.h"
 #include "Actors/Spinner.h"
-#include "Rendering/TextLabel.h"
+#include "Actors/TextLabel.h"
 #include "Core/Scene.h"
 
 void HierarchyPanel::Init()

@@ -181,6 +181,46 @@
                 1.0,
                 1.0
             ]
+        },
+        {
+            "ActorType": "TextLabel",
+            "BaseColor": [
+                0.0,
+                1.0,
+                1.0
+            ],
+            "FontPath": "Resources/Fonts/Roboto-Regular.ttf",
+            "HoverColor": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "ID": "6fa605ea-791b-4992-895d-d32ef0156c3b",
+            "PressedColor": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "ScaleBounce": true,
+            "ScreenSpace": true,
+            "Text": "Text Render",
+            "children": null,
+            "name": "Text Render",
+            "position": [
+                247.02618408203125,
+                69.2669906616211,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.7977463006973267,
+                0.7977463006973267,
+                0.7977463006973267
+            ]
         }
     ],
     "AmbientIntensity": 0.5,
@@ -188,7 +228,7 @@
         "ActorType": "CameraController",
         "CameraType": 0,
         "ID": "a70c4de9-33e1-4e96-b507-e27518570bbf",
-        "OrthoZoom": 1.866297960281372,
+        "OrthoZoom": 2.357090950012207,
         "PerspMoveSpeed": 15.014398574829102,
         "Pitch": 0.0,
         "Yaw": 0.0,
@@ -196,8 +236,8 @@
         "children": null,
         "name": "Editor Camera",
         "position": [
-            -0.06869790703058243,
-            -0.2372557520866394,
+            0.16021014750003815,
+            -1.0056430101394653,
             -3.7148234844207764
         ],
         "rotation": [

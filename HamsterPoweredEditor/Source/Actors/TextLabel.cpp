@@ -16,7 +16,8 @@ TextLabel::TextLabel(const std::string& text, const std::string& fontPath, int f
 {
     VertexBufferLayout layout = {
         {ShaderDataType::Float3, "Position"},
-        {ShaderDataType::Float2, "TexCoord"}
+        {ShaderDataType::Float2, "TexCoord"},
+        {ShaderDataType::Float, "TextureID"}
     };
 
     m_BaseColor = color;
@@ -24,31 +25,34 @@ TextLabel::TextLabel(const std::string& text, const std::string& fontPath, int f
     m_FontSize = fontSize;
     m_FontPath = fontPath;
     m_Font = Font::LoadFont(fontPath, fontSize);
-    
-    SetText(text);
-    SetCurrentColor(color);
-    SetPosition(position);
+
 
     m_Projection = glm::ortho(0.0f, (float)App::Instance().window->GetWidth(), 0.0f, (float)App::Instance().window->GetHeight());
     m_Shader.reset(new Shader("Resources/Shaders/Text.vs", "Resources/Shaders/Text.fs"));
 
-    m_VBO.reset(new GLVertexBuffer(nullptr, sizeof(float) * 6 * 4, GL_DYNAMIC_DRAW));
+    m_VBO.reset(new GLVertexBuffer(nullptr, sizeof(float) * 6 * 4 * 1000, GL_DYNAMIC_DRAW));
     m_VAO.reset(new GLVertexArray());
-    m_IBO.reset(new GLIndexBuffer(indices, sizeof(indices) / sizeof(uint32_t), GL_DYNAMIC_DRAW));
+    m_IBO.reset(new GLIndexBuffer(indices, sizeof(indices) / sizeof(uint32_t) * 256, GL_DYNAMIC_DRAW));
     
     m_VBO->SetLayout(layout);
     m_VAO->AddVertexBuffer(m_VBO);
     m_VAO->SetIndexBuffer(m_IBO);
     
-
+    
+    SetText(text);
+    SetCurrentColor(color);
+    SetPosition(position);
+    
     m_Initialized = true;
 
     SetRenderSettings({GL_TRIANGLES, true, false, false, false});
+
 }
 
 void TextLabel::SetText(const std::string& text)
 {
     m_Text = text;
+    UpdateBuffers();
 }
 
 void TextLabel::SetCurrentColor(const glm::vec3& color)
@@ -74,6 +78,8 @@ void TextLabel::SetClickColor(const glm::vec3& color)
 void TextLabel::SetFont(Font* font)
 {
     m_Font = font;
+    UpdateBuffers();
+
 }
 
 Font* TextLabel::GetFont() const
@@ -110,6 +116,7 @@ void TextLabel::Update(Timestep ts)
             mouseoffset = mousePosGLM - glm::vec2(m_bounds.x, m_bounds.y);
             m_Dragging = true;
         }
+
         
     }
     else if (mouseOverlapping)
@@ -133,63 +140,39 @@ void TextLabel::Update(Timestep ts)
         m_Dragging = false;
         SetCurrentColor(m_BaseColor);
     }
+
+    m_scaleBounceDelta = (sin(App::Instance().GetTime() * 3.f) + 2.0f) * 0.5f;
     
 }
 
 void TextLabel::Draw()
 {
     Actor::Draw();
-    m_VBO->Bind();
+
     m_Projection = glm::ortho(0.0f, Renderer::GetViewportSize().x, 0.0f, Renderer::GetViewportSize().y);
     m_Shader->Bind();
     m_Shader->SetUniformMat4f("ProjectionMat", m_Projection);
     m_Shader->SetUniform3f("TextColor", m_Color.x, m_Color.y, m_Color.z);
-    
-    Bounds bounds = {0, 0, 0, 0};
+    m_Shader->SetUniform1i("u_ScreenSpace", m_ScreenSpace);
 
-    bounds.x = GetPosition().x;
-    bounds.y = GetPosition().y;
-    glm::vec3 CharacterOrigin = GetPosition();
+    m_bounds.x = GetPosition().x;
+    m_bounds.y = GetPosition().y;
+    m_bounds.height = m_unscaledBounds.height * GetScale().y;
+    m_bounds.width = m_unscaledBounds.width * GetScale().x;
+
+    glm::mat4 scaleTransform = m_transform;
+
     
-    for (std::string::const_iterator TextCharacter = m_Text.begin(); TextCharacter != m_Text.end(); TextCharacter++)
+    if (!m_Dragging && mouseOverlapping && m_scaleBounce)
     {
-        Font::FontChar FontCharacter = m_Font->GetChar(*TextCharacter);
-        float PosX = CharacterOrigin.x + FontCharacter.Bearing.x * GetScale().x;
-        float PosY = CharacterOrigin.y - (FontCharacter.texture->GetHeight() - FontCharacter.Bearing.y) * GetScale().y;
-        float Width = FontCharacter.texture->GetWidth() * GetScale().x;
-        float Height = FontCharacter.texture->GetHeight() * GetScale().y;
-        
-        float vertices[4][5] = {
-            {PosX, PosY + Height, 0.0f, 0.0f, 0.0f},
-            {PosX, PosY, 0.0f, 0.0f, 1.0f},
-            {PosX + Width, PosY, 0.0f, 1.0f, 1.0f},
-            {PosX + Width, PosY + Height, 0.0f, 1.0f, 0.0f}
-        };
-
-        //zero out translation
-        glm::mat4 model = glm::mat4(1.0f);
-        model[3][0] = 0.0f;
-        model[3][1] = 0.0f;
-        model[3][2] = 0.0f;
-        
-        m_VBO->SetSubData(*vertices, sizeof(vertices), 0);
-        
-        FontCharacter.texture->Bind(0);
-        m_Shader->SetUniform1i("TextTexture", 0);
-        m_Shader->SetUniform1i("u_ScreenSpace", m_ScreenSpace);
-        
-        Renderer::Submit(m_Shader, m_VAO, model, {FontCharacter.texture}, m_renderSettings);
-
-        CharacterOrigin.x += (FontCharacter.Advance >> 6) * GetScale().x;
-
-        bounds.height = std::max(bounds.height, Height);
-        bounds.width += (FontCharacter.Advance >> 6) * GetScale().x;
-
+        //move pivot to center
+        scaleTransform = glm::translate(scaleTransform, glm::vec3(m_bounds.width / 2, m_bounds.height / 2, 0.0f));
+        scaleTransform = glm::scale(scaleTransform, m_scaleBounceDelta * glm::vec3(1, 1, 1));
+        scaleTransform = glm::translate(scaleTransform, glm::vec3(-m_bounds.width / 2, -m_bounds.height / 2, 0.0f));
     }
     
-
-    m_bounds = bounds;
-    m_VBO->Unbind();
+    Renderer::Submit(m_Shader, m_VAO, scaleTransform, textures, m_renderSettings);
+    
 }
 
 void TextLabel::OnInspectorGUI()
@@ -199,6 +182,8 @@ void TextLabel::OnInspectorGUI()
     {
         SetText(m_Text);
     }
+
+    ImGui::Checkbox("Bounce", &m_scaleBounce);
     
     ImGui::Checkbox("Screen Space", &m_ScreenSpace);
     
@@ -228,6 +213,65 @@ void TextLabel::OnInspectorGUI()
     
 }
 
+void TextLabel::UpdateBuffers()
+{
+    
+    float maxwidth = 0.f, maxheight = 0.f;
+    glm::vec3 CharacterOrigin = {0, 0, 0};
+    textures.clear();
+    
+    int index = 0;
+    for (std::string::const_iterator TextCharacter = m_Text.begin(); TextCharacter != m_Text.end(); TextCharacter++)
+    {
+        Font::FontChar FontCharacter = m_Font->GetChar(*TextCharacter);
+        float PosX = CharacterOrigin.x + FontCharacter.Bearing.x;
+        float PosY = CharacterOrigin.y - (FontCharacter.texture->GetHeight() - FontCharacter.Bearing.y);
+        float Width = FontCharacter.texture->GetWidth();
+        float Height = FontCharacter.texture->GetHeight();
+
+        int texindex = 0;
+        for (int i = 0; i < textures.size(); i++)
+        {
+            if (textures[i] == FontCharacter.texture)
+            {
+                texindex = i;
+                break;
+            }
+        }
+        if (texindex == 0)
+        {
+            textures.push_back(FontCharacter.texture);
+            texindex = textures.size() - 1;
+        }
+        
+        float vertices[4][6] = {
+            {PosX, PosY + Height, 0.0f, 0.0f, 0.0f, (float)texindex},
+            {PosX, PosY, 0.0f, 0.0f, 1.0f, (float)texindex},
+            {PosX + Width, PosY, 0.0f, 1.0f, 1.0f, (float)texindex},
+            {PosX + Width, PosY + Height, 0.0f, 1.0f, 0.0f, (float)texindex}
+        };
+
+        // offset indices
+        uint32_t _indices[6];
+        for (int i = 0; i < 6; i++)
+        {
+            _indices[i] = indices[i] + index * 4;
+        }
+        
+        m_VBO->SetSubData(*vertices, sizeof(vertices), index * 4 * sizeof(float) * 6);
+        m_IBO->SetSubData(_indices, sizeof(_indices) / sizeof(uint32_t), index * 6 * sizeof(uint32_t));
+
+
+        CharacterOrigin.x += (FontCharacter.Advance >> 6);
+
+        maxheight = std::max(m_bounds.height, Height);
+        maxwidth += (FontCharacter.Advance >> 6);
+        index++;
+    }
+    m_unscaledBounds.height = maxheight;
+    m_unscaledBounds.width = maxwidth;
+}
+
 TextLabel::~TextLabel()
 {
 }
@@ -241,6 +285,7 @@ nlohmann::json TextLabel::Serialize()
     json["BaseColor"] = m_BaseColor;
     json["HoverColor"] = m_HoverColor;
     json["PressedColor"] = m_PressedColor;
+    json["ScaleBounce"] = m_scaleBounce;
     return json;
 }
 
@@ -255,5 +300,10 @@ void TextLabel::Deserialize(nlohmann::json& j)
     m_BaseColor = j["BaseColor"];
     m_HoverColor = j["HoverColor"];
     m_PressedColor = j["PressedColor"];
+    if (j.contains("ScaleBounce"))
+    {
+        m_scaleBounce = j["ScaleBounce"];
+    }
+
     
 }

@@ -178,6 +178,7 @@
     <ClCompile Include="Source\Actors\PointLight.cpp" />
     <ClCompile Include="Source\Actors\Quad.cpp" />
     <ClCompile Include="Source\Actors\Spinner.cpp" />
+    <ClCompile Include="Source\Actors\TextLabel.cpp" />
     <ClCompile Include="Source\Core\App.cpp" />
     <ClCompile Include="Source\Core\Font.cpp" />
     <ClCompile Include="Source\Core\Input.cpp" />
@@ -194,7 +195,6 @@
     <ClCompile Include="Source\Rendering\PerspectiveCamera.cpp" />
     <ClCompile Include="Source\Rendering\GLRenderBuffer.cpp" />
     <ClCompile Include="Source\Rendering\Renderer.cpp" />
-    <ClCompile Include="Source\Rendering\TextLabel.cpp" />
     <ClCompile Include="Source\Rendering\VertexBufferLayout.cpp" />
     <ClCompile Include="Source\Rendering\View.cpp" />
     <ClCompile Include="Source\ResourceManagement\Shader.cpp" />
@@ -235,6 +235,7 @@
     <ClInclude Include="Source\Actors\PointLight.h" />
     <ClInclude Include="Source\Actors\Quad.h" />
     <ClInclude Include="Source\Actors\Spinner.h" />
+    <ClInclude Include="Source\Actors\TextLabel.h" />
     <ClInclude Include="Source\Core\App.h" />
     <ClInclude Include="Source\Core\Font.h" />
     <ClInclude Include="Source\Core\Input.h" />
@@ -251,7 +252,6 @@
     <ClInclude Include="Source\Rendering\Lights.h" />
     <ClInclude Include="Source\Rendering\GLRenderBuffer.h" />
     <ClInclude Include="Source\Rendering\Renderer.h" />
-    <ClInclude Include="Source\Rendering\TextLabel.h" />
     <ClInclude Include="Source\Rendering\VertexBufferLayout.h" />
     <ClInclude Include="Source\Rendering\View.h" />
     <ClInclude Include="Source\ResourceManagement\Shader.h" />

@@ -39,7 +39,6 @@ private:
     FT_Library m_ft;
     std::string m_fontName;
     static const int FontCharacterLimit = 128;
-    
 
     
 };

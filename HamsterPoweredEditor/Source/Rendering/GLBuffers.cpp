@@ -62,3 +62,9 @@ void GLIndexBuffer::Unbind() const
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
 }
+
+void GLIndexBuffer::SetSubData(uint32_t* indices, uint32_t count, uint32_t offset) 
+{
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, count * sizeof(uint32_t), indices);
+    m_Count = (offset / sizeof(uint32_t)) + count;
+}

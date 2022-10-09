@@ -32,6 +32,8 @@ public:
     virtual uint32_t GetCount() const {return m_Count;}
     virtual void Bind() const;
     virtual void Unbind() const;
+    virtual void SetSubData(uint32_t* indices, uint32_t count, uint32_t offset = 0);
+    virtual uint32_t GetID() const { return m_RendererID; }
 
 private:
     uint32_t m_RendererID;

@@ -39,7 +39,7 @@ namespace ImGui
 
     inline bool FontSelector(const char* label, Font** font)
     {
-        bool edited = true;
+        bool edited = false;
         if (ImGui::BeginCombo("Font", (*font)->GetName().c_str()))
         {
             for (auto it = Font::fonts.begin(); it != Font::fonts.end(); it++)

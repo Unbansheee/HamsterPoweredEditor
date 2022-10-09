@@ -9,7 +9,7 @@
 
 #include "Actors/Actor.h"
 #include "Actors/Quad.h"
-#include "Rendering/TextLabel.h"
+#include "Actors/TextLabel.h"
 #include "Actors/Mesh.h"
 #include "json.hpp"
 #include "Actors/DirectionalLight.h"

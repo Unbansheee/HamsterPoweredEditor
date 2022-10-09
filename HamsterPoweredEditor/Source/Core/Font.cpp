@@ -55,9 +55,10 @@ Font::Font(const std::string& path, int size)
         std::string base_filename = path.substr(path.find_last_of("/\\") + 1);
         m_fontName = base_filename.substr(0, base_filename.find_last_of("."));
 
-
+    
         
     }
+
 
     FT_Done_Face(m_face);
     FT_Done_FreeType(m_ft);
