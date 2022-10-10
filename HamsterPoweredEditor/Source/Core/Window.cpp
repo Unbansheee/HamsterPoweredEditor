@@ -2,7 +2,9 @@
 
 #include <iostream>
 
+#include "Input.h"
 #include "Timer.h"
+#include <array>
 
 Window::Window(std::string title, int _width, int _height) : m_Title(title), m_Width(_width), m_Height(_height)
 {
@@ -44,12 +46,22 @@ Window::Window(std::string title, int _width, int _height) : m_Title(title), m_W
         std::cout << "Failed to initialize GLAD" << std::endl;
     }
 
-    glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
-            {
+    glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+        {
+            Input::m_KeyboardStates[key] = action;
+        });
 
-            });
+    glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
+        {
+            Input::m_MouseButtonStates[button] = action;
+        });
+
+    glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xoffset, double yoffset)
+        {
+            Input::m_MouseScrollDelta = yoffset;
+        });
     
-
+    Input::SetContext(this);
 
     glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
     
@@ -178,9 +190,11 @@ void Window::SetTitle(std::string title)
 
 void Window::PollEvents()
 {
+    Input::Reset();
     glfwPollEvents();
     
 }
+
 
 void Window::SwapBuffers()
 {

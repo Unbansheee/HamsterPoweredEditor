@@ -62,9 +62,6 @@ void Scene::Begin()
     {
         actor->Begin();
     }
-
-
-    
     
 }
 

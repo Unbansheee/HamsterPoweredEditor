@@ -52,6 +52,7 @@ public:
     void Quit();
     
 private:
+    
     int m_Width;
     int m_Height;
     int m_PosX;

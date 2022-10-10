@@ -7,6 +7,7 @@
 #include "UI/ImGuiLayer.h"
 
 #include "imgui.h"
+#include "Input.h"
 #include "Timer.h"
 #include "ResourceManagement/Shader.h"
 #include "ResourceManagement/Texture.h"
@@ -89,7 +90,7 @@ void App::Update()
 	if (EditorLayer) EditorLayer->BeginFrame();
 	
 	//UPDATE SCENE
-
+	
 	if (m_currentScene)
 	{
 		m_currentScene->Update(timestep);
@@ -114,6 +115,7 @@ void App::Update()
 
 	window->SwapBuffers();
 	window->PollEvents();
+	
 
 	Renderer::DeferredUpdate();
 

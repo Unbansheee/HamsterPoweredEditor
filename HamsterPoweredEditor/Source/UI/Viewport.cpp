@@ -6,6 +6,7 @@
 #include "Core/Scene.h"
 #include "Core/Window.h"
 #include "imgui_internal.h"
+#include "Core/Input.h"
 
 void Viewport::Init()
 {
@@ -30,7 +31,7 @@ void Viewport::Update(Timestep ts)
 	}
 	lastSize = ImGui::GetWindowSize();
 
-	if (ImGui::IsMouseReleased(1))
+	if (Input::WasMouseButtonReleased(Mouse::Right))
 	{
 		mouseCaptured = false;
 		App::Instance().window->SetCursorMode(GLFW_CURSOR_NORMAL);
@@ -38,46 +39,45 @@ void Viewport::Update(Timestep ts)
 	
 	if (ImGui::IsItemHovered())
 	{
-		if (ImGui::IsMouseClicked(1))
+		if (Input::WasMouseButtonPressed(Mouse::Right))
 		{
 			mouseCaptured = true;
 
 		}
 
-		if (cam->GetCameraType() == CameraController::CameraType::ORTHO) cam->SetZoom(cam->GetZoom() - (ImGui::GetIO().MouseWheel/4.f) * cam->GetZoom()/2.f);
+		if (cam->GetCameraType() == CameraController::CameraType::ORTHO) cam->SetZoom(cam->GetZoom() - (Input::GetMouseWheelDelta()/4.f) * cam->GetZoom()/2.f);
 		
 	}
 	if (mouseCaptured)
 	{
 		if (ImGui::IsMouseClicked(1)) return;
-		//cam->AddPositionOffset(-ImGui::GetMouseDragDelta(1).x * 0.0028f * cam->GetZoom(), ImGui::GetMouseDragDelta(1).y * 0.0028f * cam->GetZoom(), 0);
 		cam->HandleMouseMovement(-ImGui::GetMouseDragDelta(1).x, ImGui::GetMouseDragDelta(1).y);
 		App::Instance().window->SetCursorMode(GLFW_CURSOR_DISABLED);
 		
-		if (cam->GetCameraType() == CameraController::CameraType::ORTHO) cam->SetZoom(cam->GetZoom() - (ImGui::GetIO().MouseWheel/4.f) * cam->GetZoom()/2.f);
-		else cam->SetPerspSpeed(cam->GetPerspSpeed() + (ImGui::GetIO().MouseWheel/4.f) * cam->GetPerspSpeed()/2.f);
+		if (cam->GetCameraType() == CameraController::CameraType::ORTHO) cam->SetZoom(cam->GetZoom() - (Input::GetMouseWheelDelta()/4.f) * cam->GetZoom()/2.f);
+		else cam->SetPerspSpeed(cam->GetPerspSpeed() + (Input::GetMouseWheelDelta()/4.f) * cam->GetPerspSpeed()/2.f);
 
-		if (ImGui::IsKeyDown(ImGuiKey_W))
+		if (Input::IsKeyDown(Keyboard::W))
 		{
 			cam->Move({1, 0, 0});
 		}
-		if (ImGui::IsKeyDown(ImGuiKey_S))
+		if (Input::IsKeyDown(Keyboard::S))
 		{
 			cam->Move({ -1, 0, 0 });
 		}
-		if (ImGui::IsKeyDown(ImGuiKey_A))
+		if (Input::IsKeyDown(Keyboard::A))
 		{
 			cam->Move({ 0, -1, 0 });
 		}
-		if (ImGui::IsKeyDown(ImGuiKey_D))
+		if (Input::IsKeyDown(Keyboard::D))
 		{
 			cam->Move({ 0, 1, 0 });
 		}
-		if (ImGui::IsKeyDown(ImGuiKey_Q))
+		if (Input::IsKeyDown(Keyboard::Q))
 		{
 			cam->Move({ 0, 0, 1 });
 		}
-		if (ImGui::IsKeyDown(ImGuiKey_E))
+		if (Input::IsKeyDown(Keyboard::E))
 		{
 			cam->Move({ 0, 0, -1 });
 		}
