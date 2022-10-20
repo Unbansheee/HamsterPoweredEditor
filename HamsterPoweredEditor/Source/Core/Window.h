@@ -23,6 +23,7 @@ public:
     void SetCursorMode(int mode);
 
     glm::vec2 GetMousePosition() const;
+    glm::vec2 GetMousePositionAbsolute() const;
 
     
     int GetPositionX() const;

@@ -3,6 +3,7 @@
 #include <glm/ext/matrix_clip_space.hpp>
 
 #include "Core/App.h"
+#include "Core/Input.h"
 #include "Core/Window.h"
 #include "UI/HPImGui.h"
 
@@ -101,22 +102,26 @@ void TextLabel::OnDestroy()
 void TextLabel::Update(Timestep ts)
 {
     Actor::Update(ts);
+    
+    glm::vec2 MousePosAbsolute = Input::GetMousePositionAbsolute();
+    glm::vec2 viewportSize = Renderer::GetViewportSize();
+    glm::vec2 viewportLocationAbsolute = Renderer::GetViewportPosition();
+    
+    glm::vec2 mousePosInViewport = MousePosAbsolute - viewportLocationAbsolute;
+    mousePosInViewport.y = viewportSize.y - mousePosInViewport.y;
 
-    glm::vec2 mousePosGLM = App::Instance().window->GetMousePosition();
-    mousePosGLM.y = App::Instance().window->GetHeight() - mousePosGLM.y;
-    mousePosGLM.y -= 20;
     
     
     //Check if mouse intersects bounds
-    if (mousePosGLM.x > m_bounds.x && mousePosGLM.x < m_bounds.x + m_bounds.width &&
-        mousePosGLM.y > m_bounds.y && mousePosGLM.y < m_bounds.y + m_bounds.height)
+    if (mousePosInViewport.x > m_bounds.x && mousePosInViewport.x < m_bounds.x + m_bounds.width &&
+        mousePosInViewport.y > m_bounds.y && mousePosInViewport.y < m_bounds.y + m_bounds.height)
     {
         mouseOverlapping = true;
         SetCurrentColor(m_HoverColor);
         
-        if (ImGui::IsMouseClicked(0))
+        if (Input::WasMouseButtonPressed(Mouse::Left))
         {
-            mouseoffset = mousePosGLM - glm::vec2(m_bounds.x, m_bounds.y);
+            mouseoffset = mousePosInViewport - glm::vec2(m_bounds.x, m_bounds.y);
             m_Dragging = true;
         }
 
@@ -135,17 +140,26 @@ void TextLabel::Update(Timestep ts)
     {
         if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {SetScale(GetScale() * 1.1f); mouseoffset *= 1.1f; }
         if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {SetScale(GetScale() * 0.9f); mouseoffset *= 0.9f; }
-        SetPosition({ mousePosGLM.x - mouseoffset.x, mousePosGLM.y - mouseoffset.y, 0.0f });
+        SetPosition({ mousePosInViewport.x - mouseoffset.x, mousePosInViewport.y - mouseoffset.y, 0.0f });
         SetCurrentColor(m_PressedColor);
     }
-    if (!ImGui::IsMouseDown(0) && m_Dragging)
+    if (!Input::IsMouseButtonDown(Mouse::Left) && m_Dragging)
     {
         m_Dragging = false;
         SetCurrentColor(m_BaseColor);
     }
-
-    m_scaleBounceDelta = (sin(App::Instance().GetTime() * 3.f) + 2.0f) * 0.5f;
     
+    m_scaleBounceDelta = (sin(App::Instance().GetTime() * 3.f) + 2.0f) * 0.5f;
+
+    if (m_sideScroll)
+    {
+        // Scrolling text
+        SetPosition({ GetPosition().x + m_scrollSpeed.x * ts.GetSeconds(), GetPosition().y + m_scrollSpeed.y * ts.GetSeconds(), GetPosition().z });
+        if (GetPosition().y > Renderer::GetViewportSize().y)
+            SetPosition({ GetPosition().x, -m_bounds.height, GetPosition().z });
+        if (GetPosition().x > Renderer::GetViewportSize().x)
+            SetPosition({ -m_bounds.width, GetPosition().y, GetPosition().z });
+    }
 }
 
 void TextLabel::Draw()
@@ -164,14 +178,12 @@ void TextLabel::Draw()
     m_bounds.width = m_unscaledBounds.width * GetScale().x;
 
     glm::mat4 scaleTransform = m_transform;
-
-    
     if (!m_Dragging && mouseOverlapping && m_scaleBounce)
     {
 
-        scaleTransform = glm::translate(scaleTransform, glm::vec3(m_unscaledBounds.width / 2.f, m_unscaledBounds.height / 2.f, 0.0f));
-        scaleTransform = glm::scale(scaleTransform, m_scaleBounceDelta * glm::vec3(1, 1, 0));
-        scaleTransform = glm::translate(scaleTransform, glm::vec3(-m_unscaledBounds.width / 2.f, -m_unscaledBounds.height / 2.f, 0.0f));
+        scaleTransform = glm::translate(scaleTransform, glm::vec3(m_unscaledBounds.width / 2.f, m_unscaledBounds.height / 2.f, 0.0f));     // Translate to center
+        scaleTransform = glm::scale(scaleTransform, m_scaleBounceDelta * glm::vec3(1, 1, 0));                                              // Scale 
+        scaleTransform = glm::translate(scaleTransform, glm::vec3(-m_unscaledBounds.width / 2.f, -m_unscaledBounds.height / 2.f, 0.0f));   // Translate back to original position
         
     }
     
@@ -188,6 +200,8 @@ void TextLabel::OnInspectorGUI()
     }
 
     ImGui::Checkbox("Bounce", &m_scaleBounce);
+    ImGui::Checkbox("Scroll", &m_sideScroll);
+    ImGui::DragFloat2("Scroll Speed", &m_scrollSpeed.x, 1.f, 0.0f, 10000.0f);
     
     ImGui::Checkbox("Screen Space", &m_ScreenSpace);
     
@@ -297,6 +311,8 @@ nlohmann::json TextLabel::Serialize()
     json["HoverColor"] = m_HoverColor;
     json["PressedColor"] = m_PressedColor;
     json["ScaleBounce"] = m_scaleBounce;
+    json["ScrollText"] = m_sideScroll;
+    json["ScrollSpeed"] = m_scrollSpeed;
     return json;
 }
 
@@ -314,6 +330,14 @@ void TextLabel::Deserialize(nlohmann::json& j)
     if (j.contains("ScaleBounce"))
     {
         m_scaleBounce = j["ScaleBounce"];
+    }
+    if (j.contains("ScrollText"))
+    {
+        m_sideScroll = j["ScrollText"];
+    }
+    if (j.contains("ScrollSpeed"))
+    {
+        m_scrollSpeed = j["ScrollSpeed"];
     }
 
     

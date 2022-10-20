@@ -19,7 +19,7 @@
             ],
             "rotation": [
                 0.0,
-                96996.140625,
+                3385.15576171875,
                 0.0
             ],
             "scale": [
@@ -46,7 +46,7 @@
                 0.0
             ],
             "rotation": [
-                97057.328125,
+                3385.15576171875,
                 0.0,
                 0.0
             ],
@@ -187,14 +187,19 @@
                 0.0,
                 1.0
             ],
-            "ScaleBounce": true,
+            "ScaleBounce": false,
             "ScreenSpace": true,
+            "ScrollSpeed": [
+                0.0,
+                0.0
+            ],
+            "ScrollText": false,
             "Text": "Drag Me!",
             "children": null,
             "name": "DragText",
             "position": [
-                170.045166015625,
-                72.0859375,
+                188.045166015625,
+                77.0859375,
                 0.0
             ],
             "rotation": [
@@ -229,12 +234,17 @@
             ],
             "ScaleBounce": true,
             "ScreenSpace": true,
+            "ScrollSpeed": [
+                0.0,
+                0.0
+            ],
+            "ScrollText": false,
             "Text": "Press the up and down arrows while dragging!",
             "children": null,
             "name": "ArrowText",
             "position": [
-                165.59649658203125,
-                30.389881134033203,
+                17.7415771484375,
+                21.477642059326172,
                 0.0
             ],
             "rotation": [
@@ -243,9 +253,9 @@
                 0.0
             ],
             "scale": [
-                0.312373548746109,
-                0.312373548746109,
-                0.312373548746109
+                0.39130699634552,
+                0.39130699634552,
+                0.39130699634552
             ]
         },
         {
@@ -331,6 +341,96 @@
                 0.5,
                 0.5
             ]
+        },
+        {
+            "ActorType": "TextLabel",
+            "BaseColor": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "FontPath": "Resources/Fonts/Roboto-Regular.ttf",
+            "HoverColor": [
+                0.9306926727294922,
+                0.0,
+                1.0
+            ],
+            "ID": "9866c91b-b9b8-4f0b-af5a-437fde8d5c98",
+            "PressedColor": [
+                0.48514848947525024,
+                0.0,
+                0.38907963037490845
+            ],
+            "ScaleBounce": false,
+            "ScreenSpace": true,
+            "ScrollSpeed": [
+                242.0,
+                0.0
+            ],
+            "ScrollText": true,
+            "Text": "Look at me go!",
+            "children": null,
+            "name": "Scroller",
+            "position": [
+                299.640869140625,
+                184.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.25999999046325684,
+                0.25999996066093445,
+                0.25999996066093445
+            ]
+        },
+        {
+            "ActorType": "TextLabel",
+            "BaseColor": [
+                0.425742506980896,
+                1.0,
+                0.0
+            ],
+            "FontPath": "Resources/Fonts/Roboto-Regular.ttf",
+            "HoverColor": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "ID": "f28dc210-6b2d-407c-9663-817565d6802a",
+            "PressedColor": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "ScaleBounce": false,
+            "ScreenSpace": true,
+            "ScrollSpeed": [
+                283.0,
+                239.0
+            ],
+            "ScrollText": true,
+            "Text": "Strike!",
+            "children": null,
+            "name": "WowText",
+            "position": [
+                867.9785766601563,
+                641.7579956054688,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.2809999883174896,
+                0.28099989891052246,
+                0.28099989891052246
+            ]
         }
     ],
     "AmbientIntensity": 2.200000047683716,
@@ -340,15 +440,15 @@
         "ID": "9857134b-306d-4003-9160-dfd8d06f00bc",
         "OrthoZoom": 2.745934247970581,
         "PerspMoveSpeed": 1.0,
-        "Pitch": 1.5,
-        "Yaw": 88.5,
+        "Pitch": 0.5,
+        "Yaw": -271.0,
         "Zoom": 76.69999694824219,
         "children": null,
         "name": "Editor Camera",
         "position": [
-            -0.030880112200975418,
+            -0.044675856828689575,
             0.06587306410074234,
-            4.241613864898682
+            4.306608200073242
         ],
         "rotation": [
             0.0,

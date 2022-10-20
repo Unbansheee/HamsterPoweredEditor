@@ -68,5 +68,7 @@ protected:
 
     bool m_scaleBounce = false;
     float m_scaleBounceDelta = 0.0f;
+    bool m_sideScroll = false;
+    glm::vec2 m_scrollSpeed = {0, 0};
     
 };

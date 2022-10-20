@@ -4,6 +4,9 @@
 #include <glm/gtx/quaternion.hpp>
 
 #include "imgui.h"
+#include "Core/App.h"
+#include "Core/Input.h"
+#include "Core/Window.h"
 #include "Rendering/PerspectiveCamera.h"
 
 
@@ -23,6 +26,8 @@ CameraController::CameraController(CameraType type, float aspectRatio) : m_Camer
 
 void CameraController::SetCameraType(CameraType type)
 {
+    if (type == m_CameraType)
+        return;
     delete m_Camera;
     m_CameraType = type;
     if (type == CameraType::ORTHO)
@@ -74,6 +79,29 @@ void CameraController::Update(Timestep ts)
     dt =  ts.GetSeconds();
     m_Camera->SetPosition(GetPosition());
     m_Camera->SetRotation(GetRotation());
+
+    if (Input::WasKeyPressed(Keyboard::F1))
+    {
+        Renderer::SetRenderMode(Renderer::RenderMode::LIT);
+    }
+    if (Input::WasKeyPressed(Keyboard::F2))
+    {
+        Renderer::SetRenderMode(Renderer::RenderMode::WIREFRAME);
+    }
+    if (Input::WasKeyPressed(Keyboard::F3))
+    {
+        Renderer::SetRenderMode(Renderer::RenderMode::UNLIT);
+    }
+
+    if (Input::WasKeyPressed(Keyboard::F4))
+    {
+        SetCameraType(CameraType::ORTHO);
+    }
+    if (Input::WasKeyPressed(Keyboard::F5))
+    {
+        SetCameraType(CameraType::PERSPECTIVE);
+    }
+    
     
 
 }

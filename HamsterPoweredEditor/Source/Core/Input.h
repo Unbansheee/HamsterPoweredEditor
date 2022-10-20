@@ -172,8 +172,9 @@ public:
     // Check if a mouse button was released this frame
     static bool WasMouseButtonReleased(Mouse::Button button);
 
-    static glm::vec2 GetMousePosition();
+    static glm::vec2 GetMousePosition(); // Get current mouse position relative to the window
     static glm::vec2 GetLastMousePosition();
+    static glm::vec2 GetMousePositionAbsolute(); // Get current mouse position relative to the screen
     static glm::vec2 GetMouseDelta();
 
     // Returns the distance of the mouse wheel since the last frame. -1 to 1 space
@@ -189,6 +190,7 @@ private:
 
     static inline float m_MouseScrollDelta = 0.0f;
     static inline glm::vec2 m_MousePosition = glm::vec2(0.0f);
+    static inline glm::vec2 m_MousePositionAbsolute = glm::vec2(0.0f);
     static inline glm::vec2 m_PreviousMousePosition = glm::vec2(0.0f);
     static inline glm::vec2 m_MouseDelta = glm::vec2(0.0f);
 

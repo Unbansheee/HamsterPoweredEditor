@@ -177,6 +177,13 @@ glm::vec2 Window::GetMousePosition() const
     double x, y;
     glfwGetCursorPos(m_Window, &x, &y);
     return glm::vec2(x, y);
+}
+
+glm::vec2 Window::GetMousePositionAbsolute() const
+{
+    double x, y;
+    glfwGetCursorPos(m_Window, &x, &y);
+    return glm::vec2(x + m_PosX, y + m_PosY);
     
 }
 

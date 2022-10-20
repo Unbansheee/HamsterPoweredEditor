@@ -69,13 +69,13 @@ void App::Begin()
 	Renderer::SetClearColor(glm::vec4(0.09f, 0.09f, 0.12f, 1.0f));
 
 	//Initialise editor. At a later point this can be skipped and the window should show the framebuffer.
-	//Currently the framebuffer is only shown in the Viewport widget, so this must be left on for now.
+	//Currently the framebuffer custom set and is only shown in the Viewport widget, so this must be left on for now.
 	
 	EditorLayer = new ImGuiLayer(window);
 	EditorLayer->Begin();
 	
 	//LoadScene<Scene>();
-	LoadScene("Resources/Scenes/Default.json");
+	LoadScene("Resources/Scenes/Assignment.json");
 }
 
 

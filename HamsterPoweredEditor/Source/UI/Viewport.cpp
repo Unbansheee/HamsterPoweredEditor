@@ -17,7 +17,9 @@ void Viewport::Init()
 
 void Viewport::Update(Timestep ts)
 {
+	
 	CameraController* cam = App::Instance().m_currentScene->m_editorCamera;
+	ImVec2 cursor = ImGui::GetWindowPos();
 	ImGui::PopStyleVar(1);
 	ImGui::Image((void*)(uint64_t)Renderer::m_FrameBuffer->GetFinalFrameColorID(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 
@@ -30,6 +32,14 @@ void Viewport::Update(Timestep ts)
 		App::Instance().m_currentScene->m_editorCamera->Resize(width, height);
 	}
 	lastSize = ImGui::GetWindowSize();
+
+	if (cursor.x != lastPos.x || cursor.y != lastPos.y)
+	{
+		float x = cursor.x;
+		float y = cursor.y;
+		Renderer::m_viewportPosition = { x, y };
+	}
+	lastPos = cursor;
 
 	if (Input::WasMouseButtonReleased(Mouse::Right))
 	{

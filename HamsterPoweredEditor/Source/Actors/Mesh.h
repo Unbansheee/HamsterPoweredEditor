@@ -28,6 +28,7 @@ public:
     nlohmann::json Serialize() override;
     
 protected:
+    void CopyNodesWithMeshes(aiNode* node, aiMatrix4x4 accTransform);
 
 public:
     //Default mesh is a cube

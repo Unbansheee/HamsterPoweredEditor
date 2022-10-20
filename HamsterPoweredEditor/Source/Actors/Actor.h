@@ -47,6 +47,22 @@ namespace nlohmann
             vec.w = j[3];
         }
     };
+
+    template <>
+    struct adl_serializer<glm::vec2>
+    {
+        static void to_json(json& j, const glm::vec2& vec)
+        {
+            j = json{ vec.x, vec.y };
+        }
+
+        static void from_json(const json& j, glm::vec2& vec)
+        {
+            vec.x = j[0];
+            vec.y = j[1];
+        }
+    };
+    
 }
 
 class Actor : public Object

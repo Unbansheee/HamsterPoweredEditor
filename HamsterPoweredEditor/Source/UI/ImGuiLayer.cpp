@@ -34,6 +34,7 @@ ImGuiLayer::ImGuiLayer(Window* window) : window(window)
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	io.ConfigWindowsMoveFromTitleBarOnly = true;
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(window->GetWindowCtx(), true);
 	ImGui_ImplOpenGL3_Init("#version 460");

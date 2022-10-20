@@ -131,8 +131,95 @@ Texture* Mesh::SetTexture(const std::string& path, int slot)
 
 void Mesh::SetMesh(float* _vertices, uint32_t _size, uint32_t* _indices, uint32_t _isize)
 {
-    vb.reset(new GLVertexBuffer(_vertices, _size));
-    ib.reset(new GLIndexBuffer(_indices, _isize));
+    vertices.clear();
+    indices.clear();
+    for (int i = 0; i < _size / (sizeof(float) * 11); i++)
+    {
+        vertices.push_back(_vertices[i]);
+    }
+     for (int i = 0; i < _isize; i++)
+    {
+        indices.push_back(_indices[i]);
+    }
+    
+    
+    VertexBufferLayout layout = {
+        {ShaderDataType::Float3, "Position"},
+        {ShaderDataType::Float3, "Color"},
+        {ShaderDataType::Float2, "TexCoord"},
+        {ShaderDataType::Float3, "Normal"},
+    };
+    
+    
+    vb.reset(new GLVertexBuffer(vertices.data(), (uint32_t)vertices.size() * sizeof(float)));
+    va.reset(new GLVertexArray());
+    ib.reset(new GLIndexBuffer(indices.data(), (int)indices.size()));
+    
+    vb->SetLayout(layout);
+    va->AddVertexBuffer(vb);
+    va->SetIndexBuffer(ib);
+    
+    
+    vb->Unbind();
+    va->Unbind();
+    ib->Unbind();
+    shader->Unbind();
+
+    UpdateTransform();
+}
+
+void Mesh::CopyNodesWithMeshes(aiNode* node, aiMatrix4x4 accTransform)
+{
+    aiMatrix4x4 transform;
+    if (node->mNumMeshes > 0)
+    {
+        for (unsigned index = 0; index < node->mNumMeshes; index++)
+        {
+            //get mesh from node
+            aiMesh* mesh = scene->mMeshes[node->mMeshes[index]];
+            //get transform from node
+            //transform = node->mTransformation;
+            //multiply transform by accumulated transform
+            //transform = accTransform * transform;
+            
+            for (unsigned i = 0; i < mesh->mNumVertices; i++)
+            {
+                aiVector3D pos = mesh->mVertices[i];
+                aiVector3D transformed = transform * pos;
+                
+                vertices.push_back(transformed.x);
+                vertices.push_back(transformed.y);
+                vertices.push_back(transformed.z);
+                vertices.push_back(mesh->HasVertexColors(0) ? mesh->mColors[0][i].r : 1.0f);
+                vertices.push_back(mesh->HasVertexColors(0) ? mesh->mColors[0][i].g : 1.0f);
+                vertices.push_back(mesh->HasVertexColors(0) ? mesh->mColors[0][i].b : 1.0f);
+                aiVector3D textCoord = mesh->HasTextureCoords(0) ? mesh->mTextureCoords[0][i] : aiVector3D(0.0f, 0.0f, 0.0f);
+                vertices.push_back(textCoord.x);
+                vertices.push_back(textCoord.y);
+                vertices.push_back(mesh->HasNormals() ? mesh->mNormals[i].x : 0.0f);
+                vertices.push_back(mesh->HasNormals() ? mesh->mNormals[i].y : 0.0f);
+                vertices.push_back(mesh->HasNormals() ? mesh->mNormals[i].z : 0.0f);
+            }
+
+            for (unsigned i = 0; i < mesh->mNumFaces; i++)
+            {
+                indices.push_back(mesh->mFaces[i].mIndices[0]);
+                indices.push_back(mesh->mFaces[i].mIndices[1]);
+                indices.push_back(mesh->mFaces[i].mIndices[2]);
+            }
+        }
+
+        
+    }
+    else
+    {
+        //transform = node->mTransformation * accTransform;
+    }
+
+    for (int i = 0; i < node->mNumChildren; i++)
+    {
+        CopyNodesWithMeshes(node->mChildren[i], transform);
+    }
 }
 
 void Mesh::LoadMesh(const std::string& path)
@@ -156,33 +243,9 @@ void Mesh::LoadMesh(const std::string& path)
     
     vertices.clear();
     indices.clear();
-    
-    for (unsigned index = 0; index < sizeof(scene->mMeshes) / sizeof(scene->mMeshes[0]); index++)
-    {
-        aiMesh* mesh = scene->mMeshes[index];
-        
-        for (unsigned i = 0; i < mesh->mNumVertices; i++)
-        {
-            vertices.push_back(mesh->mVertices[i].x);
-            vertices.push_back(mesh->mVertices[i].y);
-            vertices.push_back(mesh->mVertices[i].z);
-            vertices.push_back(1.0f);
-            vertices.push_back(1.0f);
-            vertices.push_back(1.0f);
-            vertices.push_back(mesh->mTextureCoords[0][i].x);
-            vertices.push_back(mesh->mTextureCoords[0][i].y);
-            vertices.push_back(mesh->mNormals[i].x);
-            vertices.push_back(mesh->mNormals[i].y);
-            vertices.push_back(mesh->mNormals[i].z);
-        }
 
-        for (unsigned i = 0; i < mesh->mNumFaces; i++)
-        {
-            indices.push_back(mesh->mFaces[i].mIndices[0]);
-            indices.push_back(mesh->mFaces[i].mIndices[1]);
-            indices.push_back(mesh->mFaces[i].mIndices[2]);
-        }
-    }
+    CopyNodesWithMeshes(scene->mRootNode, aiMatrix4x4());
+    
     VertexBufferLayout layout = {
         {ShaderDataType::Float3, "Position"},
         {ShaderDataType::Float3, "Color"},

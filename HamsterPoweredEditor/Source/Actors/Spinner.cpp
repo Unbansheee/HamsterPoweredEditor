@@ -14,6 +14,7 @@ void Spinner::Draw()
 void Spinner::Begin()
 {
     Actor::Begin();
+    SetRotation(0, 0, 0);
 }
 
 void Spinner::OnDestroy()

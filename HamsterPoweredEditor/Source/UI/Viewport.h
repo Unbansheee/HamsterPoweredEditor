@@ -11,6 +11,7 @@ public:
 private:
 	friend class App;
 	ImVec2 lastSize;
+	ImVec2 lastPos;
 	bool mouseCaptured = false;
 };
 

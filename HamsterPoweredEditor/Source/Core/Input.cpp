@@ -44,6 +44,11 @@ glm::vec2 Input::GetLastMousePosition()
     return m_PreviousMousePosition;
 }
 
+glm::vec2 Input::GetMousePositionAbsolute()
+{
+    return m_MousePositionAbsolute;
+}
+
 glm::vec2 Input::GetMouseDelta()
 {
     return m_MouseDelta;
@@ -63,6 +68,7 @@ void Input::Reset()
     m_MouseScrollDelta = 0;
     m_PreviousMousePosition = m_MousePosition;
     m_MousePosition = Context->GetMousePosition();
+    m_MousePositionAbsolute = Context->GetMousePositionAbsolute();
     m_MouseDelta = m_MousePosition - m_PreviousMousePosition;
     
     
