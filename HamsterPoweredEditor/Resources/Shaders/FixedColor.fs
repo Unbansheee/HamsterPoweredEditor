@@ -1,7 +1,6 @@
 
-	#version 460 core
+#include "Resources/Shaders/Common.glsl"
 
-	out vec4 FinalColor;
 
 	void main()
 	{

@@ -289,6 +289,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
   <ItemGroup>
     <Content Include="Resources\Shaders\Common.glsl" />
     <Content Include="Resources\Shaders\FixedTriangle.vs" />
+    <Content Include="Resources\Shaders\Lights.glsl" />
     <Content Include="Resources\Shaders\PositionOnly.vs" />
     <Content Include="Resources\Shaders\Text.vs" />
     <Content Include="Resources\Shaders\VertexColor.vs" />

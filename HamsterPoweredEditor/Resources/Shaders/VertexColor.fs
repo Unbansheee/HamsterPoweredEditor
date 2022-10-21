@@ -1,9 +1,5 @@
-
-	#version 460 core
-	
-	in vec3 FragColor;
-
-	out vec4 FinalColor;
+#version 460 core
+#include "Resources/Shaders/Common.glsl"
 
 	void main()
 	{

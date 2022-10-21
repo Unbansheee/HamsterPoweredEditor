@@ -1,6 +1,7 @@
 ﻿#include "Shader.h"
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <glad/glad.h>
 
 #include "glm/glm.hpp"
@@ -8,8 +9,9 @@
 
 Shader::Shader(const std::string& vertex, const std::string& fragment) : vertexPath(vertex), fragmentPath(fragment), rendererID(0)
 {
-    ShaderProgramSource source = CreateShaderSource(vertexPath, fragmentPath);
-    rendererID = CreateShader(source.VertexSource, source.FragmentSource);
+    m_Source = CreateShaderSource(vertexPath, fragmentPath);
+    rendererID = CreateShader(m_Source.VertexSource, m_Source.FragmentSource);
+    
 }
 
 Shader::~Shader()
@@ -77,10 +79,25 @@ int Shader::GetUniformLocation(const std::string& name)
     
 }
 
+std::shared_ptr<Shader> Shader::Create(const std::string& vertexPath, const std::string& fragmentPath)
+{
+    std::pair <std::string, std::string> key = std::make_pair(vertexPath, fragmentPath);
+    if (m_shaderCache[key] != nullptr)
+        {
+            return m_shaderCache[key];
+        }
+    
+    m_shaderCache[key] = std::make_shared<Shader>(*new Shader(vertexPath, fragmentPath));
+    return m_shaderCache[key];
+}
+
 
 unsigned int Shader::CreateShader(const std::string& vertexSource, const std::string& fragmentSource)
 {
     const char* vsrc = vertexSource.c_str();
+
+    
+    
     GLuint vshader = glCreateShader(GL_VERTEX_SHADER);
 
     glShaderSource(vshader, 1, &vsrc, NULL);
@@ -98,6 +115,7 @@ unsigned int Shader::CreateShader(const std::string& vertexSource, const std::st
     }
 
     const char* fsrc = fragmentSource.c_str();
+    
     GLuint fshader = glCreateShader(GL_FRAGMENT_SHADER);
 
     glShaderSource(fshader, 1, &fsrc, NULL);
@@ -151,7 +169,77 @@ ShaderProgramSource Shader::CreateShaderSource(const std::string& vertexPath, co
     {
         std::cout << "Fragment shader file not found: " << fragmentPath << std::endl;
     }
+    std::ifstream common("Resources/Shaders/Common.glsl");
+    if (!common)
+    {
+        std::cout << "Common shader file not found: " << "Resources/Shaders/Common.glsl" << std::endl;
+    }
+    
     source.FragmentSource = std::string((std::istreambuf_iterator<char>(fin)), std::istreambuf_iterator<char>());
-
+    PreprocessShader(source.FragmentSource, {});
+    
     return source;
+}
+
+std::string Shader::ReadFile(const std::string& path)
+{
+    std::ifstream stream(path);
+    std::string line;
+    std::stringstream ss;
+    while (getline(stream, line))
+    {
+        ss << line << std::endl;
+    }
+    return ss.str();
+}
+
+void Shader::PreprocessShader(std::string& source, std::vector<std::string>* includedPaths)
+{
+    std::vector<std::string> paths;
+    if (!includedPaths)
+    {
+        includedPaths = &paths;
+    }
+    
+    
+    // Find all #include statements
+    size_t pos = source.find("#include");
+    while (pos != std::string::npos)
+    {
+        // Find the start and end of the filename
+        size_t start = source.find_first_of("\"", pos);
+        size_t end = source.find_first_of("\"", start + 1);
+        
+        // Get the whole filename
+        std::string includeFile = source.substr(start + 1, end - start - 1);
+        //prevent duplicate includes
+        if (std::find(includedPaths->begin(), includedPaths->end(), includeFile) != includedPaths->end())
+        {
+            std::cout << "Warning: duplicate include: " << includeFile << std::endl;
+            size_t oldpos = pos;
+            pos = source.find("#include", end);
+            source.replace(oldpos, end - oldpos + 1, "");
+            
+            
+            continue;
+        }
+
+        includedPaths->push_back(includeFile);
+        
+        // Get the include file contents
+        std::string includeSource = ReadFile(includeFile);
+        if (includeSource.empty())
+        {
+            std::cout << "Shader failed to open include file: " << includeFile << std::endl;
+        }
+        
+        
+        PreprocessShader(includeSource, includedPaths);
+        
+        // Replace the #include statement with the contents of the include file
+        source.replace(pos, end - pos + 1, includeSource);
+        
+        // Find the next #include statement
+        pos = source.find("#include", pos + includeSource.length());
+    }
 }

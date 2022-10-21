@@ -1,8 +1,18 @@
 ﻿#pragma once
+#include <memory>
+#include <set>
 #include <string>
 #include <unordered_map>
 
 #include "glm/glm.hpp"
+
+struct PairHash
+{
+    template <class T1, class T2>
+    std::size_t operator() (const std::pair<T1, T2> &pair) const {
+        return std::hash<T1>()(pair.first) ^ std::hash<T2>()(pair.second);
+    }
+};
 
 struct ShaderProgramSource
 {
@@ -19,8 +29,8 @@ private:
     std::unordered_map<std::string, int> uniformLocationCache;
     
 public:
-    Shader(const std::string& vertex, const std::string& fragment);
     ~Shader();
+
 
     void Bind() const;
     void Unbind() const;
@@ -33,9 +43,22 @@ public:
     void SetUniformMat4f(const std::string& name, const glm::mat4& value);
     
     int GetUniformLocation(const std::string& name);
+
+    static std::shared_ptr<Shader> Create(const std::string& vertexPath, const std::string& fragmentPath);
     
 private:
-
     unsigned int CreateShader(const std::string& vertexSource, const std::string& fragmentSource);
-    ShaderProgramSource CreateShaderSource(const std::string& vertexPath, const std::string& fragmentPath);
+    static ShaderProgramSource CreateShaderSource(const std::string& vertexPath, const std::string& fragmentPath);
+    static std::string ReadFile(const std::string& path);
+    static void PreprocessShader(std::string& source, std::vector<std::string>* includedPaths);
+    Shader(const std::string& vertex, const std::string& fragment);
+    
+    inline static std::vector<std::string> includePaths;
+
+    // Cache of shader programs
+    inline static std::unordered_map<std::pair<std::string, std::string>, std::shared_ptr<Shader>, PairHash> m_shaderCache;
+
+    ShaderProgramSource m_Source;
+    
 };
+

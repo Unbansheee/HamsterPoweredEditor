@@ -1,10 +1,6 @@
+#version 460 core
 
-	#version 460 core
-	
-	in vec3 FragColor;
-	uniform float CurrentTime;
-
-	out vec4 FinalColor;
+#include "Resources/Shaders/Common.glsl"
 
 	void main()
 	{

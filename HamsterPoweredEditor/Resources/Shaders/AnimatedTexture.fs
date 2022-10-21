@@ -1,23 +1,9 @@
-
 #version 460 core
-
-in vec3 FragColor;
-in vec2 v_TexCoord;
-in vec3 v_Normal;
-
-uniform float CurrentTime = 0.0;
-uniform float AlphaThreshold = 0.25;
-uniform sampler2D Texture0;
-uniform sampler2D Texture1;
-uniform bool Wireframe = false;
-uniform vec3 AmbientColour;
-uniform float AmbientStrength;
+#include "Resources/Shaders/Common.glsl"
 
 uniform vec2 UVTransform;
 uniform vec2 UVScale;
-
-
-out vec4 FinalColor;
+uniform sampler2D Texture0;
 
 vec3 hueShift(vec3 color, float hue) {
     const vec3 k = vec3(0.57735, 0.57735, 0.57735);

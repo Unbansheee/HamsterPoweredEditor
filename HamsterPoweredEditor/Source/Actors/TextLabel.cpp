@@ -17,6 +17,7 @@ TextLabel::TextLabel(const std::string& text, const std::string& fontPath, int f
 {
     VertexBufferLayout layout = {
         {ShaderDataType::Float3, "Position"},
+        {ShaderDataType::Float3, "Color"},
         {ShaderDataType::Float2, "TexCoord"},
         {ShaderDataType::Float, "TextureID"}
     };
@@ -29,9 +30,9 @@ TextLabel::TextLabel(const std::string& text, const std::string& fontPath, int f
 
 
     m_Projection = glm::ortho(0.0f, (float)App::Instance().window->GetWidth(), 0.0f, (float)App::Instance().window->GetHeight());
-    m_Shader.reset(new Shader("Resources/Shaders/Text.vs", "Resources/Shaders/Text.fs"));
+    m_Shader = (Shader::Create("Resources/Shaders/Text.vs", "Resources/Shaders/Text.fs"));
 
-    m_VBO.reset(new GLVertexBuffer(nullptr, sizeof(float) * 6 * 4 * 1000, GL_DYNAMIC_DRAW));
+    m_VBO.reset(new GLVertexBuffer(nullptr, sizeof(float) * 9 * 4 * 1000, GL_DYNAMIC_DRAW));
     m_VAO.reset(new GLVertexArray());
     m_IBO.reset(new GLIndexBuffer(indices, sizeof(indices) / sizeof(uint32_t) * 256, GL_DYNAMIC_DRAW));
     
@@ -46,7 +47,7 @@ TextLabel::TextLabel(const std::string& text, const std::string& fontPath, int f
     
     m_Initialized = true;
 
-    SetRenderSettings({GL_TRIANGLES, true, false, false, false});
+    SetRenderSettings({GL_TRIANGLES, true, true, false, true});
 
     m_VAO->Unbind();
     m_VBO->Unbind();
@@ -62,6 +63,7 @@ void TextLabel::SetText(const std::string& text)
 void TextLabel::SetCurrentColor(const glm::vec3& color)
 {
     m_Color = color;
+    UpdateBuffers();
 }
 
 void TextLabel::SetBaseColor(const glm::vec3& color)
@@ -169,8 +171,6 @@ void TextLabel::Draw()
     m_Projection = glm::ortho(0.0f, Renderer::GetViewportSize().x, 0.0f, Renderer::GetViewportSize().y);
     m_Shader->Bind();
     m_Shader->SetUniformMat4f("ProjectionMat", m_Projection);
-    m_Shader->SetUniform3f("TextColor", m_Color.x, m_Color.y, m_Color.z);
-    m_Shader->SetUniform1i("u_ScreenSpace", m_ScreenSpace);
 
     m_bounds.x = GetPosition().x;
     m_bounds.y = GetPosition().y;
@@ -186,6 +186,7 @@ void TextLabel::Draw()
         scaleTransform = glm::translate(scaleTransform, glm::vec3(-m_unscaledBounds.width / 2.f, -m_unscaledBounds.height / 2.f, 0.0f));   // Translate back to original position
         
     }
+    m_Shader->Unbind();
     
     Renderer::Submit(m_Shader, m_VAO, scaleTransform, textures, m_renderSettings);
     
@@ -265,11 +266,11 @@ void TextLabel::UpdateBuffers()
             texindex = textures.size() - 1;
         }
         
-        float vertices[4][6] = {
-            {PosX, PosY + Height, 0.0f, 0.0f, 0.0f, (float)texindex},
-            {PosX, PosY, 0.0f, 0.0f, 1.0f, (float)texindex},
-            {PosX + Width, PosY, 0.0f, 1.0f, 1.0f, (float)texindex},
-            {PosX + Width, PosY + Height, 0.0f, 1.0f, 0.0f, (float)texindex}
+        float vertices[4][9] = {
+            {PosX, PosY + Height, 0.0f, m_Color.x, m_Color.y, m_Color.z, 0.0f, 0.0f, (float)texindex},
+            {PosX, PosY, 0.0f, m_Color.x, m_Color.y, m_Color.z,  0.0f, 1.0f, (float)texindex},
+            {PosX + Width, PosY, 0.0f, m_Color.x, m_Color.y, m_Color.z, 1.0f, 1.0f, (float)texindex},
+            {PosX + Width, PosY + Height, 0.0f, m_Color.x, m_Color.y, m_Color.z, 1.0f, 0.0f, (float)texindex}
         };
 
         // offset indices
@@ -279,7 +280,7 @@ void TextLabel::UpdateBuffers()
             _indices[i] = indices[i] + index * 4;
         }
         
-        m_VBO->SetSubData(*vertices, sizeof(vertices), index * 4 * sizeof(float) * 6);
+        m_VBO->SetSubData(*vertices, sizeof(vertices), index * 4 * sizeof(float) * 9);
         m_IBO->SetSubData(_indices, sizeof(_indices) / sizeof(uint32_t), index * 6 * sizeof(uint32_t));
 
 

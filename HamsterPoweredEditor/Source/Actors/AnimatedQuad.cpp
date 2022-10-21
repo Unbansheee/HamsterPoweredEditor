@@ -85,7 +85,7 @@ AnimatedQuad::AnimatedQuad()
     va->AddVertexBuffer(vb);
     va->SetIndexBuffer(ib);
 
-    shader.reset(new Shader("Resources/Shaders/VertexColor.vs", "Resources/Shaders/AnimatedTexture.fs"));
+    shader = (Shader::Create("Resources/Shaders/VertexColor.vs", "Resources/Shaders/AnimatedTexture.fs"));
     shader->Bind();
     
     texture = (Texture::CreateTexture("Resources/Textures/beetho.png"));

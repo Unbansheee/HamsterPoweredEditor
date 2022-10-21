@@ -12,7 +12,7 @@ void Renderer::Init()
     m_Width = 1280;
     m_Height = 720;
 
-    m_WireShader.reset(new Shader("Resources/Shaders/VertexColor.vs", "Resources/Shaders/Wireframe.fs"));
+    m_WireShader= Shader::Create("Resources/Shaders/VertexColor.vs", "Resources/Shaders/Wireframe.fs");
     
     FrameBufferSpecification spec;
     spec.Width = m_Width;
@@ -93,61 +93,70 @@ void Renderer::SetMSAASamples(int samples)
 
 void Renderer::Render()
 {
-    for (auto object : m_RenderObjects)
+    std::map < std::shared_ptr<Shader>, std::vector<RenderObject>> renderMap;
+    for (auto& object : m_RenderObjects)
     {
-        auto& shader = object.shader;
-        auto& vertexArray = object.vertexArray;
-        auto& transform = object.transform;
-        auto& settings = object.settings;
-        
-               
-        vertexArray->Bind();
-        shader->Bind();
-        
-        for (int i = 0; i < object.textures.size(); i++)
-        {
-            if (object.textures[i] != nullptr)
-            {
-                object.textures[i]->Bind(i);
-                shader->SetUniform1i("u_Textures[" + std::to_string(i) + "]", i);
-            }
-        }
-        
-        shader->SetUniform1i("Wireframe", m_renderMode == RenderMode::WIREFRAME);
-        shader->SetUniform1i("Unlit", m_renderMode == RenderMode::UNLIT);
-        
-        shader->SetUniform1f("AmbientStrength", m_AmbientLightStrength);
-        shader->SetUniform3f("AmbientColour", clearColor.x, clearColor.y, clearColor.z);
-
-        glm::vec3 cameraPos = m_SceneData->CameraPosition;
-        shader->SetUniform3f("CameraPosition", cameraPos.x, cameraPos.y, cameraPos.z);
-        
-        shader->SetUniformMat4f("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
-        shader->SetUniformMat4f("u_Transform", transform);
-        shader->SetUniform1f("CurrentTime", App::Instance().GetTime());
-
-        for (int i = 0; i < m_PointLights.size() && i < 8; i++)
-        {
-            shader->SetUniform3f("PointLights[" + std::to_string(i) + "].Position", m_PointLights[i].position.x, m_PointLights[i].position.y, m_PointLights[i].position.z);
-            shader->SetUniform3f("PointLights[" + std::to_string(i) + "].Color", m_PointLights[i].color.x, m_PointLights[i].color.y, m_PointLights[i].color.z);
-            shader->SetUniform1f("PointLights[" + std::to_string(i) + "].Intensity", m_PointLights[i].intensity);
-            shader->SetUniform1f("PointLights[" + std::to_string(i) + "].Radius", m_PointLights[i].radius);
-        }
-        shader->SetUniform1i("PointLightCount", (int)m_PointLights.size());
-
-        for (int i = 0; i < m_DirectionalLights.size() && i < 8; i++)
-        {
-            shader->SetUniform3f("DirLights[" + std::to_string(i) + "].Direction", m_DirectionalLights[i].direction.x, m_DirectionalLights[i].direction.y, m_DirectionalLights[i].direction.z);
-            shader->SetUniform3f("DirLights[" + std::to_string(i) + "].Color", m_DirectionalLights[i].color.x, m_DirectionalLights[i].color.y, m_DirectionalLights[i].color.z);
-            shader->SetUniform1f("DirLights[" + std::to_string(i) + "].Intensity", m_DirectionalLights[i].intensity);
-        }
-        shader->SetUniform1i("DirLightCount", (int)m_DirectionalLights.size());
-        
-            
-        DrawIndexed(vertexArray, settings);
-        vertexArray->Unbind();
-        drawCalls++;
+        renderMap[object.shader].push_back(object);
     }
+
+    for (auto& [shader, objects] : renderMap)
+    {
+        shader->Bind();
+
+        for (auto object : objects)
+        {
+            auto& vertexArray = object.vertexArray;
+            auto& transform = object.transform;
+            auto& settings = object.settings;
+            
+                   
+            vertexArray->Bind();
+            for (int i = 0; i < object.textures.size(); i++)
+            {
+                if (object.textures[i] != nullptr)
+                {
+                    object.textures[i]->Bind(i);
+                    shader->SetUniform1i("u_Textures[" + std::to_string(i) + "]", i);
+                }
+            }
+            
+            shader->SetUniform1i("Wireframe", m_renderMode == RenderMode::WIREFRAME);
+            shader->SetUniform1i("Unlit", m_renderMode == RenderMode::UNLIT);
+            
+            shader->SetUniform1f("AmbientStrength", m_AmbientLightStrength);
+            shader->SetUniform3f("AmbientColour", clearColor.x, clearColor.y, clearColor.z);
+
+            glm::vec3 cameraPos = m_SceneData->CameraPosition;
+            shader->SetUniform3f("CameraPosition", cameraPos.x, cameraPos.y, cameraPos.z);
+            
+            shader->SetUniformMat4f("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
+            shader->SetUniformMat4f("u_Transform", transform);
+            shader->SetUniform1f("CurrentTime", App::Instance().GetTime());
+
+            for (int i = 0; i < m_PointLights.size() && i < 8; i++)
+            {
+                shader->SetUniform3f("PointLights[" + std::to_string(i) + "].Position", m_PointLights[i].position.x, m_PointLights[i].position.y, m_PointLights[i].position.z);
+                shader->SetUniform3f("PointLights[" + std::to_string(i) + "].Color", m_PointLights[i].color.x, m_PointLights[i].color.y, m_PointLights[i].color.z);
+                shader->SetUniform1f("PointLights[" + std::to_string(i) + "].Intensity", m_PointLights[i].intensity);
+                shader->SetUniform1f("PointLights[" + std::to_string(i) + "].Radius", m_PointLights[i].radius);
+            }
+            shader->SetUniform1i("PointLightCount", (int)m_PointLights.size());
+
+            for (int i = 0; i < m_DirectionalLights.size() && i < 8; i++)
+            {
+                shader->SetUniform3f("DirLights[" + std::to_string(i) + "].Direction", m_DirectionalLights[i].direction.x, m_DirectionalLights[i].direction.y, m_DirectionalLights[i].direction.z);
+                shader->SetUniform3f("DirLights[" + std::to_string(i) + "].Color", m_DirectionalLights[i].color.x, m_DirectionalLights[i].color.y, m_DirectionalLights[i].color.z);
+                shader->SetUniform1f("DirLights[" + std::to_string(i) + "].Intensity", m_DirectionalLights[i].intensity);
+            }
+            shader->SetUniform1i("DirLightCount", (int)m_DirectionalLights.size());
+            
+                
+            DrawIndexed(vertexArray, settings);
+            vertexArray->Unbind();
+            drawCalls++;
+        }
+    }
+    
     
     m_FrameBuffer->BlitToScreen();
 }

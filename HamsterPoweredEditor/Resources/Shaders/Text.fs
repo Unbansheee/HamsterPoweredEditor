@@ -1,17 +1,17 @@
 #version 460 core
 
-in vec2 FragTexCoords;
-in float FragTextureID;
+#include "Resources/Shaders/Common.glsl"
 
-uniform sampler2D u_Textures[32];
-uniform vec3 TextColor;
-uniform bool Wireframe = false;
 
-out vec4 FinalColor;
+in float v_TextureID;
+
+
+
+
 
 void main()
 {
-    float Alpha = texture(u_Textures[int(FragTextureID)], FragTexCoords).r;
+    float Alpha = texture(u_Textures[int(v_TextureID)], v_TexCoord).r;
     //FinalColor = vec4(1, 1, 1, 1);
     if (Wireframe)
     {
@@ -19,8 +19,18 @@ void main()
     }
     else
     {
-        FinalColor = vec4(TextColor, Alpha);
+
+        if (Alpha < 0.5)
+        {
+            discard;
+        }
+        else
+        {
+            FinalColor = vec4(FragColor, Alpha);
+        }
+        
+
+        
     }
     
-    //FinalColor = vec4(TextColor, 1);
 }

@@ -28,7 +28,7 @@ Quad::Quad()
     va->AddVertexBuffer(vb);
     va->SetIndexBuffer(ib);
     
-    shader.reset(new Shader("Resources/Shaders/VertexColor.vs", "Resources/Shaders/TexturedShader.fs"));
+    shader = Shader::Create("Resources/Shaders/VertexColor.vs", "Resources/Shaders/TexturedShader.fs");
     shader->Bind();
     
 
