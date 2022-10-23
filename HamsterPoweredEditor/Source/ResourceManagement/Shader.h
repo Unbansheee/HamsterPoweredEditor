@@ -45,6 +45,9 @@ public:
     int GetUniformLocation(const std::string& name);
 
     static std::shared_ptr<Shader> Create(const std::string& vertexPath, const std::string& fragmentPath);
+    static void ReloadAllShaders();
+    
+    void ReloadShader();
     
 private:
     unsigned int CreateShader(const std::string& vertexSource, const std::string& fragmentSource);

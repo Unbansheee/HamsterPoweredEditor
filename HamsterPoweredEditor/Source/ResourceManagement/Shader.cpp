@@ -91,6 +91,24 @@ std::shared_ptr<Shader> Shader::Create(const std::string& vertexPath, const std:
     return m_shaderCache[key];
 }
 
+void Shader::ReloadAllShaders()
+{
+    std::cout << "Reloading All Shaders" << std::endl;
+    for (auto& shader : m_shaderCache)
+    {
+        shader.second->ReloadShader();
+    }
+    std::cout << "Shader Reload Complete" << std::endl;
+}
+
+void Shader::ReloadShader()
+{
+    glDeleteProgram(rendererID);
+    m_Source = CreateShaderSource(vertexPath, fragmentPath);
+    rendererID = CreateShader(m_Source.VertexSource, m_Source.FragmentSource);
+    std::cout << "Shader Reloaded" << std::endl;
+}
+
 
 unsigned int Shader::CreateShader(const std::string& vertexSource, const std::string& fragmentSource)
 {

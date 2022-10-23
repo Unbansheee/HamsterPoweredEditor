@@ -95,6 +95,11 @@ void App::Update()
 	{
 		m_currentScene->Update(timestep);
 
+		if (Input::WasKeyPressed(Keyboard::R))
+		{
+			Shader::ReloadAllShaders();
+		}
+		
 		//RENDER SCENE
 		Renderer::BeginScene(*m_currentScene->m_editorCamera->GetCamera());
 		m_currentScene->Render();

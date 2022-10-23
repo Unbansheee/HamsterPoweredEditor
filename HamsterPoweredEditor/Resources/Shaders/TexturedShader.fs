@@ -9,6 +9,7 @@ void main()
     vec4 texColor = texture(u_Textures[0], v_TexCoord);
 
     vec4 mixed = texColor;
+    
     if (mixed.a <= AlphaThreshold && !Wireframe) {
         discard;
     }
@@ -42,14 +43,13 @@ void main()
             PointLight += CalcPointLight(PointLights[i], normal, v_Position, viewDir, PointLights[i].Radius);
         }
         
-
-
+        
         vec3 result = (ambient + DirectionalLight + PointLight) * mixed.rgb;
 
-        
+
         FinalColor = vec4(result, mixed.a);
     }
-
+    
 }
 
 
