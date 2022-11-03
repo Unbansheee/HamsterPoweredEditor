@@ -252,3 +252,7 @@ void CameraController::Deserialize(nlohmann::json& j)
     Resize(Renderer::GetViewportSize().x, Renderer::GetViewportSize().y);
 }
 
+void CameraController::FixedUpdate(double ts)
+{
+}
+

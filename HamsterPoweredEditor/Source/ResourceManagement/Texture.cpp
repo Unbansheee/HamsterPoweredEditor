@@ -56,6 +56,17 @@ Texture* Texture::CreateTexture(unsigned char* data, int _width, int _height, in
     return texture;
 }
 
+Texture* Texture::GetWhiteTexture()
+{
+    if (m_whiteTexture == nullptr)
+    {
+        unsigned char data[4] = { 255, 255, 255, 255 };
+        m_whiteTexture = CreateTexture(data, 1, 1, 4);
+    }
+    return m_whiteTexture;
+    
+}
+
 void Texture::DeleteTextureID(uint32_t id)
 {
     glDeleteTextures(1, &id);

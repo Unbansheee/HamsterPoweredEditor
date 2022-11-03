@@ -45,3 +45,7 @@ void Spinner::OnInspectorGUI()
 Spinner::~Spinner()
 {
 }
+
+void Spinner::FixedUpdate(double ts)
+{
+}

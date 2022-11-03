@@ -1,0 +1,117 @@
+{
+    "Actors": [
+        {
+            "ActorType": "ClothActor",
+            "CollisionEnabled": true,
+            "CollisionMeshOrigin": [
+                10.0,
+                3.0,
+                -5.0
+            ],
+            "CollisionMeshScale": 2.0,
+            "CollisionMeshSpeed": 0.5,
+            "CollisionMeshTravelDistance": [
+                0.0,
+                0.0,
+                10.0
+            ],
+            "Damping": 0.10000000149011612,
+            "Gravity": [
+                0.0,
+                -9.8100004196167,
+                0.0
+            ],
+            "Height": 20,
+            "ID": "54cd400e-eddf-4fec-a693-2a77f3829097",
+            "Iterations": 1,
+            "PhysicsTime": 1000.0,
+            "RestLength": 1.0,
+            "Stiffness": 25.0,
+            "Width": 20,
+            "Wind": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "children": null,
+            "name": "Cloth",
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "ActorType": "DirLight",
+            "Color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "ID": "e18f14ad-bad9-4c5a-9beb-7c9fe188e590",
+            "Intensity": 1.0,
+            "children": null,
+            "name": "Light",
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                -54.0,
+                -197.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    ],
+    "AmbientIntensity": 2.200000047683716,
+    "EditorCamera": {
+        "ActorType": "CameraController",
+        "CameraType": 1,
+        "ID": "44066282-a9e2-4e80-a2f2-284b8ae45ab4",
+        "OrthoZoom": 6.215575218200684,
+        "PerspMoveSpeed": 8.201739311218262,
+        "Pitch": -3.0,
+        "Yaw": 105.0,
+        "Zoom": 75.0,
+        "children": null,
+        "name": "Editor Camera",
+        "position": [
+            8.785321235656738,
+            18.254087448120117,
+            60.88045883178711
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "scale": [
+            1.0,
+            1.0,
+            1.0
+        ]
+    },
+    "RenderMode": 2,
+    "SceneColour": [
+        0.10000000149011612,
+        0.10000000149011612,
+        0.10000000149011612,
+        1.0
+    ]
+}

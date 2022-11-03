@@ -280,8 +280,8 @@ void TextLabel::UpdateBuffers()
             _indices[i] = indices[i] + index * 4;
         }
         
-        m_VBO->SetSubData(*vertices, sizeof(vertices), index * 4 * sizeof(float) * 9);
-        m_IBO->SetSubData(_indices, sizeof(_indices) / sizeof(uint32_t), index * 6 * sizeof(uint32_t));
+        m_VBO->UpdateData(*vertices, sizeof(vertices), index * 4 * sizeof(float) * 9);
+        m_IBO->UpdateData(_indices, sizeof(_indices) / sizeof(uint32_t), index * 6 * sizeof(uint32_t));
 
 
         CharacterOrigin.x += (FontCharacter.Advance >> 6);
@@ -342,4 +342,8 @@ void TextLabel::Deserialize(nlohmann::json& j)
     }
 
     
+}
+
+void TextLabel::FixedUpdate(double ts)
+{
 }

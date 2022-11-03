@@ -61,8 +61,12 @@ void Viewport::Update(Timestep ts)
 	if (mouseCaptured)
 	{
 		if (ImGui::IsMouseClicked(1)) return;
-		cam->HandleMouseMovement(-ImGui::GetMouseDragDelta(1).x, ImGui::GetMouseDragDelta(1).y);
+
+		cam->HandleMouseMovement(-Input::GetMouseDelta().x, Input::GetMouseDelta().y);
 		App::Instance().window->SetCursorMode(GLFW_CURSOR_DISABLED);
+
+		
+		
 		
 		if (cam->GetCameraType() == CameraController::CameraType::ORTHO) cam->SetZoom(cam->GetZoom() - (Input::GetMouseWheelDelta()/4.f) * cam->GetZoom()/2.f);
 		else cam->SetPerspSpeed(cam->GetPerspSpeed() + (Input::GetMouseWheelDelta()/4.f) * cam->GetPerspSpeed()/2.f);

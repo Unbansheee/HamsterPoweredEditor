@@ -178,9 +178,11 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClCompile Include="include\imgui\imnodes.cpp" />
     <ClCompile Include="Source\Actors\Actor.cpp" />
     <ClCompile Include="Source\Actors\AnimatedQuad.cpp" />
+    <ClCompile Include="Source\Actors\ClothActor.cpp" />
     <ClCompile Include="Source\Actors\DirectionalLight.cpp" />
+    <ClCompile Include="Source\Actors\DynamicMeshActor.cpp" />
     <ClCompile Include="Source\Actors\Hexagon.cpp" />
-    <ClCompile Include="Source\Actors\Mesh.cpp" />
+    <ClCompile Include="Source\Actors\MeshActor.cpp" />
     <ClCompile Include="Source\Actors\Object.cpp" />
     <ClCompile Include="Source\Actors\CameraController.cpp" />
     <ClCompile Include="Source\Actors\PointLight.cpp" />
@@ -195,6 +197,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClCompile Include="Source\Core\Timer.cpp" />
     <ClCompile Include="Source\Core\UUID.cpp" />
     <ClCompile Include="Source\Core\Window.cpp" />
+    <ClCompile Include="Source\Rendering\DynamicMesh.cpp" />
     <ClCompile Include="Source\Rendering\glad.c" />
     <ClCompile Include="Source\Rendering\GLFrameBuffer.cpp" />
     <ClCompile Include="Source\Rendering\GLBuffers.cpp" />
@@ -203,6 +206,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClCompile Include="Source\Rendering\PerspectiveCamera.cpp" />
     <ClCompile Include="Source\Rendering\GLRenderBuffer.cpp" />
     <ClCompile Include="Source\Rendering\Renderer.cpp" />
+    <ClCompile Include="Source\Rendering\StaticMesh.cpp" />
     <ClCompile Include="Source\Rendering\VertexBufferLayout.cpp" />
     <ClCompile Include="Source\Rendering\View.cpp" />
     <ClCompile Include="Source\ResourceManagement\Shader.cpp" />
@@ -235,9 +239,11 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClInclude Include="include\stb_image\stb_image.h" />
     <ClInclude Include="Source\Actors\Actor.h" />
     <ClInclude Include="Source\Actors\AnimatedQuad.h" />
+    <ClInclude Include="Source\Actors\ClothActor.h" />
     <ClInclude Include="Source\Actors\DirectionalLight.h" />
+    <ClInclude Include="Source\Actors\DynamicMeshActor.h" />
     <ClInclude Include="Source\Actors\Hexagon.h" />
-    <ClInclude Include="Source\Actors\Mesh.h" />
+    <ClInclude Include="Source\Actors\MeshActor.h" />
     <ClInclude Include="Source\Actors\Object.h" />
     <ClInclude Include="Source\Actors\CameraController.h" />
     <ClInclude Include="Source\Actors\PointLight.h" />
@@ -252,6 +258,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClInclude Include="Source\Core\Scene.h" />
     <ClInclude Include="Source\Core\UUID.h" />
     <ClInclude Include="Source\Core\Window.h" />
+    <ClInclude Include="Source\Rendering\DynamicMesh.h" />
     <ClInclude Include="Source\Rendering\GLFrameBuffer.h" />
     <ClInclude Include="Source\Rendering\GLBuffers.h" />
     <ClInclude Include="Source\Rendering\GLVertexArray.h" />
@@ -260,6 +267,8 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClInclude Include="Source\Rendering\Lights.h" />
     <ClInclude Include="Source\Rendering\GLRenderBuffer.h" />
     <ClInclude Include="Source\Rendering\Renderer.h" />
+    <ClInclude Include="Source\Rendering\StaticMesh.h" />
+    <ClInclude Include="Source\Rendering\Vertex.h" />
     <ClInclude Include="Source\Rendering\VertexBufferLayout.h" />
     <ClInclude Include="Source\Rendering\View.h" />
     <ClInclude Include="Source\ResourceManagement\Shader.h" />

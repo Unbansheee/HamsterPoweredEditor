@@ -5,11 +5,11 @@
 
 class Texture;
 
-class Mesh : public Actor
+class MeshActor : public Actor
 {
 public:
-    Mesh();
-    ~Mesh();
+    MeshActor();
+    ~MeshActor();
 
     void OnInspectorGUI() override;
     

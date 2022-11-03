@@ -56,6 +56,9 @@ private:
     CameraController* m_editorCamera;
     glm::vec4 m_sceneColour = { 0.1f, 0.1f, 0.1f, 1.0f };
     std::queue<std::pair<HP::UUID, HP::UUID>> m_parentChildQueue;
+    double m_fixedUpdateAccumulator = 0.0;
+    double m_fixedUpdateInterval = 1.0 / 60.0;
+    
     
     std::shared_ptr<Quad> quad1;
     std::shared_ptr<Quad> quad2;

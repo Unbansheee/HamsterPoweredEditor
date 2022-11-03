@@ -39,6 +39,8 @@ public:
     ~TextLabel() override;
     nlohmann::json Serialize() override;
     void Deserialize(nlohmann::json& j) override;
+    void FixedUpdate(double ts) override;
+
 protected:
     
     

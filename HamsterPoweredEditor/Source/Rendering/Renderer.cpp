@@ -1,5 +1,9 @@
 #include "Renderer.h"
 
+//#include <glm/ext/matrix_projection.hpp>
+
+#include <glm/ext/matrix_projection.hpp>
+
 #include "Core/App.h"
 #include "Core/Timer.h"
 #include "ResourceManagement/Texture.h"
@@ -30,6 +34,8 @@ void Renderer::BeginScene(View& camera)
     m_FrameBuffer->BindMSAABuffer();
     m_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
     m_SceneData->CameraPosition = camera.GetPosition();
+    m_ProjectionMatrix = camera.GetProjectionMatrix();
+    m_ViewMatrix = camera.GetViewMatrix();
     drawCalls = 0;
 }
 
@@ -118,6 +124,12 @@ void Renderer::Render()
                     object.textures[i]->Bind(i);
                     shader->SetUniform1i("u_Textures[" + std::to_string(i) + "]", i);
                 }
+                else
+                {
+                    Texture* tex = Texture::GetWhiteTexture();
+                    tex->Bind(i);
+                    shader->SetUniform1i("u_Textures[" + std::to_string(i) + "]", i);
+                }
             }
             
             shader->SetUniform1i("Wireframe", m_renderMode == RenderMode::WIREFRAME);
@@ -168,6 +180,14 @@ void Renderer::DeferredUpdate()
         m_DeferredTasks.front()();
         m_DeferredTasks.pop();
     }
+}
+
+glm::vec3 Renderer::ScreenToWorldPos(glm::vec2 screenPos)
+{
+    glm::vec4 viewport = glm::vec4(0.0f, 0.0f, m_Width, m_Height);
+    glm::vec3 worldPos = glm::unProject(glm::vec3(screenPos.x, m_Height - screenPos.y, 0.0f), m_ViewMatrix, m_ProjectionMatrix, viewport);
+    return worldPos;
+    
 }
 
 void Renderer::Clear()

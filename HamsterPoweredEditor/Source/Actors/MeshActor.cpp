@@ -1,4 +1,4 @@
-﻿#include "Mesh.h"
+﻿#include "MeshActor.h"
 #include "ResourceManagement/Texture.h"
 #include <iostream>
 
@@ -8,7 +8,7 @@
 #include "UI/HPImGui.h"
 #include <assimp/postprocess.h>
 
-Mesh::Mesh()
+MeshActor::MeshActor()
 {
     textures.resize(32, nullptr);
     texturepaths.resize(32, "");
@@ -44,13 +44,13 @@ Mesh::Mesh()
     
 }
 
-Mesh::~Mesh()
+MeshActor::~MeshActor()
 {
     
     
 }
 
-void Mesh::OnInspectorGUI()
+void MeshActor::OnInspectorGUI()
 {
     Actor::OnInspectorGUI();
 
@@ -92,7 +92,7 @@ void Mesh::OnInspectorGUI()
     
 }
 
-void Mesh::Draw()
+void MeshActor::Draw()
 {
     
     Actor::Draw();
@@ -101,20 +101,20 @@ void Mesh::Draw()
     
 }
 
-void Mesh::Update(Timestep ts)
+void MeshActor::Update(Timestep ts)
 {
     Actor::Update(ts);
 }
 
-void Mesh::Begin()
+void MeshActor::Begin()
 {
 }
 
-void Mesh::OnDestroy()
+void MeshActor::OnDestroy()
 {
 }
 
-Texture* Mesh::SetTexture(const std::string& path, int slot)
+Texture* MeshActor::SetTexture(const std::string& path, int slot)
 {
     //check if slot is valid
     if (slot < 0 || slot > 31)
@@ -129,7 +129,7 @@ Texture* Mesh::SetTexture(const std::string& path, int slot)
     return textures[slot];
 }
 
-void Mesh::SetMesh(float* _vertices, uint32_t _size, uint32_t* _indices, uint32_t _isize)
+void MeshActor::SetMesh(float* _vertices, uint32_t _size, uint32_t* _indices, uint32_t _isize)
 {
     vertices.clear();
     indices.clear();
@@ -168,7 +168,7 @@ void Mesh::SetMesh(float* _vertices, uint32_t _size, uint32_t* _indices, uint32_
     UpdateTransform();
 }
 
-void Mesh::CopyNodesWithMeshes(aiNode* node, aiMatrix4x4 accTransform)
+void MeshActor::CopyNodesWithMeshes(aiNode* node, aiMatrix4x4 accTransform)
 {
     aiMatrix4x4 transform;
     if (node->mNumMeshes > 0)
@@ -222,7 +222,7 @@ void Mesh::CopyNodesWithMeshes(aiNode* node, aiMatrix4x4 accTransform)
     }
 }
 
-void Mesh::LoadMesh(const std::string& path)
+void MeshActor::LoadMesh(const std::string& path)
 {
     
     Assimp::Importer importer;
@@ -274,7 +274,7 @@ void Mesh::LoadMesh(const std::string& path)
     
 }
 
-void Mesh::Deserialize(nlohmann::json& j)
+void MeshActor::Deserialize(nlohmann::json& j)
 {
     Actor::Deserialize(j);
     meshpath = j["MeshPath"];
@@ -289,7 +289,7 @@ void Mesh::Deserialize(nlohmann::json& j)
     
 }
 
-nlohmann::json Mesh::Serialize()
+nlohmann::json MeshActor::Serialize()
 {
     auto j = Actor::Serialize();
     j["MeshPath"] = meshpath;

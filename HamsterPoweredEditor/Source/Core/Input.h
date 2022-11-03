@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <array>
 #include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 
 namespace Keyboard
 {
@@ -176,6 +177,7 @@ public:
     static glm::vec2 GetLastMousePosition();
     static glm::vec2 GetMousePositionAbsolute(); // Get current mouse position relative to the screen
     static glm::vec2 GetMouseDelta();
+    static glm::vec3 GetMousePositionWorld(); // Get current mouse position in world space
 
     // Returns the distance of the mouse wheel since the last frame. -1 to 1 space
     static float GetMouseWheelDelta();

@@ -40,11 +40,14 @@ public:
     //This is not managed by the cache and the user is responsible for deleting the texture.
     static Texture* CreateTexture(unsigned char* data, int _width, int _height, int channels, FilteringMode mode = LINEAR);
 
+    static Texture* GetWhiteTexture();
+
     static void DeleteTextureID(uint32_t id);
     static void DeleteTexture(Texture* texture);
 private:
     FilteringMode filteringMode = LINEAR;
     inline static std::unordered_map<std::string, Texture*> m_textureCache;
+    inline static Texture* m_whiteTexture = nullptr;
     Texture(const std::string& path, FilteringMode mode = LINEAR);
     Texture(unsigned char* data, int width, int height, int bpp = 4, FilteringMode mode = LINEAR);
     ~Texture();

@@ -75,7 +75,7 @@ void App::Begin()
 	EditorLayer->Begin();
 	
 	//LoadScene<Scene>();
-	LoadScene("Resources/Scenes/Assignment.json");
+	LoadScene("Resources/Scenes/Cloth.json");
 }
 
 

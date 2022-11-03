@@ -3,6 +3,7 @@
 #include <array>
 
 #include "Window.h"
+#include "Rendering/Renderer.h"
 
 bool Input::IsKeyDown(Keyboard::Key key)
 {
@@ -52,6 +53,11 @@ glm::vec2 Input::GetMousePositionAbsolute()
 glm::vec2 Input::GetMouseDelta()
 {
     return m_MouseDelta;
+}
+
+glm::vec3 Input::GetMousePositionWorld()
+{
+    return Renderer::ScreenToWorldPos(GetMousePosition());
 }
 
 float Input::GetMouseWheelDelta()

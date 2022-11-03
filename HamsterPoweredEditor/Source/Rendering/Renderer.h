@@ -69,6 +69,9 @@ public:
     static int GetMSAASamples() {return m_MSAASamples;}
     static void Render();
     static void DeferredUpdate(); // Called after the scene is rendered and the texture is shown on the screen
+    static void GetProjectionMatrix(glm::mat4& matrix);
+    static void GetViewMatrix(glm::mat4& matrix);
+    static glm::vec3 ScreenToWorldPos(glm::vec2 screenPos);
 private:
     static void Clear();
     
@@ -105,6 +108,8 @@ private:
     };
 
     static SceneData* m_SceneData;
+    inline static glm::mat4 m_ProjectionMatrix;
+    inline static glm::mat4 m_ViewMatrix;
 
 
 };

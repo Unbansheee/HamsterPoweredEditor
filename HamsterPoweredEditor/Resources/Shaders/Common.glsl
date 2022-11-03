@@ -4,6 +4,7 @@ in vec2 v_TexCoord;
 in vec3 v_Normal;
 in vec3 v_Position;
 in vec3 v_TransformedNormal;
+in int v_TexIndex;
 
 uniform float CurrentTime;
 uniform float AlphaThreshold = 0.25f;

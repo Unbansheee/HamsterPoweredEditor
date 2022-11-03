@@ -9,7 +9,8 @@ class Object
 public:
     virtual ~Object() = default;
     virtual void Begin() = 0;
-    virtual void Update(Timestep ts) = 0;
+    virtual void Update(Timestep ts) {};
+    virtual void FixedUpdate(double ts) {};
     virtual void OnDestroy() = 0;
     
     virtual nlohmann::json Serialize() = 0;

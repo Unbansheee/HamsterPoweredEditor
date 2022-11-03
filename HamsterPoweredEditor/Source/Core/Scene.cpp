@@ -10,9 +10,11 @@
 #include "Actors/Actor.h"
 #include "Actors/Quad.h"
 #include "Actors/TextLabel.h"
-#include "Actors/Mesh.h"
+#include "Actors/MeshActor.h"
 #include "json.hpp"
+#include "Actors/ClothActor.h"
 #include "Actors/DirectionalLight.h"
+#include "Actors/DynamicMeshActor.h"
 #include "Actors/PointLight.h"
 #include "Actors/Spinner.h"
 
@@ -23,6 +25,8 @@ Scene::Scene()
     m_editorCamera->SetPosition(glm::vec3(0.0f, 0.0f, 3.0f));
     m_editorCamera->SetName("Editor Camera");
     m_editorCamera->SetZoom(2.5f);
+
+
 
     Renderer::SetClearColor(m_sceneColour);
 }
@@ -40,6 +44,16 @@ Scene::~Scene()
 
 void Scene::Update(Timestep ts)
 {
+    m_fixedUpdateAccumulator += ts.GetSeconds();
+    while (m_fixedUpdateAccumulator >= m_fixedUpdateInterval)
+    {
+        m_fixedUpdateAccumulator -= m_fixedUpdateInterval;
+        for (auto& actor : m_actors)
+        {
+            actor->FixedUpdate(m_fixedUpdateInterval);
+        }
+    }
+    
     m_editorCamera->Update(ts);
     for (Actor* actor : m_actors)
     {
@@ -147,9 +161,9 @@ void Scene::DeserializeScene(const std::string& filepath)
         {
             actor = SpawnActor<Hexagon>();
         }
-        else if (actorType == "Mesh")
+        else if (actorType == "Mesh" || actorType == "MeshActor")
         {
-            actor = SpawnActor<Mesh>();
+            actor = SpawnActor<MeshActor>();
         }
         else if (actorType == "TextLabel")
         {
@@ -166,6 +180,14 @@ void Scene::DeserializeScene(const std::string& filepath)
          else if (actorType == "Spinner")
          {
              actor = SpawnActor<Spinner>();
+         }
+         else if (actorType == "ClothActor")
+         {
+             actor = SpawnActor<ClothActor>();
+         }
+         else if (actorType == "DynamicMeshActor")
+         {
+             actor = SpawnActor<DynamicMeshActor>();
          }
 
         else

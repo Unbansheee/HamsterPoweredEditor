@@ -6,8 +6,10 @@
 #include "ImGuiLayer.h"
 #include "imgui_internal.h"
 #include "Actors/AnimatedQuad.h"
+#include "Actors/ClothActor.h"
 #include "Actors/DirectionalLight.h"
-#include "Actors/Mesh.h"
+#include "Actors/DynamicMeshActor.h"
+#include "Actors/MeshActor.h"
 #include "Actors/PointLight.h"
 #include "Actors/Spinner.h"
 #include "Actors/TextLabel.h"
@@ -153,14 +155,29 @@ void HierarchyPanel::Update(Timestep ts)
         {
             m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<Actor>();
         }
-        if (ImGui::MenuItem("Mesh"))
-        {
-            m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<Mesh>();
-        }
 
+        
         if (ImGui::MenuItem("Text Label"))
         {
             m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<TextLabel>();
+        }
+
+        if (ImGui::BeginMenu("Mesh"))
+        {
+            if (ImGui::MenuItem("Static Mesh"))
+            {
+                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<MeshActor>();
+            }
+            if (ImGui::MenuItem("Dynamic Mesh"))
+            {
+                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<DynamicMeshActor>();
+            }
+            if (ImGui::MenuItem("Cloth Mesh"))
+            {
+                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<ClothActor>();
+            }
+
+            ImGui::EndMenu();
         }
 
         if (ImGui::BeginMenu("Utility"))
