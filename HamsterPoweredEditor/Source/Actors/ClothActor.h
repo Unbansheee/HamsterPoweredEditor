@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include "Actor.h"
+#include "DynamicMeshActor.h"
+#include "Core/Raycast.h"
 #include "Rendering/DynamicMesh.h"
 
 class MeshActor;
@@ -27,7 +29,7 @@ struct ClothConstraint
     
 };
 
-class ClothActor : public Actor
+class ClothActor : public DynamicMeshActor
 {
 public:
     void FixedUpdate(double ts) override;
@@ -60,7 +62,7 @@ protected:
     bool collisionEnabled = true;
     
     
-    DynamicMesh m_mesh;
+    //DynamicMesh m_mesh;
     StaticMesh m_collisionMesh;
     glm::vec3 m_collisionMeshCurrentPosition = { 0, 0, 0 };
     float m_collisionMeshScale = 1.f;
@@ -75,10 +77,10 @@ protected:
     std::vector<ClothConstraint> m_constraints;
     std::vector<Vertex> m_verts;
     std::vector<uint32_t> m_indices;
-    
-    
+    bool m_mouseDown;
+    Hit m_mouseHit;
+    ClothParticle* m_mouseDownVert;
 
-    
 public:
     ~ClothActor() override;
     

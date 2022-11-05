@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "MeshActor.h"
 #include "Core/Input.h"
 #include "Core/Scene.h"
 
@@ -12,18 +13,83 @@ glm::vec3 lerp(glm::vec3 a, glm::vec3 b, float t)
 
 void ClothActor::FixedUpdate(double ts)
 {
+
+    
     VerletIntegration(ts);
+
+
     
     SatisfyConstraints(iterations, ts);
+
+
     
+
 }
 
 void ClothActor::Update(Timestep ts)
 {
 
     m_collisionMeshCurrentPosition = lerp(m_collisionMeshOrigin + m_collisionTravelDistance/2.f, m_collisionMeshOrigin - m_collisionTravelDistance/2.f, (float)sin(ts.GetTimeAsSeconds() * m_collisionMeshSpeed));
-    if (collisionEnabled) ResolveCollisions(ts.GetSeconds());
+    //if (collisionEnabled) ResolveCollisions(ts.GetSeconds());
+
+    
+    auto hit = Input::RaycastMouse();
+    if (hit.Actor == this)
+    {
+        if (Input::WasMouseButtonPressed(Mouse::Left))
+        {
+            m_mouseDown = true;
+            m_mouseHit = hit;
+
+            // Find closest point
+            float minDist = 1000000.f;
+            for (auto& p : m_particles)
+            {
+                float dist = glm::distance(p.Position, m_mouseHit.Location);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    m_mouseDownVert = &p;
+                }
+            }
+        }
+    }
+
+    if (Input::WasMouseButtonReleased(Mouse::Left))
+    {
+        m_mouseDown = false;
+        if (m_mouseDownVert)
+        {
+            m_mouseDownVert->bFixed = false;
+            m_mouseDownVert = nullptr;
+        }
+    }
+    
+    if (m_mouseDown)
+    {
+        if (m_mouseDownVert)
+        {
+            // translate vert perpendicular to the hit normal
+            glm::vec3 v0 = Renderer::ScreenToWorldPos(Input::GetMousePositionInViewport(), 0.0f);
+            glm::vec3 v1 = Renderer::ScreenToWorldPos(Input::GetMousePositionInViewport(), 1.0f);
+
+            glm::vec3 dir  = (v1 - v0); 
+            dir = glm::normalize(dir);
+
+            
+            
+            glm::vec3 mouseposprojected = v0 + (dir * m_mouseHit.Distance);
+            m_mouseDownVert->bFixed = true;
+            m_mouseDownVert->Position = mouseposprojected;
+            
+        }
+    }
+
+    
     UpdateMesh();
+
+    
+    
     
 }
 

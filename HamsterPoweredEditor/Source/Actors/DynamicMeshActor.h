@@ -20,5 +20,5 @@ public:
     ~DynamicMeshActor() override;
 
 
-    DynamicMesh mesh;
+    DynamicMesh m_mesh;
 };

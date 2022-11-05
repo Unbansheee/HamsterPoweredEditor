@@ -2,6 +2,7 @@
 
 #include <array>
 
+#include "Raycast.h"
 #include "Window.h"
 #include "Rendering/Renderer.h"
 
@@ -57,7 +58,36 @@ glm::vec2 Input::GetMouseDelta()
 
 glm::vec3 Input::GetMousePositionWorld()
 {
-    return Renderer::ScreenToWorldPos(GetMousePosition());
+    return RaycastMouse().Location;
+}
+
+glm::vec2 Input::GetMousePositionInViewport()
+{
+    glm::vec2 MousePosAbsolute = Input::GetMousePositionAbsolute();
+    glm::vec2 viewportLocationAbsolute = Renderer::GetViewportPosition();
+    glm::vec2 mousePosInViewport = MousePosAbsolute - viewportLocationAbsolute;
+
+    return mousePosInViewport;
+}
+
+Hit Input::RaycastMouse()
+{
+    glm::vec2 MousePosAbsolute = Input::GetMousePositionAbsolute();
+    glm::vec2 viewportLocationAbsolute = Renderer::GetViewportPosition();
+    glm::vec2 mousePosInViewport = MousePosAbsolute - viewportLocationAbsolute;
+
+    glm::vec3 v0 = Renderer::ScreenToWorldPos(mousePosInViewport, 0.0f);
+    glm::vec3 v1 = Renderer::ScreenToWorldPos(mousePosInViewport, 1.0f);
+
+    glm::vec3 dir  = (v1 - v0); 
+    dir = glm::normalize(dir);
+    
+
+    Hit hit;
+    hit.Location = v0;
+    Raycast(v0, dir, hit, 10000);
+
+    return hit;
 }
 
 float Input::GetMouseWheelDelta()

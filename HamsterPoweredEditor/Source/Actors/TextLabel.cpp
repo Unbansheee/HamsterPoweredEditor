@@ -104,6 +104,7 @@ void TextLabel::OnDestroy()
 void TextLabel::Update(Timestep ts)
 {
     Actor::Update(ts);
+
     
     glm::vec2 MousePosAbsolute = Input::GetMousePositionAbsolute();
     glm::vec2 viewportSize = Renderer::GetViewportSize();
@@ -111,7 +112,9 @@ void TextLabel::Update(Timestep ts)
     
     glm::vec2 mousePosInViewport = MousePosAbsolute - viewportLocationAbsolute;
     mousePosInViewport.y = viewportSize.y - mousePosInViewport.y;
-
+    
+    
+    
     
     
     //Check if mouse intersects bounds

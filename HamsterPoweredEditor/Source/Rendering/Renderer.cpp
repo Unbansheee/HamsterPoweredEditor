@@ -4,7 +4,9 @@
 
 #include <glm/ext/matrix_projection.hpp>
 
+#include "Actors/MeshActor.h"
 #include "Core/App.h"
+#include "Core/Raycast.h"
 #include "Core/Timer.h"
 #include "ResourceManagement/Texture.h"
 #include "ResourceManagement/Shader.h"
@@ -182,11 +184,17 @@ void Renderer::DeferredUpdate()
     }
 }
 
-glm::vec3 Renderer::ScreenToWorldPos(glm::vec2 screenPos)
+glm::vec3 Renderer::ScreenToWorldPos(glm::vec2 screenPos, float distanceBetweenPlanes)
 {
     glm::vec4 viewport = glm::vec4(0.0f, 0.0f, m_Width, m_Height);
-    glm::vec3 worldPos = glm::unProject(glm::vec3(screenPos.x, m_Height - screenPos.y, 0.0f), m_ViewMatrix, m_ProjectionMatrix, viewport);
-    return worldPos;
+    
+    //get mouse coords
+    glm::vec2 mousePos = screenPos;
+    mousePos.y = m_Height - mousePos.y;
+
+    glm::vec3 v0 = glm::unProject(glm::vec3(float(mousePos.x), float(mousePos.y), distanceBetweenPlanes),m_ViewMatrix,m_ProjectionMatrix, viewport);
+    
+    return v0;
     
 }
 

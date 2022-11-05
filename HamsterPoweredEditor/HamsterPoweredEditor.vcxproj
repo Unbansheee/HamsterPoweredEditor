@@ -193,6 +193,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClCompile Include="Source\Core\Font.cpp" />
     <ClCompile Include="Source\Core\Input.cpp" />
     <ClCompile Include="Source\Core\main.cpp" />
+    <ClCompile Include="Source\Core\Raycast.cpp" />
     <ClCompile Include="Source\Core\Scene.cpp" />
     <ClCompile Include="Source\Core\Timer.cpp" />
     <ClCompile Include="Source\Core\UUID.cpp" />
@@ -253,6 +254,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClInclude Include="Source\Core\App.h" />
     <ClInclude Include="Source\Core\Font.h" />
     <ClInclude Include="Source\Core\Input.h" />
+    <ClInclude Include="Source\Core\Raycast.h" />
     <ClInclude Include="Source\Core\Timer.h" />
     <ClInclude Include="Source\Core\Timestep.h" />
     <ClInclude Include="Source\Core\Scene.h" />

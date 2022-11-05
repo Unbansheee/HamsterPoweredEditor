@@ -21,9 +21,24 @@ public:
     void Begin();
     void DestroyActor(Actor* actor);
     void SetColour(glm::vec4 colour);
+    CameraController* GetCameraController() { return m_editorCamera; }
     const std::string& GetPath() const { return m_filepath; }
     
     const std::vector<Actor*>& GetActors() const { return m_actors; }
+
+    template <typename T>
+    std::vector<T*> GetActorsOfClass()
+    {
+        std::vector<T*> actors;
+        for (auto actor : m_actors)
+        {
+            if (dynamic_cast<T*>(actor))
+            {
+                actors.push_back(dynamic_cast<T*>(actor));
+            }
+        }
+        return actors;
+    }
     
     template<typename T, typename... Args>
     T* SpawnActor(Args... args)

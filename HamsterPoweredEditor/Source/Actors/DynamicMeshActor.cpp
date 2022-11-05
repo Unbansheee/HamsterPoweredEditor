@@ -32,7 +32,7 @@ DynamicMeshActor::~DynamicMeshActor()
 void DynamicMeshActor::Draw()
 {
     Actor::Draw();
-    mesh.Draw(m_transform);
+    m_mesh.Draw(m_transform);
 }
 
 void DynamicMeshActor::Begin()

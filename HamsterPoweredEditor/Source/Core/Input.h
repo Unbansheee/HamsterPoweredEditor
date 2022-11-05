@@ -3,6 +3,8 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
+#include "Raycast.h"
+
 namespace Keyboard
 {
     enum Key
@@ -178,6 +180,8 @@ public:
     static glm::vec2 GetMousePositionAbsolute(); // Get current mouse position relative to the screen
     static glm::vec2 GetMouseDelta();
     static glm::vec3 GetMousePositionWorld(); // Get current mouse position in world space
+    static glm::vec2 GetMousePositionInViewport(); // Get current mouse position relative to the viewport
+    static Hit RaycastMouse(); // Raycast from the mouse position into the world
 
     // Returns the distance of the mouse wheel since the last frame. -1 to 1 space
     static float GetMouseWheelDelta();
