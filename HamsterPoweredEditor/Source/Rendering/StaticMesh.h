@@ -19,12 +19,19 @@ public:
     void Create(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
     void Load(const std::string& path);
     void Clear();
-    void SetShader(const std::shared_ptr<Shader>& shader);
+    void SetShader(std::shared_ptr<Shader> shader);
+    const std::shared_ptr<Shader>& GetShader() const {return m_shader;}
     const Vertex& GetClosestPoint(const glm::vec3& point);
     Texture* SetTexture(const std::string& path, int slot = 0);
-
+    void SetTexture(Texture* texture, int slot = 0);
+    std::shared_ptr<GLVertexArray> GetVAO() const {return m_vertexArray;}
+    std::shared_ptr<GLVertexBuffer> GetVBO() const {return m_vertexBuffer;}
+    std::shared_ptr<GLIndexBuffer> GetIBO() const {return m_indexBuffer;}
+    
     const std::vector<Vertex>& GetVertices() const { return m_vertices; }
     const std::vector<uint32_t>& GetIndices() const { return m_indices; }
+
+    void Cube();
     
 protected:
     std::vector<Vertex> m_vertices;

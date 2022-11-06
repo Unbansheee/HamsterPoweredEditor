@@ -2,6 +2,7 @@
 
 #include "Resources/Shaders/Common.glsl"
 #include "Resources/Shaders/Lights.glsl"
+#include "Resources/Shaders/Reflections.glsl"
 
 
 void main()
@@ -46,6 +47,14 @@ void main()
         
         vec3 result = (ambient + DirectionalLight + PointLight) * mixed.rgb;
 
+        vec3 reflection = GetEnvironmentReflection(normal, viewDir, u_Skybox, u_SkyboxBrightness);
+        reflection = 1.0 - exp(-reflection * u_SkyboxBrightness);
+        
+        
+        
+        result += reflection * u_Metallic;
+        
+        
 
         FinalColor = vec4(result, mixed.a);
     }

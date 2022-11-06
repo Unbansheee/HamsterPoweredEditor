@@ -4,16 +4,16 @@
             "ActorType": "ClothActor",
             "CollisionEnabled": true,
             "CollisionMeshOrigin": [
-                10.0,
-                3.0,
-                -5.0
+                25.200000762939453,
+                14.899999618530273,
+                2.5
             ],
-            "CollisionMeshScale": 2.0,
-            "CollisionMeshSpeed": 0.5,
+            "CollisionMeshScale": 7.400000095367432,
+            "CollisionMeshSpeed": 0.6000000238418579,
             "CollisionMeshTravelDistance": [
                 0.0,
                 0.0,
-                10.0
+                27.5
             ],
             "Damping": 0.10000000149011612,
             "Gravity": [
@@ -21,18 +21,20 @@
                 -9.8100004196167,
                 0.0
             ],
-            "Height": 20,
+            "Height": 50,
             "ID": "54cd400e-eddf-4fec-a693-2a77f3829097",
-            "Iterations": 1,
+            "Iterations": 4,
             "PhysicsTime": 1000.0,
-            "RestLength": 1.0,
-            "Stiffness": 25.0,
-            "Width": 20,
+            "RestLength": 1.100000023841858,
+            "Stiffness": 50.0,
+            "Turbulence": 50.0,
+            "Width": 50,
             "Wind": [
-                0.0,
+                0.10000000149011612,
                 0.0,
                 0.0
             ],
+            "WindFrequency": 50.0,
             "children": null,
             "name": "Cloth",
             "position": [
@@ -59,7 +61,7 @@
                 1.0
             ],
             "ID": "e18f14ad-bad9-4c5a-9beb-7c9fe188e590",
-            "Intensity": 1.0,
+            "Intensity": 1.2999999523162842,
             "children": null,
             "name": "Light",
             "position": [
@@ -68,33 +70,240 @@
                 0.0
             ],
             "rotation": [
-                -54.0,
-                -197.0,
-                0.0
+                -62.0,
+                -151.0,
+                -32.0
             ],
             "scale": [
                 1.0,
                 1.0,
                 1.0
             ]
+        },
+        {
+            "ActorType": "SkyboxActor",
+            "Brightness": 1.2799999713897705,
+            "ID": "2332f2da-afcc-42ee-9739-f05c65b2b8df",
+            "Path": "Resources/Textures/Skybox/Hilltop.png",
+            "children": null,
+            "name": "Skybox",
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                -36.0,
+                0.0
+            ],
+            "scale": [
+                100000.0,
+                100000.0,
+                100000.0
+            ]
+        },
+        {
+            "ActorType": "TextLabel",
+            "BaseColor": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "FontPath": "Resources/Fonts/Roboto-Regular.ttf",
+            "HoverColor": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "ID": "a946723f-6ee0-490b-b468-ab1ed50c6ed6",
+            "PressedColor": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "ScaleBounce": false,
+            "ScreenSpace": true,
+            "ScrollSpeed": [
+                0.0,
+                0.0
+            ],
+            "ScrollText": false,
+            "Text": "Controls:",
+            "children": [
+                "446dfd68-5ce2-4efc-b770-3c24b93b4f65",
+                "025db3a1-c56f-4f37-a309-7197cca06597",
+                "0ea960d7-339a-4a4a-9d20-e325fa4ca2cc"
+            ],
+            "name": "Controls",
+            "position": [
+                10.872001647949219,
+                90.71700286865234,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.3138104975223541,
+                0.3138104975223541,
+                0.3138104975223541
+            ]
+        },
+        {
+            "ActorType": "TextLabel",
+            "BaseColor": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "FontPath": "Resources/Fonts/Roboto-Regular.ttf",
+            "HoverColor": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "ID": "446dfd68-5ce2-4efc-b770-3c24b93b4f65",
+            "PressedColor": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "ScaleBounce": false,
+            "ScreenSpace": true,
+            "ScrollSpeed": [
+                0.0,
+                0.0
+            ],
+            "ScrollText": false,
+            "Text": "Camera: RMB (Hold)",
+            "children": null,
+            "name": "Cam",
+            "position": [
+                4.0,
+                -89.9000015258789,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.699999988079071,
+                0.7000000476837158,
+                0.7000000476837158
+            ]
+        },
+        {
+            "ActorType": "TextLabel",
+            "BaseColor": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "FontPath": "Resources/Fonts/Roboto-Regular.ttf",
+            "HoverColor": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "ID": "025db3a1-c56f-4f37-a309-7197cca06597",
+            "PressedColor": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "ScaleBounce": false,
+            "ScreenSpace": true,
+            "ScrollSpeed": [
+                0.0,
+                0.0
+            ],
+            "ScrollText": false,
+            "Text": "Move: WASD",
+            "children": null,
+            "name": "Move",
+            "position": [
+                4.0,
+                -163.10000610351563,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.699999988079071,
+                0.699999988079071,
+                0.699999988079071
+            ]
+        },
+        {
+            "ActorType": "TextLabel",
+            "BaseColor": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "FontPath": "Resources/Fonts/Roboto-Regular.ttf",
+            "HoverColor": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "ID": "0ea960d7-339a-4a4a-9d20-e325fa4ca2cc",
+            "PressedColor": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "ScaleBounce": false,
+            "ScreenSpace": true,
+            "ScrollSpeed": [
+                0.0,
+                0.0
+            ],
+            "ScrollText": false,
+            "Text": "Drag Cloth: LMB",
+            "children": null,
+            "name": "Drag",
+            "position": [
+                4.0,
+                -238.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.699999988079071,
+                0.699999988079071,
+                0.699999988079071
+            ]
         }
     ],
-    "AmbientIntensity": 2.200000047683716,
+    "AmbientIntensity": 0.33000001311302185,
     "EditorCamera": {
         "ActorType": "CameraController",
         "CameraType": 1,
         "ID": "44066282-a9e2-4e80-a2f2-284b8ae45ab4",
         "OrthoZoom": 6.215575218200684,
-        "PerspMoveSpeed": 8.201739311218262,
-        "Pitch": -3.0,
-        "Yaw": 105.0,
+        "PerspMoveSpeed": 20.0,
+        "Pitch": 2.5,
+        "Yaw": -669.0,
         "Zoom": 75.0,
         "children": null,
         "name": "Editor Camera",
         "position": [
-            8.785321235656738,
-            18.254087448120117,
-            60.88045883178711
+            62.35899353027344,
+            29.080488204956055,
+            63.89745330810547
         ],
         "rotation": [
             0.0,
@@ -109,9 +318,9 @@
     },
     "RenderMode": 2,
     "SceneColour": [
-        0.10000000149011612,
-        0.10000000149011612,
-        0.10000000149011612,
+        0.8763638138771057,
+        0.896039605140686,
+        0.7718361616134644,
         1.0
     ]
 }

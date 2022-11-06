@@ -99,6 +99,11 @@ void StaticMesh::Clear()
     Create(m_vertices, m_indices);
 }
 
+void StaticMesh::SetShader(std::shared_ptr<Shader> shader)
+{
+    m_shader = shader;
+}
+
 const Vertex& StaticMesh::GetClosestPoint(const glm::vec3& point)
 {
     float minDistance = std::numeric_limits<float>::max();
@@ -126,11 +131,73 @@ Texture* StaticMesh::SetTexture(const std::string& path, int slot)
         std::cout << "Texture slot must be between 0 and 31" << std::endl;
         return nullptr;
     }
-    m_textures[slot]->Bind(slot);
+    //m_textures[slot]->Bind(slot);
     m_textures[slot] = (Texture::CreateTexture(path));
     m_texturePaths[slot] = path;
-    m_textures[slot]->Unbind();
+    //m_textures[slot]->Unbind();
     return m_textures[slot];
+}
+
+void StaticMesh::SetTexture(Texture* texture, int slot)
+{
+    m_textures[slot] = texture;
+    m_texturePaths[slot] = texture->GetPath();
+}
+
+void StaticMesh::Cube()
+{
+    m_vertices.clear();
+    m_indices.clear();
+
+    //Front
+    m_vertices.push_back({ {-0.5f,  0.5f, 0.5f}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, 0 });
+    m_vertices.push_back({ {-0.5f, -0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, 0 });
+    m_vertices.push_back({ {0.5f, -0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, 0 });
+    m_vertices.push_back({ {0.5f,  0.5f, 0.5f}, {1.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, 0 });
+
+    //Back
+    m_vertices.push_back({ {0.5f,  0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {0.0f, 0.0f, -1.0f}, 0 });
+    m_vertices.push_back({ {0.5f, -0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, 0 });
+    m_vertices.push_back({ {-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, 0 });
+    m_vertices.push_back({ {-0.5f,  0.5f, -0.5f}, {1.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.0f, -1.0f}, 0 });
+
+    //Right
+    m_vertices.push_back({ {0.5f,  0.5f,  0.5f}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, 0 });
+    m_vertices.push_back({ {0.5f, -0.5f,  0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, 0 });
+    m_vertices.push_back({ {0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, 0 });
+    m_vertices.push_back({ {0.5f,  0.5f, -0.5f}, {1.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, 0 });
+
+    //Left
+    m_vertices.push_back({ {-0.5f,  0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {-1.0f, 0.0f, 0.0f}, 0 });
+    m_vertices.push_back({ {-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {-1.0f, 0.0f, 0.0f}, 0 });
+    m_vertices.push_back({ {-0.5f, -0.5f,  0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {-1.0f, 0.0f, 0.0f}, 0 });
+    m_vertices.push_back({ {-0.5f,  0.5f,  0.5f}, {1.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {-1.0f, 0.0f, 0.0f}, 0 });
+
+    //Top
+    m_vertices.push_back({ {-0.5f,  0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, 0 });
+    m_vertices.push_back({ {-0.5f,  0.5f,  0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, 0 });
+    m_vertices.push_back({ {0.5f,  0.5f,  0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, 0 });
+    m_vertices.push_back({ {0.5f,  0.5f, -0.5f}, {1.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, 0 });
+
+    //bottom
+    m_vertices.push_back({ {-0.5f, -0.5f,  0.5f}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f}, {0.0f, -1.0f, 0.0f}, 0 });
+    m_vertices.push_back({ {-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, -1.0f, 0.0f}, 0 });
+    m_vertices.push_back({ {0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, {0.0f, -1.0f, 0.0f}, 0 });
+    m_vertices.push_back({ {0.5f, -0.5f,  0.5f}, {1.0f, 1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, -1.0f, 0.0f}, 0 });
+    
+
+    m_indices = {
+        0, 1, 2, 2, 3, 0,
+        4, 5, 6, 6, 7, 4,
+        8, 9, 10, 10, 11, 8,
+        12, 13, 14, 14, 15, 12,
+        16, 17, 18, 18, 19, 16,
+        20, 21, 22, 22, 23, 20
+    };
+
+    Create(m_vertices, m_indices);
+    
+    
 }
 
 

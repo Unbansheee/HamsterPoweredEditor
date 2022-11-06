@@ -39,6 +39,19 @@ public:
         }
         return actors;
     }
+
+    template <typename T>
+    T* GetActorOfClass()
+    {
+        for (auto actor : m_actors)
+        {
+            if (dynamic_cast<T*>(actor))
+            {
+                return dynamic_cast<T*>(actor);
+            }
+        }
+        return nullptr;
+    }
     
     template<typename T, typename... Args>
     T* SpawnActor(Args... args)
@@ -72,7 +85,7 @@ private:
     glm::vec4 m_sceneColour = { 0.1f, 0.1f, 0.1f, 1.0f };
     std::queue<std::pair<HP::UUID, HP::UUID>> m_parentChildQueue;
     double m_fixedUpdateAccumulator = 0.0;
-    double m_fixedUpdateInterval = 1.0 / 60.0;
+    double m_fixedUpdateInterval = 1.0 / 120.0;
     
     
     std::shared_ptr<Quad> quad1;

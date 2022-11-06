@@ -54,7 +54,7 @@
             ]
         },
         {
-            "ActorType": "Mesh",
+            "ActorType": "MeshActor",
             "ID": "d74b7551-b8b7-44bd-b946-412e5f7c7679",
             "MeshPath": "",
             "Textures": [
@@ -110,7 +110,7 @@
             ]
         },
         {
-            "ActorType": "Mesh",
+            "ActorType": "MeshActor",
             "ID": "3e0d9f52-a39e-4375-a2a2-c866f3c5ab35",
             "MeshPath": "Resources/Meshes/sm_tent.fbx",
             "Textures": [
@@ -166,7 +166,7 @@
             ]
         },
         {
-            "ActorType": "Mesh",
+            "ActorType": "MeshActor",
             "ID": "b96460c4-424d-49dc-9bc4-275e41a35566",
             "MeshPath": "Resources/Meshes/sm_Campfire.fbx",
             "Textures": [
@@ -224,7 +224,7 @@
             ]
         },
         {
-            "ActorType": "Mesh",
+            "ActorType": "MeshActor",
             "ID": "12b4307a-b02d-40fe-ba79-44193de409d8",
             "MeshPath": "Resources/Meshes/MonkeySmooth.obj",
             "Textures": [
@@ -280,7 +280,7 @@
             ]
         },
         {
-            "ActorType": "Mesh",
+            "ActorType": "MeshActor",
             "ID": "e83d146d-e736-4ea7-b20d-7d95c412131c",
             "MeshPath": "Resources/Meshes/Gun.obj",
             "Textures": [
@@ -336,7 +336,7 @@
             ]
         },
         {
-            "ActorType": "Mesh",
+            "ActorType": "MeshActor",
             "ID": "28bfbbd7-021b-4f19-965b-bb8683e4e363",
             "MeshPath": "Resources/Meshes/MonkeySmooth.obj",
             "Textures": [
@@ -422,11 +422,11 @@
             "ActorType": "PointLight",
             "Color": [
                 1.0,
-                0.2970297336578369,
-                0.0
+                0.3979511857032776,
+                0.1435643434524536
             ],
             "ID": "a12388f5-9e28-4dad-be4e-495f0d1acc69",
-            "Intensity": 2.799999952316284,
+            "Intensity": 2.0999999046325684,
             "Radius": 5.400000095367432,
             "children": null,
             "name": "FireLight",
@@ -473,6 +473,29 @@
                 1.0,
                 1.0
             ]
+        },
+        {
+            "ActorType": "SkyboxActor",
+            "Brightness": 0.3400000035762787,
+            "ID": "9910cd83-312e-4562-928b-8b0b036de42d",
+            "Path": "Resources/Textures/Skybox/ClarensNight.png",
+            "children": null,
+            "name": "Skybox",
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                -208.0,
+                0.0
+            ],
+            "scale": [
+                100000.0,
+                100000.0,
+                100000.0
+            ]
         }
     ],
     "AmbientIntensity": 0.10000000149011612,
@@ -482,8 +505,8 @@
         "ID": "b8dc23f2-d0b0-4e8b-8702-013d345b6c0b",
         "OrthoZoom": 2.5,
         "PerspMoveSpeed": 2.1534149646759033,
-        "Pitch": 9.799999237060547,
-        "Yaw": 210.0,
+        "Pitch": 4.799999237060547,
+        "Yaw": 566.5,
         "Zoom": 41.70000076293945,
         "children": null,
         "name": "Editor Camera",

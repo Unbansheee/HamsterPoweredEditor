@@ -11,6 +11,7 @@
 #include "Actors/DynamicMeshActor.h"
 #include "Actors/MeshActor.h"
 #include "Actors/PointLight.h"
+#include "Actors/SkyboxActor.h"
 #include "Actors/Spinner.h"
 #include "Actors/TextLabel.h"
 #include "Core/Scene.h"
@@ -213,6 +214,11 @@ void HierarchyPanel::Update(Timestep ts)
                 m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<PointLight>();
             }
             ImGui::EndMenu();
+        }
+
+        if (ImGui::MenuItem("Skybox"))
+        {
+            m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<SkyboxActor>();
         }
 
         

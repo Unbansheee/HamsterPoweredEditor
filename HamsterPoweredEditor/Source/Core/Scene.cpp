@@ -16,6 +16,7 @@
 #include "Actors/DirectionalLight.h"
 #include "Actors/DynamicMeshActor.h"
 #include "Actors/PointLight.h"
+#include "Actors/SkyboxActor.h"
 #include "Actors/Spinner.h"
 
 Scene::Scene()
@@ -72,6 +73,7 @@ void Scene::Render()
 
 void Scene::Begin()
 {
+    
     for (Actor* actor : m_actors)
     {
         actor->Begin();
@@ -188,6 +190,10 @@ void Scene::DeserializeScene(const std::string& filepath)
          else if (actorType == "DynamicMeshActor")
          {
              actor = SpawnActor<DynamicMeshActor>();
+         }
+         else if (actorType == "SkyboxActor")
+         {
+             actor = SpawnActor<SkyboxActor>();
          }
 
         else

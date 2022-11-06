@@ -5,6 +5,7 @@
 #include <glm/ext/matrix_projection.hpp>
 
 #include "Actors/MeshActor.h"
+#include "Actors/SkyboxActor.h"
 #include "Core/App.h"
 #include "Core/Raycast.h"
 #include "Core/Timer.h"
@@ -15,6 +16,7 @@ Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData();
 
 void Renderer::Init()
 {
+    
     m_Width = 1280;
     m_Height = 720;
 
@@ -163,6 +165,14 @@ void Renderer::Render()
                 shader->SetUniform1f("DirLights[" + std::to_string(i) + "].Intensity", m_DirectionalLights[i].intensity);
             }
             shader->SetUniform1i("DirLightCount", (int)m_DirectionalLights.size());
+
+            auto skybox =  App::Instance().m_currentScene->GetActorOfClass<SkyboxActor>();
+            if (skybox)
+            {
+                if (skybox->cubemap) skybox->cubemap->Bind(32);
+                shader->SetUniform1i("u_Skybox", 32);
+                shader->SetUniform1f("u_SkyboxBrightness", skybox->brightness);
+            }
             
                 
             DrawIndexed(vertexArray, settings);

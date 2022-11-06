@@ -30,7 +30,7 @@ Texture::FilteringMode Texture::GetFilteringMode() const
     return filteringMode;
 }
 
-Texture* Texture::CreateTexture(const std::string& path, FilteringMode mode)
+Texture* Texture::CreateTexture(const std::string& path, GLenum target, FilteringMode mode)
 {
     if (path.empty())
     {
@@ -41,13 +41,13 @@ Texture* Texture::CreateTexture(const std::string& path, FilteringMode mode)
     {
         return m_textureCache[path];
     }
-    m_textureCache[path] = new Texture(path);
+    m_textureCache[path] = new Texture(path, target);
     return m_textureCache[path];
 }
 
 Texture* Texture::CreateTextureUncached(const std::string& path, FilteringMode mode)
 {
-    return new Texture(path);
+    return new Texture(path, GL_TEXTURE_2D);
 }
 
 Texture* Texture::CreateTexture(unsigned char* data, int _width, int _height, int channels, FilteringMode mode)
@@ -88,7 +88,7 @@ void Texture::DeleteTexture(Texture* texture)
     texture = nullptr;
 }
 
-Texture::Texture(const std::string& path, FilteringMode mode)
+Texture::Texture(const std::string& path, GLenum target, FilteringMode mode)
     : rendererID(0), filePath(path), localBuffer(NULL), width(0), height(0), bpp(0)
 {
 
@@ -121,7 +121,9 @@ Texture::Texture(const std::string& path, FilteringMode mode)
         std::cout << "Image format not supported" << std::endl;
     }
     
-    glCreateTextures(GL_TEXTURE_2D, 1, &rendererID);
+    
+    
+    glCreateTextures(target, 1, &rendererID);
     glTextureStorage2D(rendererID, 1, internalFormat, width, height);
 
     SetFilteringMode(mode);

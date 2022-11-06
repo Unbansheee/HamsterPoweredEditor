@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Actor.h"
 #include "DynamicMeshActor.h"
+#include "PerlinNoise.hpp"
 #include "Core/Raycast.h"
 #include "Rendering/DynamicMesh.h"
 
@@ -57,9 +58,12 @@ protected:
     float restLength = 1.f;
     float stiffness = 0.1f;
     float damping = 0.1f;
-    int iterations = 1;
+    int iterations = 4;
     float physicsTime = 200.f;
     bool collisionEnabled = true;
+    float windTurbulenceStrength = 10.f;
+    float windFrequency = 0.5f;
+    siv::PerlinNoise perlin;
     
     
     //DynamicMesh m_mesh;

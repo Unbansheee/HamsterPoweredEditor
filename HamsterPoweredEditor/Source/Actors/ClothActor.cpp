@@ -1,10 +1,12 @@
 ﻿#include "ClothActor.h"
 
 #include <iostream>
+#include <GLFW/glfw3.h>
 
 #include "MeshActor.h"
 #include "Core/Input.h"
 #include "Core/Scene.h"
+#include "PerlinNoise.hpp"
 
 glm::vec3 lerp(glm::vec3 a, glm::vec3 b, float t)
 {
@@ -13,25 +15,17 @@ glm::vec3 lerp(glm::vec3 a, glm::vec3 b, float t)
 
 void ClothActor::FixedUpdate(double ts)
 {
-
     
     VerletIntegration(ts);
-
-
-    
     SatisfyConstraints(iterations, ts);
-
-
     
-
 }
 
 void ClothActor::Update(Timestep ts)
 {
 
     m_collisionMeshCurrentPosition = lerp(m_collisionMeshOrigin + m_collisionTravelDistance/2.f, m_collisionMeshOrigin - m_collisionTravelDistance/2.f, (float)sin(ts.GetTimeAsSeconds() * m_collisionMeshSpeed));
-    //if (collisionEnabled) ResolveCollisions(ts.GetSeconds());
-
+    if (collisionEnabled) ResolveCollisions(ts.GetSeconds());
     
     auto hit = Input::RaycastMouse();
     if (hit.Actor == this)
@@ -81,6 +75,12 @@ void ClothActor::Update(Timestep ts)
             glm::vec3 mouseposprojected = v0 + (dir * m_mouseHit.Distance);
             m_mouseDownVert->bFixed = true;
             m_mouseDownVert->Position = mouseposprojected;
+
+
+
+
+
+            
             
         }
     }
@@ -130,6 +130,8 @@ nlohmann::json ClothActor::Serialize()
     j["Damping"] = damping;
     j["Gravity"] = m_gravity;
     j["Wind"] = m_wind;
+    j["Turbulence"] = windTurbulenceStrength;
+    j["WindFrequency"] = windFrequency;
     
     j["CollisionEnabled"] = collisionEnabled;
     j["CollisionMeshOrigin"] = m_collisionMeshOrigin;
@@ -154,6 +156,8 @@ void ClothActor::Deserialize(nlohmann::json& j)
     damping = j["Damping"];
     m_gravity = j["Gravity"];
     m_wind = j["Wind"];
+    if (j.contains("Turbulence")) windTurbulenceStrength = j["Turbulence"];
+    if (j.contains("WindFrequency")) windFrequency = j["WindFrequency"];
 
     collisionEnabled = j["CollisionEnabled"];
     m_collisionMeshOrigin = j["CollisionMeshOrigin"];
@@ -199,6 +203,12 @@ void ClothActor::OnInspectorGUI()
         {}
 
         if (ImGui::DragFloat3("Wind", &m_wind.x, 0.1f, -10.0f, 10.0f))
+        {}
+
+        if (ImGui::DragFloat("Turbulence", &windTurbulenceStrength, 0.1f, 0.0f, 50.0f))
+        {}
+
+        if (ImGui::DragFloat("Wind Frequency", &windFrequency, 0.1f, 0.0f, 50.0f))
         {}
 
         if (ImGui::DragFloat3("Gravity", &m_gravity.x, 0.1f, -10.0f, 10.0f))
@@ -346,6 +356,15 @@ void ClothActor::VerletIntegration(float deltaTime)
 
             //convert wind from world space to local space
             glm::vec3 wind = glm::vec3(glm::inverse(m_transform) * glm::vec4(m_wind, 0));
+
+            
+            wind.x += (perlin.normalizedOctave1D(glfwGetTime() * windFrequency + p.Position.x, 3, 0.5)) * windTurbulenceStrength;
+            wind.y += (perlin.normalizedOctave1D(glfwGetTime() * windFrequency + p.Position.y, 3, 0.5)) * windTurbulenceStrength;
+            wind.z += (perlin.normalizedOctave1D(glfwGetTime() * windFrequency + p.Position.z, 3, 0.5)) * windTurbulenceStrength;
+            
+            
+            
+            
             
             
             //Gravity

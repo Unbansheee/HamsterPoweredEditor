@@ -26,8 +26,11 @@ void Viewport::Update(Timestep ts)
 	//check if resized
 	if (ImGui::GetWindowSize().x != lastSize.x || ImGui::GetWindowSize().y != lastSize.y)
 	{
-		float width = ImGui::GetContentRegionMax().x;
-		float height = ImGui::GetContentRegionMax().y;
+		ImVec2 vMin = ImGui::GetWindowContentRegionMin();
+		ImVec2 vMax = ImGui::GetWindowContentRegionMax();
+		
+		float width = vMax.x - vMin.x;
+		float height = vMax.y - vMin.y;
 		Renderer::Resize((int)width, (int)height);
 		App::Instance().m_currentScene->m_editorCamera->Resize(width, height);
 	}

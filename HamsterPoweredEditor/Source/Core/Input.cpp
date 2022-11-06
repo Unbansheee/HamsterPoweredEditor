@@ -3,6 +3,7 @@
 #include <array>
 
 #include "Raycast.h"
+#include "Timer.h"
 #include "Window.h"
 #include "Rendering/Renderer.h"
 
@@ -72,6 +73,7 @@ glm::vec2 Input::GetMousePositionInViewport()
 
 Hit Input::RaycastMouse()
 {
+    
     glm::vec2 MousePosAbsolute = Input::GetMousePositionAbsolute();
     glm::vec2 viewportLocationAbsolute = Renderer::GetViewportPosition();
     glm::vec2 mousePosInViewport = MousePosAbsolute - viewportLocationAbsolute;

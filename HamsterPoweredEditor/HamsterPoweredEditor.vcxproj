@@ -179,6 +179,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClCompile Include="Source\Actors\Actor.cpp" />
     <ClCompile Include="Source\Actors\AnimatedQuad.cpp" />
     <ClCompile Include="Source\Actors\ClothActor.cpp" />
+    <ClCompile Include="Source\Actors\SkyboxActor.cpp" />
     <ClCompile Include="Source\Actors\DirectionalLight.cpp" />
     <ClCompile Include="Source\Actors\DynamicMeshActor.cpp" />
     <ClCompile Include="Source\Actors\Hexagon.cpp" />
@@ -210,6 +211,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClCompile Include="Source\Rendering\StaticMesh.cpp" />
     <ClCompile Include="Source\Rendering\VertexBufferLayout.cpp" />
     <ClCompile Include="Source\Rendering\View.cpp" />
+    <ClCompile Include="Source\ResourceManagement\Cubemap.cpp" />
     <ClCompile Include="Source\ResourceManagement\Shader.cpp" />
     <ClCompile Include="Source\ResourceManagement\Texture.cpp" />
     <ClCompile Include="Source\UI\HierarchyPanel.cpp" />
@@ -237,10 +239,12 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClInclude Include="include\imgui\imstb_rectpack.h" />
     <ClInclude Include="include\imgui\imstb_textedit.h" />
     <ClInclude Include="include\imgui\imstb_truetype.h" />
+    <ClInclude Include="include\PerlinNoise.hpp" />
     <ClInclude Include="include\stb_image\stb_image.h" />
     <ClInclude Include="Source\Actors\Actor.h" />
     <ClInclude Include="Source\Actors\AnimatedQuad.h" />
     <ClInclude Include="Source\Actors\ClothActor.h" />
+    <ClInclude Include="Source\Actors\SkyboxActor.h" />
     <ClInclude Include="Source\Actors\DirectionalLight.h" />
     <ClInclude Include="Source\Actors\DynamicMeshActor.h" />
     <ClInclude Include="Source\Actors\Hexagon.h" />
@@ -273,6 +277,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClInclude Include="Source\Rendering\Vertex.h" />
     <ClInclude Include="Source\Rendering\VertexBufferLayout.h" />
     <ClInclude Include="Source\Rendering\View.h" />
+    <ClInclude Include="Source\ResourceManagement\Cubemap.h" />
     <ClInclude Include="Source\ResourceManagement\Shader.h" />
     <ClInclude Include="Source\ResourceManagement\Texture.h" />
     <ClInclude Include="Source\UI\HierarchyPanel.h" />
@@ -291,6 +296,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
   <ItemGroup>
     <Compile Include="Resources\Shaders\AnimatedTexture.fs" />
     <Compile Include="Resources\Shaders\FixedColor.fs" />
+    <Compile Include="Resources\Shaders\Skybox.fs" />
     <Compile Include="Resources\Shaders\Text.fs" />
     <Compile Include="Resources\Shaders\TexturedShader.fs" />
     <Compile Include="Resources\Shaders\VertexColor.fs" />
@@ -302,6 +308,8 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <Content Include="Resources\Shaders\FixedTriangle.vs" />
     <Content Include="Resources\Shaders\Lights.glsl" />
     <Content Include="Resources\Shaders\PositionOnly.vs" />
+    <Content Include="Resources\Shaders\Reflections.glsl" />
+    <Content Include="Resources\Shaders\Skybox.vs" />
     <Content Include="Resources\Shaders\Text.vs" />
     <Content Include="Resources\Shaders\VertexColor.vs" />
     <Content Include="Resources\Textures\beetho.png" />

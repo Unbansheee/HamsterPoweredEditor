@@ -12,6 +12,7 @@ Raycast::Raycast(const glm::vec3& origin, const glm::vec3& direction, Hit& hit, 
 
     for (auto actor : actors)
     {
+        
         StaticMesh& mesh = actor->m_mesh;
 
         // Get the world matrix of the actor
