@@ -5,8 +5,8 @@
             "CollisionEnabled": true,
             "CollisionMeshOrigin": [
                 25.200000762939453,
-                14.899999618530273,
-                2.5
+                15.5,
+                0.0
             ],
             "CollisionMeshScale": 7.400000095367432,
             "CollisionMeshSpeed": 0.6000000238418579,
@@ -23,16 +23,17 @@
             ],
             "Height": 50,
             "ID": "54cd400e-eddf-4fec-a693-2a77f3829097",
-            "Iterations": 4,
+            "Iterations": 8,
             "PhysicsTime": 1000.0,
-            "RestLength": 1.100000023841858,
+            "RestLength": 1.0,
+            "SelfCollision": false,
             "Stiffness": 50.0,
             "Turbulence": 50.0,
             "Width": 50,
             "Wind": [
-                0.10000000149011612,
                 0.0,
-                0.0
+                0.0,
+                1.0
             ],
             "WindFrequency": 50.0,
             "children": null,
@@ -104,86 +105,14 @@
             ]
         },
         {
-            "ActorType": "TextLabel",
-            "BaseColor": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "FontPath": "Resources/Fonts/Roboto-Regular.ttf",
-            "HoverColor": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "ID": "a946723f-6ee0-490b-b468-ab1ed50c6ed6",
-            "PressedColor": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "ScaleBounce": false,
-            "ScreenSpace": true,
-            "ScrollSpeed": [
-                0.0,
-                0.0
-            ],
-            "ScrollText": false,
-            "Text": "Controls:",
-            "children": [
-                "446dfd68-5ce2-4efc-b770-3c24b93b4f65",
-                "025db3a1-c56f-4f37-a309-7197cca06597",
-                "0ea960d7-339a-4a4a-9d20-e325fa4ca2cc"
-            ],
-            "name": "Controls",
-            "position": [
-                10.872001647949219,
-                90.71700286865234,
-                0.0
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": [
-                0.3138104975223541,
-                0.3138104975223541,
-                0.3138104975223541
-            ]
-        },
-        {
-            "ActorType": "TextLabel",
-            "BaseColor": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "FontPath": "Resources/Fonts/Roboto-Regular.ttf",
-            "HoverColor": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "ID": "446dfd68-5ce2-4efc-b770-3c24b93b4f65",
-            "PressedColor": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "ScaleBounce": false,
-            "ScreenSpace": true,
-            "ScrollSpeed": [
-                0.0,
-                0.0
-            ],
-            "ScrollText": false,
-            "Text": "Camera: RMB (Hold)",
+            "ActorType": "DynamicMeshActor",
+            "ID": "aeff02fb-a2d6-47ed-a762-d624f11faed4",
+            "TexturePath": "Resources/Textures/PatchyGrass.png",
             "children": null,
-            "name": "Cam",
+            "name": "Floor",
             "position": [
-                4.0,
-                -89.9000015258789,
+                22.899999618530273,
+                8.899999618530273,
                 0.0
             ],
             "rotation": [
@@ -192,118 +121,28 @@
                 0.0
             ],
             "scale": [
-                0.699999988079071,
-                0.7000000476837158,
-                0.7000000476837158
-            ]
-        },
-        {
-            "ActorType": "TextLabel",
-            "BaseColor": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "FontPath": "Resources/Fonts/Roboto-Regular.ttf",
-            "HoverColor": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "ID": "025db3a1-c56f-4f37-a309-7197cca06597",
-            "PressedColor": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "ScaleBounce": false,
-            "ScreenSpace": true,
-            "ScrollSpeed": [
-                0.0,
-                0.0
-            ],
-            "ScrollText": false,
-            "Text": "Move: WASD",
-            "children": null,
-            "name": "Move",
-            "position": [
-                4.0,
-                -163.10000610351563,
-                0.0
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": [
-                0.699999988079071,
-                0.699999988079071,
-                0.699999988079071
-            ]
-        },
-        {
-            "ActorType": "TextLabel",
-            "BaseColor": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "FontPath": "Resources/Fonts/Roboto-Regular.ttf",
-            "HoverColor": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "ID": "0ea960d7-339a-4a4a-9d20-e325fa4ca2cc",
-            "PressedColor": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "ScaleBounce": false,
-            "ScreenSpace": true,
-            "ScrollSpeed": [
-                0.0,
-                0.0
-            ],
-            "ScrollText": false,
-            "Text": "Drag Cloth: LMB",
-            "children": null,
-            "name": "Drag",
-            "position": [
-                4.0,
-                -238.0,
-                0.0
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": [
-                0.699999988079071,
-                0.699999988079071,
-                0.699999988079071
+                50.0,
+                50.00001907348633,
+                50.00001907348633
             ]
         }
     ],
-    "AmbientIntensity": 0.33000001311302185,
+    "AmbientIntensity": 1.3300000429153442,
     "EditorCamera": {
         "ActorType": "CameraController",
         "CameraType": 1,
         "ID": "44066282-a9e2-4e80-a2f2-284b8ae45ab4",
         "OrthoZoom": 6.215575218200684,
         "PerspMoveSpeed": 20.0,
-        "Pitch": 2.5,
-        "Yaw": -669.0,
+        "Pitch": -2.5,
+        "Yaw": -574.5,
         "Zoom": 75.0,
         "children": null,
         "name": "Editor Camera",
         "position": [
-            62.35899353027344,
-            29.080488204956055,
-            63.89745330810547
+            -30.570894241333008,
+            30.2758846282959,
+            41.447853088378906
         ],
         "rotation": [
             0.0,
@@ -318,9 +157,9 @@
     },
     "RenderMode": 2,
     "SceneColour": [
-        0.8763638138771057,
-        0.896039605140686,
-        0.7718361616134644,
+        0.21718604862689972,
+        0.22772276401519775,
+        0.16120967268943787,
         1.0
     ]
 }

@@ -5,7 +5,7 @@
 class PerspectiveCamera : public View
 {
 public:
-    PerspectiveCamera(float _fov = glm::radians(45.f), float _aspect = (float)Renderer::AspectRatio(), float _near = 0.1f, float _far = 100.f);
+    PerspectiveCamera(float _fov = glm::radians(45.f), float _aspect = (float)Renderer::AspectRatio(), float _near = 0.1f, float _far = 10000.f);
     void SetProjection(float _fov, float _aspect, float _near, float _far);
 
     void RecalculateViewMatrix() override;

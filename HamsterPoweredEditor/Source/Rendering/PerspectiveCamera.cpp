@@ -24,7 +24,7 @@ void PerspectiveCamera::SetProjection(float _fov, float _aspect, float _near, fl
     near = _near;
     far = _far;
     
-    m_ProjectionMatrix = glm::perspective(fov, _aspect, 0.1f, 100.0f);
+    m_ProjectionMatrix = glm::perspective(fov, _aspect, _near, _far);
     m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix; 
 }
 

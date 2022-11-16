@@ -19,7 +19,7 @@ CameraController::CameraController(CameraType type, float aspectRatio) : m_Camer
     }
     else
     {
-        m_Camera = new PerspectiveCamera(glm::radians(m_Zoom), m_AspectRatio, 0.1f, 100.0f);
+        m_Camera = new PerspectiveCamera(glm::radians(m_Zoom), m_AspectRatio, 1.f, 10000.0f);
     }
     
 }
@@ -38,7 +38,7 @@ void CameraController::SetCameraType(CameraType type)
     }
     else
     {
-        m_Camera = new PerspectiveCamera(glm::radians(m_Zoom), m_AspectRatio, 0.1f, 100.0f);
+        m_Camera = new PerspectiveCamera(glm::radians(m_Zoom), m_AspectRatio, 1.f, 10000.0f);
         SetRotation(0.f, 0.f, 0.f);
         
         
@@ -125,7 +125,7 @@ void CameraController::SetZoom(float zoom)
     else
     {
         m_Zoom = glm::clamp(zoom, 0.1f, 140.f);
-        static_cast<PerspectiveCamera*>(m_Camera)->SetProjection(glm::radians(m_Zoom), m_AspectRatio, 0.1f, 100.0f);
+        static_cast<PerspectiveCamera*>(m_Camera)->SetProjection(glm::radians(m_Zoom), m_AspectRatio, 1.f, 10000.0f);
     }
 }
 
@@ -155,7 +155,7 @@ void CameraController::Resize(float width, float height)
     }
     else
     {
-        static_cast<PerspectiveCamera*>(m_Camera)->SetProjection(glm::radians(m_Zoom), m_AspectRatio, 0.1f, 100.0f);
+        static_cast<PerspectiveCamera*>(m_Camera)->SetProjection(glm::radians(m_Zoom), m_AspectRatio, 1.f, 10000.0f);
     }
 }
 
