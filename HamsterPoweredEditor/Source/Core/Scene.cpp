@@ -16,8 +16,12 @@
 #include "Actors/DirectionalLight.h"
 #include "Actors/DynamicMeshActor.h"
 #include "Actors/PointLight.h"
+#include "Actors/RimLitActor.h"
+#include "Actors/ShinyMesh.h"
 #include "Actors/SkyboxActor.h"
 #include "Actors/Spinner.h"
+
+class RimLitActor;
 
 Scene::Scene()
 {
@@ -194,6 +198,14 @@ void Scene::DeserializeScene(const std::string& filepath)
          else if (actorType == "SkyboxActor")
          {
              actor = SpawnActor<SkyboxActor>();
+         }
+         else if (actorType == "ShinyMesh")
+         {
+             actor = SpawnActor<ShinyMesh>();
+         }
+         else if (actorType == "RimLitActor")
+         {
+             actor = SpawnActor<RimLitActor>();
          }
 
         else

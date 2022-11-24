@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Actor.h"
-#include "imgui_impl_opengl3_loader.h"
 #include "Rendering/DynamicMesh.h"
+#include <string>
 
 class DynamicMeshActor : public Actor
 {
@@ -20,11 +20,12 @@ public:
 protected:
     void OnInspectorGUI() override;
     std::string texturePath;
-
 public:
     ~DynamicMeshActor() override;
+    std::string meshPath;
 
 
     DynamicMesh m_mesh;
+    
     bool TraceEnabled = false;
 };

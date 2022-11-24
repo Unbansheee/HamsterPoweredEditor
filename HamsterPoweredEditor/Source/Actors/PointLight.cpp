@@ -1,5 +1,11 @@
 ﻿#include "PointLight.h"
 
+PointLight::PointLight()
+{
+    m_Mesh.Load("Resources/Meshes/Sphere.obj");
+    m_Mesh.SetShader(Shader::Create("Resources/Shaders/VertexColor.vs", "Resources/Shaders/Unlit.fs"));
+}
+
 void PointLight::Update(Timestep ts)
 {
     Actor::Update(ts);
@@ -10,6 +16,10 @@ void PointLight::Draw()
 {
     Actor::Draw();
     Renderer::Submit(m_Light);
+    m_Mesh.Draw(m_transform, [&](std::shared_ptr<Shader> shader)
+    {
+        shader->SetUniform3f("u_Color", m_Light.color.x, m_Light.color.y, m_Light.color.z);
+    });
     
 }
 

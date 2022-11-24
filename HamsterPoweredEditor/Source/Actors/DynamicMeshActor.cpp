@@ -37,6 +37,7 @@ nlohmann::json DynamicMeshActor::Serialize()
 {
     auto j = Actor::Serialize();
     j["TexturePath"] = texturePath;
+    j["MeshPath"] = meshPath;
     return j;
 }
 
@@ -44,6 +45,9 @@ void DynamicMeshActor::Deserialize(nlohmann::json& j)
 {
     Actor::Deserialize(j);
     if (j.contains("TexturePath")) texturePath = j["TexturePath"];
+    if (j.contains("MeshPath")) meshPath = j["MeshPath"];
+    
+    m_mesh.Load(meshPath);
     m_mesh.SetTexture(texturePath);
     
 }
@@ -52,11 +56,15 @@ void DynamicMeshActor::OnInspectorGUI()
 {
     Actor::OnInspectorGUI();
 
-    if (ImGui::OpenFilePath("Texture", texturePath, "Open File", "Image File (*.png;*.jpg;*.jpeg){.png,.jpg,.jpeg},.*", "Resources/Textures"))
+    if (ImGui::OpenFilePath("Texture", texturePath, "Open Texture", "Image File (*.png;*.jpg;*.jpeg){.png,.jpg,.jpeg},.*", "Resources/Textures"))
     {
         m_mesh.SetTexture(texturePath);
-        
     }
+    if (ImGui::OpenFilePath("Mesh Path", meshPath, "Open Mesh", "Mesh File (*.obj;*.fbx){.obj,.fbx},.*", "Resources/Meshes"))
+    {
+        m_mesh.Load(meshPath);
+    }
+    
 }
 
 DynamicMeshActor::~DynamicMeshActor()

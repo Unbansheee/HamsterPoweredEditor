@@ -1,9 +1,11 @@
 ﻿#pragma once
 #include "Actor.h"
+#include "Rendering/DynamicMesh.h"
 
 class PointLight : public Actor
 {
 public:
+    PointLight();
     void Update(Timestep ts) override;
     void Draw() override;
     void Begin() override;
@@ -24,6 +26,7 @@ protected:
     void OnInspectorGUI() override;
 
     PointLightData m_Light = {{0, 0, 0}, {1, 1, 1}, 1.0f, 0.1f};
+    DynamicMesh m_Mesh;
 public:
     
 };

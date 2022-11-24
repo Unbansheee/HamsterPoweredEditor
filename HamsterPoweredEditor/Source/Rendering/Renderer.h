@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>
+#include <map>
 #include <queue>
 #include <glad/glad.h>
 
@@ -29,6 +30,7 @@ struct RenderObject
     const glm::mat4 transform;
     const RenderSettings settings;
     std::vector<Texture*> textures;
+    std::function<void(std::shared_ptr<Shader>)> uniforms;
 };
 
 class Renderer
@@ -54,7 +56,7 @@ public:
     static void Init();
     static void BeginScene(View& camera);
     static void EndScene();
-    static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f), const std::vector<Texture*>& textures = {}, const RenderSettings& settings = RenderSettings());
+    static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f), const std::vector<Texture*>& textures = {}, const RenderSettings& settings = RenderSettings(), const std::function<void(std::shared_ptr<Shader>)>& uniforms = {});
     static void Submit(const PointLightData& light);
     static void Submit(const DirectionalLightData& light);
     static void SetClearColor(const glm::vec4& color);

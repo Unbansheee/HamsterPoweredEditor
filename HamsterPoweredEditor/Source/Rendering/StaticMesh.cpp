@@ -29,6 +29,11 @@ void StaticMesh::Draw(const glm::mat4& transform)
     Renderer::Submit(m_shader, m_vertexArray, transform, m_textures, m_renderSettings);
 }
 
+void StaticMesh::Draw(const glm::mat4& transform, std::function<void(std::shared_ptr<Shader>)> shaderSetup)
+{
+    Renderer::Submit(m_shader, m_vertexArray, transform, m_textures, m_renderSettings, shaderSetup);
+}
+
 void StaticMesh::Create(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)
 {
     m_vertices = vertices;

@@ -179,6 +179,8 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClCompile Include="Source\Actors\Actor.cpp" />
     <ClCompile Include="Source\Actors\AnimatedQuad.cpp" />
     <ClCompile Include="Source\Actors\ClothActor.cpp" />
+    <ClCompile Include="Source\Actors\RimLitActor.cpp" />
+    <ClCompile Include="Source\Actors\ShinyMesh.cpp" />
     <ClCompile Include="Source\Actors\SkyboxActor.cpp" />
     <ClCompile Include="Source\Actors\DirectionalLight.cpp" />
     <ClCompile Include="Source\Actors\DynamicMeshActor.cpp" />
@@ -244,6 +246,8 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClInclude Include="Source\Actors\Actor.h" />
     <ClInclude Include="Source\Actors\AnimatedQuad.h" />
     <ClInclude Include="Source\Actors\ClothActor.h" />
+    <ClInclude Include="Source\Actors\RimLitActor.h" />
+    <ClInclude Include="Source\Actors\ShinyMesh.h" />
     <ClInclude Include="Source\Actors\SkyboxActor.h" />
     <ClInclude Include="Source\Actors\DirectionalLight.h" />
     <ClInclude Include="Source\Actors\DynamicMeshActor.h" />
@@ -296,9 +300,12 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
   <ItemGroup>
     <Compile Include="Resources\Shaders\AnimatedTexture.fs" />
     <Compile Include="Resources\Shaders\FixedColor.fs" />
+    <Compile Include="Resources\Shaders\RimLight.fs" />
+    <Compile Include="Resources\Shaders\Shiny.fs" />
     <Compile Include="Resources\Shaders\Skybox.fs" />
     <Compile Include="Resources\Shaders\Text.fs" />
     <Compile Include="Resources\Shaders\TexturedShader.fs" />
+    <Compile Include="Resources\Shaders\Unlit.fs" />
     <Compile Include="Resources\Shaders\VertexColor.fs" />
     <Compile Include="Resources\Shaders\VertexColorFade.fs" />
     <Compile Include="Resources\Shaders\Wireframe.fs" />

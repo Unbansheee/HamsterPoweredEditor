@@ -11,6 +11,8 @@
 #include "Actors/DynamicMeshActor.h"
 #include "Actors/MeshActor.h"
 #include "Actors/PointLight.h"
+#include "Actors/RimLitActor.h"
+#include "Actors/ShinyMesh.h"
 #include "Actors/SkyboxActor.h"
 #include "Actors/Spinner.h"
 #include "Actors/TextLabel.h"
@@ -176,6 +178,14 @@ void HierarchyPanel::Update(Timestep ts)
             if (ImGui::MenuItem("Cloth Mesh"))
             {
                 m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<ClothActor>();
+            }
+            if (ImGui::MenuItem("Shiny Mesh"))
+            {
+                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<ShinyMesh>();
+            }
+            if (ImGui::MenuItem("Rim Lit Mesh"))
+            {
+                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<RimLitActor>();
             }
 
             ImGui::EndMenu();

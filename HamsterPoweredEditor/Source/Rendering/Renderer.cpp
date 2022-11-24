@@ -51,9 +51,9 @@ void Renderer::EndScene()
     m_RenderObjects.clear();
 }
 
-void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform, const std::vector<Texture*>& textures, const RenderSettings& settings)
+void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform, const std::vector<Texture*>& textures, const RenderSettings& settings, const std::function<void(std::shared_ptr<Shader>)>& uniforms)
 {
-    m_RenderObjects.push_back({ shader, vertexArray, transform, settings, textures });
+    m_RenderObjects.push_back({ shader, vertexArray, transform, settings, textures, uniforms });
  
 }
 
@@ -172,6 +172,11 @@ void Renderer::Render()
                 if (skybox->cubemap) skybox->cubemap->Bind(32);
                 shader->SetUniform1i("u_Skybox", 32);
                 shader->SetUniform1f("u_SkyboxBrightness", skybox->brightness);
+            }
+
+            if (object.uniforms)
+            {
+                object.uniforms(shader);
             }
             
                 
