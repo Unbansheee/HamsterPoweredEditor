@@ -2,6 +2,9 @@
 
 #include "Actors/Actor.h"
 #include "ImGuiLayer.h"
+#include "Actors/GameObject.h"
+#include "Actors/MeshComponent.h"
+#include "Actors/PointLightComponent.h"
 
 void InspectorPanel::DrawTransformEdit(Actor* actor)
 {
@@ -80,8 +83,9 @@ void InspectorPanel::Begin()
 
 void InspectorPanel::Update(Timestep ts)
 {
-    
     UIComponent::Update(ts);
+
+    /*
     if (m_Parent->m_SelectedActor)
     {
         Actor* actor = m_Parent->m_SelectedActor;
@@ -95,6 +99,39 @@ void InspectorPanel::Update(Timestep ts)
         DrawTransformEdit(actor);
 
         actor->OnInspectorGUI();
+    }
+    */
+
+    auto selected = m_Parent->m_SelectedGameObject;
+    if (selected)
+    {
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.2f, 0.0f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.3f, 0.0f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.0f, 0.1f, 0.0f, 1.0f));
+        
+        if (ImGui::Button("Add Component"))
+        {
+            ImGui::OpenPopup("AddComponent");
+        }
+
+        ImGui::PopStyleColor(3);
+
+        if (ImGui::BeginPopup("AddComponent"))
+        {
+            if (ImGui::MenuItem("Mesh"))
+            {
+                selected->AddComponent<MeshComponent>();
+                ImGui::CloseCurrentPopup();
+            }
+            if (ImGui::MenuItem("Point Light"))
+            {
+                selected->AddComponent<PointLightComponent>();
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndPopup();
+        }
+        
+        selected->OnInspectorGUI();
     }
 }
 

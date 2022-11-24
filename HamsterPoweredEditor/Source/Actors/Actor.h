@@ -182,6 +182,9 @@ protected:
     HP::UUID m_id;
 
     void SetID(const std::string& id) { m_id.SetID(id); }
+
+
+    
     
 protected:
     friend class InspectorPanel;

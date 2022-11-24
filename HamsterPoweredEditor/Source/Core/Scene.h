@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "Actors/CameraController.h"
+#include "Actors/GameObject.h"
 
 class Actor;
 class Quad;
@@ -25,6 +26,7 @@ public:
     const std::string& GetPath() const { return m_filepath; }
     
     const std::vector<Actor*>& GetActors() const { return m_actors; }
+    std::vector<GameObject>& GetGameObjects() { return m_gameObjects; }
 
     template <typename T>
     std::vector<T*> GetActorsOfClass()
@@ -86,6 +88,8 @@ private:
     std::queue<std::pair<HP::UUID, HP::UUID>> m_parentChildQueue;
     double m_fixedUpdateAccumulator = 0.0;
     double m_fixedUpdateInterval = 1.0 / 120.0;
+
+    std::vector<GameObject> m_gameObjects;
     
     
     std::shared_ptr<Quad> quad1;

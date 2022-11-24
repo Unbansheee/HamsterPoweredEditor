@@ -51,5 +51,6 @@ protected:
     RenderSettings m_renderSettings;
     
     void CopyNodesWithMeshes(aiNode* node, aiMatrix4x4 accumulatedTransform);
+    
 
 };

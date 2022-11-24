@@ -318,6 +318,8 @@ void Actor::Deserialize(nlohmann::json& j)
             m_scene->SetParentChild(GetID(), HP::UUID(child));
         }
     }
+    
+    
     UpdateTransform();
 
 

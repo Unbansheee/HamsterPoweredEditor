@@ -64,6 +64,11 @@ void Scene::Update(Timestep ts)
     {
         actor->Update(ts);
     }
+
+    for (GameObject& gameObject : m_gameObjects)
+    {
+        gameObject.Update(ts);
+    }
 }
 
 void Scene::Render()
@@ -71,6 +76,11 @@ void Scene::Render()
     for (Actor* actor : m_actors)
     {
         actor->Draw();
+    }
+
+    for (GameObject& gameObject : m_gameObjects)
+    {
+        gameObject.Render();
     }
 
 }
@@ -82,6 +92,8 @@ void Scene::Begin()
     {
         actor->Begin();
     }
+
+    m_gameObjects.emplace_back();
     
 }
 
