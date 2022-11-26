@@ -1,4 +1,5 @@
 ﻿#include "Spinner.h"
+#include "Core/JSONConversions.h"
 
 void Spinner::Update(Timestep ts)
 {

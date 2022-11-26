@@ -28,6 +28,8 @@ public:
     const std::vector<Actor*>& GetActors() const { return m_actors; }
     std::vector<GameObject>& GetGameObjects() { return m_gameObjects; }
 
+    GameObject& SpawnObject();
+    
     template <typename T>
     std::vector<T*> GetActorsOfClass()
     {

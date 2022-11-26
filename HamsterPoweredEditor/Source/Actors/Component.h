@@ -6,6 +6,10 @@
 #include "json.hpp"
 #include "Core/Timestep.h"
 
+#define COMPONENT_GEN() \
+void Serialize(nlohmann::json& j) override; \
+void Deserialize(nlohmann::json& j) override;
+
 class GameObject;
 class Component;
 
@@ -25,8 +29,10 @@ public:
 
     GameObject* GetOwner() const { return Owner; }
 
-    virtual nlohmann::json Serialize();
-    virtual void Deserialize(nlohmann::json& j);
+    virtual void Serialize(nlohmann::json& j) {};
+    virtual void Deserialize(nlohmann::json& j) {};
+    virtual void SerializeCustom(nlohmann::json& j) {};
+    virtual void DeserializeCustom(nlohmann::json& j) {};
 
     
     

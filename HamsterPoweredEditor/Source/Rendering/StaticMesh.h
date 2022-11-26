@@ -21,6 +21,7 @@ public:
     void Load(const std::string& path);
     void Clear();
     void SetShader(std::shared_ptr<Shader> shader);
+    const std::string& GetPath() const {return m_path;}
     const std::shared_ptr<Shader>& GetShader() const {return m_shader;}
     const Vertex& GetClosestPoint(const glm::vec3& point);
     Texture* SetTexture(const std::string& path, int slot = 0);

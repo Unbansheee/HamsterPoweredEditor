@@ -13,14 +13,11 @@
 class TransformComponent : public Component
 {
 public:
-    TransformComponent(GameObject* owner)
-        : Component(owner)
-    {
-        auto properties = SerializedProperties::GetProperties("TransformComponent");
-        glm::vec3 position = properties[0].GetValue<glm::vec3>();
-        std::cout << "Position: " << position.x << ", " << position.y << ", " << position.z << std::endl;
-    }
+    TransformComponent(GameObject* owner);
 
+    void Deserialize(nlohmann::json& j) override;
+    void Serialize(nlohmann::json& j) override;
+    
     void Update(Timestep ts) override;
     void Render(const glm::mat4& transform) override;
     void OnInspectorGUI() override;

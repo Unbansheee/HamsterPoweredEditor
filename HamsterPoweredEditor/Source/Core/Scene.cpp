@@ -15,11 +15,13 @@
 #include "Actors/ClothActor.h"
 #include "Actors/DirectionalLight.h"
 #include "Actors/DynamicMeshActor.h"
+#include "Actors/NameComponent.h"
 #include "Actors/PointLight.h"
 #include "Actors/RimLitActor.h"
 #include "Actors/ShinyMesh.h"
 #include "Actors/SkyboxActor.h"
 #include "Actors/Spinner.h"
+#include "Core/JSONConversions.h"
 
 class RimLitActor;
 
@@ -31,7 +33,7 @@ Scene::Scene()
     m_editorCamera->SetName("Editor Camera");
     m_editorCamera->SetZoom(2.5f);
 
-
+    m_gameObjects.reserve(1024);
 
     Renderer::SetClearColor(m_sceneColour);
 }
@@ -92,8 +94,6 @@ void Scene::Begin()
     {
         actor->Begin();
     }
-
-    m_gameObjects.emplace_back();
     
 }
 
@@ -106,6 +106,14 @@ void Scene::SetColour(glm::vec4 colour)
 {
     m_sceneColour = colour;
     Renderer::SetClearColor(colour);
+}
+
+GameObject& Scene::SpawnObject()
+{
+    auto& object = m_gameObjects.emplace_back();
+    object.SetupComponents();
+    object.GetComponent<NameComponent>()->SetName("New Object");
+    return object;
 }
 
 void Scene::SerializeScene(const std::string& filepath)
@@ -123,6 +131,14 @@ void Scene::SerializeScene(const std::string& filepath)
     {
         nlohmann::json actorJson = actor->Serialize();
         j["Actors"].push_back(actorJson);
+    }
+
+    j["GameObjects"] = nlohmann::json::array();
+    for (GameObject& gameObject : m_gameObjects)
+    {
+        nlohmann::json gameObjectJson;
+        gameObject.Serialize(gameObjectJson);
+        j["GameObjects"].push_back(gameObjectJson);
     }
 
     std::ofstream file(filepath);
@@ -226,6 +242,13 @@ void Scene::DeserializeScene(const std::string& filepath)
             continue;
         }
         actor->Deserialize(actorJson);
+    }
+
+    for (auto gameObjectJson : j["GameObjects"])
+    {
+        GameObject& object = SpawnObject();
+        auto test = object.components;
+        object.Deserialize(gameObjectJson);
     }
 
     

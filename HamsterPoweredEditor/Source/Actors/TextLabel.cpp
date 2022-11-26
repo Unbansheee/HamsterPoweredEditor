@@ -6,6 +6,7 @@
 #include "Core/Input.h"
 #include "Core/Window.h"
 #include "UI/HPImGui.h"
+#include "Core/JSONConversions.h"
 
 unsigned int indices[3 * 2] = {
     0, 1, 2,   // first triangle

@@ -1,4 +1,5 @@
 ﻿#include "DirectionalLight.h"
+#include "Core/JSONConversions.h"
 
 void DirLight::Update(Timestep ts)
 {

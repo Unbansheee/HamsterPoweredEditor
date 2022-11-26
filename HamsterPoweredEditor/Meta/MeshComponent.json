@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "Name": "m_Mesh",
+    "Type": "DynamicMesh",
+    "Value": ""
+  },
+  {
+    "Name": "m_MeshPath",
+    "Type": "std::string",
+    "Value": ""
+  }
+]

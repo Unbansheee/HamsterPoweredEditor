@@ -11,12 +11,6 @@
 
 GameObject::GameObject()
 {
-    //ctor
-    AddComponent<NameComponent>();
-    AddComponent<TransformComponent>();
-    AddComponent<MeshComponent>("Resources/Meshes/Sphere.obj");
-    
-    
 }
 
 void GameObject::Update(Timestep ts)
@@ -25,6 +19,12 @@ void GameObject::Update(Timestep ts)
     {
         component->Update(ts);
     }
+}
+
+void GameObject::SetupComponents()
+{
+    AddComponent<NameComponent>();
+    AddComponent<TransformComponent>();
 }
 
 void GameObject::Render()
@@ -104,6 +104,83 @@ void GameObject::RemoveFromParent()
 {
     auto transform = GetComponent<TransformComponent>();
     transform->RemoveFromParent();
+}
+
+void GameObject::Serialize(nlohmann::json& j)
+{
+    j["Components"] = nlohmann::json::array();
+    for (auto& component : components)
+    {
+        nlohmann::json componentJson;
+        component->Serialize(componentJson);
+        component->SerializeCustom(componentJson);
+        j["Components"].push_back(componentJson);
+    }
+}
+
+void GameObject::Deserialize(nlohmann::json& j)
+{
+    for (auto& componentjson : j["Components"])
+    {
+        if (componentjson == nullptr)
+        {
+            continue;
+        }
+        
+        std::string type = componentjson["Type"];
+        
+        Component* component;
+        
+
+        
+        if (type == "NameComponent")
+        {
+            component = GetComponent<NameComponent>();
+            if (!component)
+            {
+                component = AddComponent<NameComponent>();
+            }
+        }
+        else if (type == "TransformComponent")
+        {
+            component = GetComponent<TransformComponent>();
+            if (!component)
+            {
+                component = AddComponent<TransformComponent>();
+            }
+        }
+        else if (type == "MeshComponent")
+        {
+            component = GetComponent<MeshComponent>();
+            if (!component)
+            {
+                component = AddComponent<MeshComponent>();
+            }
+        }
+        else if (type == "PointLightComponent")
+        {
+            component = GetComponent<PointLightComponent>();
+            if (!component)
+            {
+                component = AddComponent<PointLightComponent>();
+            }
+        }
+        else if (type == "ProceduralMeshComponent")
+        {
+            component = GetComponent<ProceduralMeshComponent>();
+            if (!component)
+            {
+                component = AddComponent<ProceduralMeshComponent>();
+            }
+        }
+        else
+        {
+            continue;
+        }
+        component->Deserialize(componentjson);
+        component->DeserializeCustom(componentjson);
+        
+    }
 }
 
 

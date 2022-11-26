@@ -219,7 +219,8 @@ void HierarchyPanel::Update(Timestep ts)
     if (ImGui::Button("Add Actor"))
     {
         //Spawn context menu
-        ImGui::OpenPopup("AddActor");
+        //ImGui::OpenPopup("AddActor");
+        App::Instance().m_currentScene->SpawnObject();
     }
     
     for (auto& i : App::Instance().m_currentScene->GetGameObjects())

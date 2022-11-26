@@ -11,7 +11,7 @@ void PointLightComponent::Update(Timestep ts)
 void PointLightComponent::Render(const glm::mat4& transform)
 {
     Component::Render(transform);
-    m_PointLight.position = Owner->GetComponent<TransformComponent>()->GetWorldPosition();
+    m_PointLight.position = GetOwner()->GetComponent<TransformComponent>()->GetWorldPosition();
     Renderer::Submit(m_PointLight);
 }
 

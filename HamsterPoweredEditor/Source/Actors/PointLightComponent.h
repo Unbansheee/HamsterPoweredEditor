@@ -9,6 +9,8 @@ public:
     {
         
     }
+
+    COMPONENT_GEN()
     
     void Update(Timestep ts) override;
     void Render(const glm::mat4& transform) override;
@@ -21,7 +23,9 @@ public:
     glm::vec3 GetColor() const;
     float GetIntensity() const;
     float GetRadius() const;
+
+    
     
 private:
-    PointLightData m_PointLight;
+    REFLECT PointLightData m_PointLight;
 };

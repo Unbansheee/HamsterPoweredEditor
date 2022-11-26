@@ -4,6 +4,7 @@
 
 #include "imgui.h"
 #include "UI/HPImGui.h"
+#include "Core/JSONConversions.h"
 
 Hexagon::Hexagon()
 {

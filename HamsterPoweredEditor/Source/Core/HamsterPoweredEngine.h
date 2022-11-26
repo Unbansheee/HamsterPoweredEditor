@@ -1,1 +1,2 @@
 #define REFLECT
+#define GENERATE_REFLECTION

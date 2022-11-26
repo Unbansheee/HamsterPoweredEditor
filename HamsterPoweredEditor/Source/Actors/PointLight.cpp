@@ -1,4 +1,5 @@
 ﻿#include "PointLight.h"
+#include "Core/JSONConversions.h"
 
 PointLight::PointLight()
 {

@@ -498,15 +498,15 @@
             ]
         }
     ],
-    "AmbientIntensity": 0.10000000149011612,
+    "AmbientIntensity": 17.399999618530273,
     "EditorCamera": {
         "ActorType": "CameraController",
         "CameraType": 1,
         "ID": "b8dc23f2-d0b0-4e8b-8702-013d345b6c0b",
         "OrthoZoom": 2.5,
         "PerspMoveSpeed": 2.1534149646759033,
-        "Pitch": 4.799999237060547,
-        "Yaw": 566.5,
+        "Pitch": -3.1999969482421875,
+        "Yaw": 558.0,
         "Zoom": 41.70000076293945,
         "children": null,
         "name": "Editor Camera",
@@ -526,11 +526,64 @@
             1.0
         ]
     },
+    "GameObjects": [
+        {
+            "Components": [
+                {
+                    "Type": "NameComponent",
+                    "m_name": "Red"
+                },
+                {
+                    "LocalPosition": [
+                        0.0,
+                        -1.2999999523162842,
+                        0.0
+                    ],
+                    "LocalRotation": [
+                        0.0,
+                        284.0,
+                        0.0
+                    ],
+                    "LocalScale": [
+                        2.0,
+                        2.000000476837158,
+                        2.000000476837158
+                    ],
+                    "Type": "TransformComponent",
+                    "m_lockedScale": true
+                },
+                {
+                    "Type": "MeshComponent",
+                    "m_Mesh": {
+                        "MeshPath": "Resources/Meshes/Greg.obj"
+                    },
+                    "m_MeshPath": ""
+                },
+                {
+                    "Type": "PointLightComponent",
+                    "m_PointLight": {
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Intensity": 2.200000047683716,
+                        "Position": [
+                            0.0,
+                            -1.2999999523162842,
+                            0.0
+                        ],
+                        "Radius": 10.100000381469727
+                    }
+                }
+            ]
+        }
+    ],
     "RenderMode": 2,
     "SceneColour": [
-        0.007058129645884037,
-        0.025103367865085602,
-        0.03960394859313965,
+        0.05661209300160408,
+        0.12129233032464981,
+        0.17326730489730835,
         1.0
     ]
 }

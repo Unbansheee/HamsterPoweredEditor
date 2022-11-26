@@ -7,7 +7,11 @@
 #include "GameObject.h"
 #include "imgui.h"
 
+TransformComponent::TransformComponent(GameObject* owner) : Component(owner)
+{
 
+    
+}
 
 
 void TransformComponent::Update(Timestep ts)

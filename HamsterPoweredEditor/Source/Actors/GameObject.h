@@ -8,7 +8,7 @@
 class GameObject
 {
 private:
-    std::vector<Component*> components;
+    
     
     
 public:
@@ -17,6 +17,7 @@ public:
     GameObject();
 
     virtual void Update(Timestep ts);
+    virtual void SetupComponents();
     virtual void Render();
     virtual void OnInspectorGUI();
 
@@ -31,6 +32,8 @@ public:
     void RemoveAllChildren();
     void RemoveFromParent();
 
+    void Serialize(nlohmann::json& j);
+    void Deserialize(nlohmann::json& j);
     
     
     // Add component with custom constructor
@@ -73,6 +76,6 @@ public:
         return componentsOfType;
     }
 
-
+    std::vector<Component*> components = {};
 
 };

@@ -13,57 +13,7 @@ class Scene;
 
 
 
-namespace nlohmann
-{
-    template <>
-    struct adl_serializer<glm::vec3>
-    {
-        static void to_json(json& j, const glm::vec3& vec)
-        {
-            j = json{ vec.x, vec.y, vec.z };
-        }
 
-        static void from_json(const json& j, glm::vec3& vec)
-        {
-            vec.x = j[0];
-            vec.y = j[1];
-            vec.z = j[2];
-        }
-    };
-
-    template <>
-    struct adl_serializer<glm::vec4>
-    {
-        static void to_json(json& j, const glm::vec4& vec)
-        {
-            j = json{ vec.x, vec.y, vec.z, vec.w };
-        }
-
-        static void from_json(const json& j, glm::vec4& vec)
-        {
-            vec.x = j[0];
-            vec.y = j[1];
-            vec.z = j[2];
-            vec.w = j[3];
-        }
-    };
-
-    template <>
-    struct adl_serializer<glm::vec2>
-    {
-        static void to_json(json& j, const glm::vec2& vec)
-        {
-            j = json{ vec.x, vec.y };
-        }
-
-        static void from_json(const json& j, glm::vec2& vec)
-        {
-            vec.x = j[0];
-            vec.y = j[1];
-        }
-    };
-    
-}
 
 class Actor : public Object
 {

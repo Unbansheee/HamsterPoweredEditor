@@ -242,7 +242,11 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClCompile Include="Source\UI\ThemeUI.cpp" />
     <ClCompile Include="Source\UI\UIComponent.cpp" />
     <ClCompile Include="Source\UI\Viewport.cpp" />
-  </ItemGroup>
+	<ClCompile Include="Source\Actors\TransformComponent.reflection.cpp" />
+
+	<ClCompile Include="Source\Actors\NameComponent.reflection.cpp" /> 
+	<ClCompile Include="Source\Actors\PointLightComponent.reflection.cpp" /> 
+	<ClCompile Include="Source\Actors\MeshComponent.reflection.cpp" /></ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\imgui\imconfig.h" />
     <ClInclude Include="include\imgui\imgui.h" />
@@ -286,6 +290,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClInclude Include="Source\Core\Font.h" />
     <ClInclude Include="Source\Core\HamsterPoweredEngine.h" />
     <ClInclude Include="Source\Core\Input.h" />
+    <ClInclude Include="Source\Core\JSONConversions.h" />
     <ClInclude Include="Source\Core\Raycast.h" />
     <ClInclude Include="Source\Core\SerializedProperties.h" />
     <ClInclude Include="Source\Core\Timer.h" />
