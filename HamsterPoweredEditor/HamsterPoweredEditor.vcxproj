@@ -138,6 +138,9 @@
       <Command>xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Debug\Resources"
 xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)HamsterPoweredReflection\bin\Release\net6.0\HamsterPoweredReflection.exe</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -165,6 +168,9 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
       <Command>xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Debug\Resources"
 xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Command>
     </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>$(SolutionDir)HamsterPoweredReflection\bin\Release\net6.0\HamsterPoweredReflection.exe</Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="include\imgui\imgui.cpp" />
@@ -200,11 +206,13 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClCompile Include="Source\Actors\TextLabel.cpp" />
     <ClCompile Include="Source\Actors\TransformComponent.cpp" />
     <ClCompile Include="Source\Core\App.cpp" />
+    <ClCompile Include="Source\Core\ComponentRegistry.cpp" />
     <ClCompile Include="Source\Core\Font.cpp" />
     <ClCompile Include="Source\Core\Input.cpp" />
     <ClCompile Include="Source\Core\main.cpp" />
     <ClCompile Include="Source\Core\Raycast.cpp" />
     <ClCompile Include="Source\Core\Scene.cpp" />
+    <ClCompile Include="Source\Core\SerializedProperties.cpp" />
     <ClCompile Include="Source\Core\Timer.cpp" />
     <ClCompile Include="Source\Core\UUID.cpp" />
     <ClCompile Include="Source\Core\Window.cpp" />
@@ -274,9 +282,12 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClInclude Include="Source\Actors\TextLabel.h" />
     <ClInclude Include="Source\Actors\TransformComponent.h" />
     <ClInclude Include="Source\Core\App.h" />
+    <ClInclude Include="Source\Core\ComponentRegistry.h" />
     <ClInclude Include="Source\Core\Font.h" />
+    <ClInclude Include="Source\Core\HamsterPoweredEngine.h" />
     <ClInclude Include="Source\Core\Input.h" />
     <ClInclude Include="Source\Core\Raycast.h" />
+    <ClInclude Include="Source\Core\SerializedProperties.h" />
     <ClInclude Include="Source\Core\Timer.h" />
     <ClInclude Include="Source\Core\Timestep.h" />
     <ClInclude Include="Source\Core\Scene.h" />

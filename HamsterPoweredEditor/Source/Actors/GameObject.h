@@ -1,11 +1,16 @@
 ﻿#pragma once
 #include <string>
 #include <vector>
-
+#include "Core/HamsterPoweredEngine.h"
 #include "Component.h"
+
 
 class GameObject
 {
+private:
+    std::vector<Component*> components;
+    
+    
 public:
     friend class Scene;
     
@@ -16,6 +21,7 @@ public:
     virtual void OnInspectorGUI();
 
     void Destroy();
+    
 
     //Wrapper Functions for transform component
     GameObject* GetParent();
@@ -26,8 +32,7 @@ public:
     void RemoveFromParent();
 
     
-
-
+    
     // Add component with custom constructor
     template <typename T, typename... Args>
     T* AddComponent(Args&&... args)
@@ -69,7 +74,5 @@ public:
     }
 
 
-private:
-    std::vector<Component*> components;
-    
+
 };

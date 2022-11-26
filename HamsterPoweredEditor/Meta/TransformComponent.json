@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "LocalPosition",
+    "Type": "glm::vec3",
+    "Value": "{0, 0, 0}"
+  },
+  {
+    "Name": "LocalRotation",
+    "Type": "glm::vec3",
+    "Value": "{0, 0, 0}"
+  },
+  {
+    "Name": "LocalScale",
+    "Type": "glm::vec3",
+    "Value": "{1, 1, 1}"
+  },
+  {
+    "Name": "m_lockedScale",
+    "Type": "bool",
+    "Value": "true"
+  }
+]

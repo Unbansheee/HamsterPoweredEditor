@@ -1,12 +1,13 @@
 ﻿#pragma once
 //
+#include <functional>
 #include <glm/fwd.hpp>
-
+#include "Core/HamsterPoweredEngine.h"
+#include "json.hpp"
 #include "Core/Timestep.h"
 
 class GameObject;
-
-
+class Component;
 
 
 class Component
@@ -23,9 +24,16 @@ public:
     virtual void OnInspectorGUI() {}
 
     GameObject* GetOwner() const { return Owner; }
+
+    virtual nlohmann::json Serialize();
+    virtual void Deserialize(nlohmann::json& j);
+
+    
     
 protected:
     GameObject* Owner;
+    
+
 };
 
 

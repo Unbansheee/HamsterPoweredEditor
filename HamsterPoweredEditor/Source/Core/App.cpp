@@ -3,6 +3,7 @@
 #include <iostream>
 #include <ostream>
 
+#include "ComponentRegistry.h"
 #include "Font.h"
 #include "UI/ImGuiLayer.h"
 
@@ -13,6 +14,7 @@
 #include "ResourceManagement/Texture.h"
 #include "Window.h"
 #include "Actors/CameraController.h"
+#include "Actors/TransformComponent.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -63,7 +65,6 @@ void App::Begin()
 	Font::LoadFont("Resources/Fonts/South Australia.ttf", 100);
 	
 
-	
 	
 	Renderer::Init();
 	Renderer::SetClearColor(glm::vec4(0.09f, 0.09f, 0.12f, 1.0f));

@@ -1,10 +1,14 @@
 ﻿#pragma once
 
+#include <iostream>
+
+#include "Core/HamsterPoweredEngine.h"
 #include <vector>
 #include <glm/vec3.hpp>
 #include <glm/gtc/quaternion.hpp>
 
 #include "Component.h"
+#include "Core/SerializedProperties.h"
 
 class TransformComponent : public Component
 {
@@ -12,6 +16,9 @@ public:
     TransformComponent(GameObject* owner)
         : Component(owner)
     {
+        auto properties = SerializedProperties::GetProperties("TransformComponent");
+        glm::vec3 position = properties[0].GetValue<glm::vec3>();
+        std::cout << "Position: " << position.x << ", " << position.y << ", " << position.z << std::endl;
     }
 
     void Update(Timestep ts) override;
@@ -55,11 +62,11 @@ private:
 
     glm::mat4 LocalTransform;
     
-    glm::vec3 LocalPosition;
-    glm::vec3 LocalRotation;
-    glm::vec3 LocalScale = {1, 1, 1};
+    REFLECT glm::vec3 LocalPosition = {0, 0, 0};
+    REFLECT glm::vec3 LocalRotation = {0, 0, 0};
+    REFLECT glm::vec3 LocalScale = {1, 1, 1};
 
-    bool m_lockedScale = true;
+    REFLECT bool m_lockedScale = true;
 
     
 };
