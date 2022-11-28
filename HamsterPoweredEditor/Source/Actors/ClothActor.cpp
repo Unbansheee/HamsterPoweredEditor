@@ -283,7 +283,7 @@ void ClothActor::OnInspectorGUI()
 
 void ClothActor::ResolveCollisions(float ts)
 {
-
+    auto meshesInScene = m_scene->GetActorsOfClass<DynamicMeshActor>();
     //Loop through all cloth mesh particles
     for (int i = 0; i < m_particles.size(); i++)
     {
@@ -319,7 +319,7 @@ void ClothActor::ResolveCollisions(float ts)
 
         
         // Check if particle collides with any other actor
-        for (auto& actor : m_scene->GetActorsOfClass<DynamicMeshActor>())
+        for (auto& actor : meshesInScene)
         {
             if (actor == this) continue;
 
@@ -447,31 +447,35 @@ void ClothActor::GenerateCloth(int width, int height)
 
 void ClothActor::VerletIntegration(float deltaTime)
 {
+    
+
+    //convert gravity from world space to local space
+    glm::vec3 gravity = glm::vec3(glm::inverse(m_transform) * glm::vec4(m_gravity, 0));
+
+    //convert wind from world space to local space
+    glm::vec3 wind = glm::vec3(glm::inverse(m_transform) * glm::vec4(m_wind, 0));
+
+    // apply some turbulent wind using perlin noise
+    //wind.x += (perlin.normalizedOctave1D(glfwGetTime() * windFrequency + p.Position.x, 3, 0.5)) * windTurbulenceStrength;
+   // wind.y += (perlin.normalizedOctave1D(glfwGetTime() * windFrequency + p.Position.y, 3, 0.5)) * windTurbulenceStrength;
+   // wind.z += (perlin.normalizedOctave1D(glfwGetTime() * windFrequency + p.Position.z, 3, 0.5)) * windTurbulenceStrength;
+   // perlin.noise
+
+
+
+
     for (auto& p : m_particles)
     {
         if (!p.bFixed)
         {
             glm::vec3 FinalForce = { 0,0,0 };
-
-            //convert gravity from world space to local space
-            glm::vec3 gravity = glm::vec3(glm::inverse(m_transform) * glm::vec4(m_gravity, 0));
-
-            //convert wind from world space to local space
-            glm::vec3 wind = glm::vec3(glm::inverse(m_transform) * glm::vec4(m_wind, 0));
-
-            // apply some turbulent wind using perlin noise
-            wind.x += (perlin.normalizedOctave1D(glfwGetTime() * windFrequency + p.Position.x, 3, 0.5)) * windTurbulenceStrength;
-            wind.y += (perlin.normalizedOctave1D(glfwGetTime() * windFrequency + p.Position.y, 3, 0.5)) * windTurbulenceStrength;
-            wind.z += (perlin.normalizedOctave1D(glfwGetTime() * windFrequency + p.Position.z, 3, 0.5)) * windTurbulenceStrength;
-            
-            
             //Apply Gravity
             FinalForce += gravity;
             //Apply Wind
             FinalForce += wind;
             //Apply Drag
             FinalForce += -damping * p.Velocity;
-            
+
             //Verlet Integration
             glm::vec3 temp = p.Position;
             p.Position += (p.Position - p.OldPosition) + (FinalForce * deltaTime * deltaTime);
@@ -495,13 +499,16 @@ void ClothActor::SatisfyConstraints(int iterations, float ts)
 
             //Get the current distance between the two particles
             glm::vec3 delta = p1->Position - p2->Position;
-            float distance = glm::length(delta);
+            const float distance = (delta.x * delta.x + delta.y * delta.y + delta.z * delta.z);
+
+
 
             
             if (distance > 0)
             {
                 //Correct particle positions
-                float difference = (c.RestLength - distance) / distance ;
+                const float distsqrt = sqrt(distance);
+                const float difference = (c.RestLength - distsqrt) / distsqrt;
                 glm::vec3 translate = delta * difference * 0.5f * stiffness * ts;
                 
                 if (!p1->bFixed)
