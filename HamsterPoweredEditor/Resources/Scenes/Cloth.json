@@ -21,7 +21,7 @@
                 -9.8100004196167,
                 0.0
             ],
-            "Height": 40,
+            "Height": 50,
             "ID": "54cd400e-eddf-4fec-a693-2a77f3829097",
             "Iterations": 8,
             "PhysicsTime": 1000.0,
@@ -29,7 +29,7 @@
             "SelfCollision": false,
             "Stiffness": 50.0,
             "Turbulence": 50.0,
-            "Width": 40,
+            "Width": 50,
             "Wind": [
                 0.0,
                 0.0,

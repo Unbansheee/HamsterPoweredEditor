@@ -41,7 +41,7 @@ Scene::Scene()
 Scene::~Scene()
 {
     for (auto& actor : m_actors)
-    {
+    { 
         delete actor;
     }
 
