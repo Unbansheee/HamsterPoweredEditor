@@ -21,7 +21,7 @@
 #include "Actors/ShinyMesh.h"
 #include "Actors/SkyboxActor.h"
 #include "Actors/Spinner.h"
-#include "Core/JSONConversions.h"
+
 
 class RimLitActor;
 
@@ -34,6 +34,8 @@ Scene::Scene()
     m_editorCamera->SetZoom(2.5f);
 
     m_gameObjects.reserve(1024);
+
+
 
     Renderer::SetClearColor(m_sceneColour);
 }
@@ -54,6 +56,10 @@ void Scene::Update(Timestep ts)
     m_fixedUpdateAccumulator += ts.GetSeconds();
     while (m_fixedUpdateAccumulator >= m_fixedUpdateInterval)
     {
+
+        
+
+        
         m_fixedUpdateAccumulator -= m_fixedUpdateInterval;
         for (auto& actor : m_actors)
         {
@@ -71,6 +77,8 @@ void Scene::Update(Timestep ts)
     {
         gameObject.Update(ts);
     }
+    
+    
 }
 
 void Scene::Render()

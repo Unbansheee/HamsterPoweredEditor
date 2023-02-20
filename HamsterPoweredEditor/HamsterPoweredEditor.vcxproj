@@ -206,16 +206,18 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClCompile Include="Source\Actors\TextLabel.cpp" />
     <ClCompile Include="Source\Actors\TransformComponent.cpp" />
     <ClCompile Include="Source\Core\App.cpp" />
+    <ClCompile Include="Source\Core\BoxCollider.cpp" />
+    <ClCompile Include="Source\Core\Collider.cpp" />
     <ClCompile Include="Source\Core\ComponentRegistry.cpp" />
     <ClCompile Include="Source\Core\Font.cpp" />
     <ClCompile Include="Source\Core\Input.cpp" />
     <ClCompile Include="Source\Core\main.cpp" />
     <ClCompile Include="Source\Core\Raycast.cpp" />
     <ClCompile Include="Source\Core\Scene.cpp" />
-    <ClCompile Include="Source\Core\SerializedProperties.cpp" />
     <ClCompile Include="Source\Core\Timer.cpp" />
     <ClCompile Include="Source\Core\UUID.cpp" />
     <ClCompile Include="Source\Core\Window.cpp" />
+    <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\Rendering\DynamicMesh.cpp" />
     <ClCompile Include="Source\Rendering\glad.c" />
     <ClCompile Include="Source\Rendering\GLFrameBuffer.cpp" />
@@ -230,6 +232,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClCompile Include="Source\Rendering\View.cpp" />
     <ClCompile Include="Source\ResourceManagement\Cubemap.cpp" />
     <ClCompile Include="Source\ResourceManagement\Shader.cpp" />
+    <ClCompile Include="Source\ResourceManagement\ShaderGraph.cpp" />
     <ClCompile Include="Source\ResourceManagement\Texture.cpp" />
     <ClCompile Include="Source\UI\HierarchyPanel.cpp" />
     <ClCompile Include="Source\UI\ImFileDialog.cpp" />
@@ -242,11 +245,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClCompile Include="Source\UI\ThemeUI.cpp" />
     <ClCompile Include="Source\UI\UIComponent.cpp" />
     <ClCompile Include="Source\UI\Viewport.cpp" />
-	<ClCompile Include="Source\Actors\TransformComponent.reflection.cpp" />
-
-	<ClCompile Include="Source\Actors\NameComponent.reflection.cpp" /> 
-	<ClCompile Include="Source\Actors\PointLightComponent.reflection.cpp" /> 
-	<ClCompile Include="Source\Actors\MeshComponent.reflection.cpp" /></ItemGroup>
+  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\imgui\imconfig.h" />
     <ClInclude Include="include\imgui\imgui.h" />
@@ -286,18 +285,20 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClInclude Include="Source\Actors\TextLabel.h" />
     <ClInclude Include="Source\Actors\TransformComponent.h" />
     <ClInclude Include="Source\Core\App.h" />
+    <ClInclude Include="Source\Core\BoxCollider.h" />
+    <ClInclude Include="Source\Core\Collider.h" />
     <ClInclude Include="Source\Core\ComponentRegistry.h" />
     <ClInclude Include="Source\Core\Font.h" />
     <ClInclude Include="Source\Core\HamsterPoweredEngine.h" />
     <ClInclude Include="Source\Core\Input.h" />
     <ClInclude Include="Source\Core\JSONConversions.h" />
     <ClInclude Include="Source\Core\Raycast.h" />
-    <ClInclude Include="Source\Core\SerializedProperties.h" />
     <ClInclude Include="Source\Core\Timer.h" />
     <ClInclude Include="Source\Core\Timestep.h" />
     <ClInclude Include="Source\Core\Scene.h" />
     <ClInclude Include="Source\Core\UUID.h" />
     <ClInclude Include="Source\Core\Window.h" />
+    <ClInclude Include="Source\Physics.h" />
     <ClInclude Include="Source\Rendering\DynamicMesh.h" />
     <ClInclude Include="Source\Rendering\GLFrameBuffer.h" />
     <ClInclude Include="Source\Rendering\GLBuffers.h" />
@@ -313,6 +314,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClInclude Include="Source\Rendering\View.h" />
     <ClInclude Include="Source\ResourceManagement\Cubemap.h" />
     <ClInclude Include="Source\ResourceManagement\Shader.h" />
+    <ClInclude Include="Source\ResourceManagement\ShaderGraph.h" />
     <ClInclude Include="Source\ResourceManagement\Texture.h" />
     <ClInclude Include="Source\UI\HierarchyPanel.h" />
     <ClInclude Include="Source\UI\HPImGui.h" />
@@ -341,6 +343,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <Compile Include="Resources\Shaders\Wireframe.fs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Nodes.json" />
     <Content Include="Resources\Shaders\Common.glsl" />
     <Content Include="Resources\Shaders\FixedTriangle.vs" />
     <Content Include="Resources\Shaders\Lights.glsl" />
@@ -351,9 +354,6 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <Content Include="Resources\Shaders\VertexColor.vs" />
     <Content Include="Resources\Textures\beetho.png" />
     <Content Include="Resources\Textures\Gear.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Source" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

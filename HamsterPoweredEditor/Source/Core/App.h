@@ -11,6 +11,8 @@
 #include "Actors/CameraController.h"
 #include "Core/Scene.h"
 
+#include "Physics.h"
+
 struct GLFWwindow;
 class Window;
 class Scene;

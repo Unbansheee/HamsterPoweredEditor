@@ -8,15 +8,17 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include "Component.h"
-#include "Core/SerializedProperties.h"
+#include "TransformComponent.generated.h"
+
+SERIALIZEDCLASS
 
 class TransformComponent : public Component
 {
 public:
+    GENERATED()
+    
     TransformComponent(GameObject* owner);
-
-    void Deserialize(nlohmann::json& j) override;
-    void Serialize(nlohmann::json& j) override;
+    
     
     void Update(Timestep ts) override;
     void Render(const glm::mat4& transform) override;
@@ -59,11 +61,11 @@ private:
 
     glm::mat4 LocalTransform;
     
-    REFLECT glm::vec3 LocalPosition = {0, 0, 0};
-    REFLECT glm::vec3 LocalRotation = {0, 0, 0};
-    REFLECT glm::vec3 LocalScale = {1, 1, 1};
+    SERIALIZEDVAR glm::vec3 LocalPosition = {0, 0, 0};
+    SERIALIZEDVAR glm::vec3 LocalRotation = {0, 0, 0};
+    SERIALIZEDVAR glm::vec3 LocalScale = {1, 1, 1};
 
-    REFLECT bool m_lockedScale = true;
+    SERIALIZEDVAR bool m_lockedScale = true;
 
     
 };

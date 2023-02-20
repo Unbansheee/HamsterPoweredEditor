@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "Component.h"
 #include "PointLight.h"
+#include "PointLightComponent.generated.h"
+
+SERIALIZEDCLASS
 
 class PointLightComponent : public Component
 {
@@ -10,7 +13,8 @@ public:
         
     }
 
-    COMPONENT_GEN()
+    GENERATED()
+    
     
     void Update(Timestep ts) override;
     void Render(const glm::mat4& transform) override;
@@ -27,5 +31,5 @@ public:
     
     
 private:
-    REFLECT PointLightData m_PointLight;
+    SERIALIZEDVAR PointLightData m_PointLight;
 };

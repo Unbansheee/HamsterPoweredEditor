@@ -1,5 +1,5 @@
 ﻿#include "DirectionalLight.h"
-#include "Core/JSONConversions.h"
+
 
 void DirLight::Update(Timestep ts)
 {
@@ -54,7 +54,7 @@ nlohmann::json DirLight::Serialize()
 {
     auto j = Actor::Serialize();
     j["Intensity"] = m_Light.intensity;
-    j["Color"] = m_Light.color;
+    //j["Color"] = m_Light.color;
     return j;
 }
 
@@ -62,7 +62,7 @@ void DirLight::Deserialize(nlohmann::json& j)
 {
     Actor::Deserialize(j);
     m_Light.intensity = j["Intensity"];
-    m_Light.color = j["Color"];
+    //m_Light.color = j["Color"];
 }
 
 void DirLight::OnInspectorGUI()

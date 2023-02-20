@@ -3,10 +3,15 @@
 #include <string>
 
 #include "Component.h"
+#include "NameComponent.generated.h"
+
+SERIALIZEDCLASS
 
 class NameComponent : public Component
 {
 public:
+    GENERATED()
+    
     COMPONENT_CONSTRUCTOR(NameComponent, Component)
     {
         SetName("Unnamed Object");
@@ -35,11 +40,10 @@ public:
     }
 
     void OnInspectorGUI() override;
-    void Serialize(nlohmann::json& j) override;
-    void Deserialize(nlohmann::json& j) override;
+
     
     
 private:
-    REFLECT std::string m_name;
+    SERIALIZEDVAR std::string m_name;
     
 };

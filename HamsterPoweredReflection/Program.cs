@@ -1,4 +1,5 @@
-﻿using System.Net.Mime;
+﻿using System.Diagnostics;
+using System.Net.Mime;
 using HamsterPoweredReflection;
 
 class Program
@@ -8,6 +9,7 @@ class Program
     static void Main(string[] args)
     {
 
+       
 #pragma warning disable CS8602
         SourceFolder = Directory.GetParent(System.AppContext.BaseDirectory).Parent.Parent.Parent.Parent + "\\HamsterPoweredEditor\\Source\\";
         DestinationFolder = Directory.GetParent(System.AppContext.BaseDirectory).Parent.Parent.Parent.Parent + "\\HamsterPoweredEditor\\Meta\\";
@@ -26,10 +28,25 @@ class Program
             SourceFolder = args[0];
             DestinationFolder = args[1];
         }
+        /*
+       
+       HeaderParser parser = new HeaderParser(SourceFolder);
+       parser.Parse(DestinationFolder);
+       */
         
+        // Time how long it takes to parse the header files
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
         
-        HeaderParser parser = new HeaderParser(SourceFolder);
-        parser.Parse(DestinationFolder);
+        Parser parser = new Parser(SourceFolder, DestinationFolder);
+        List<MetaClass> classes = parser.BeginBatchParse();
+        
+        CodeGenerator generator = new CodeGenerator(classes);
+        generator.GenerateSerializationCode(SourceFolder);
+
+        stopwatch.Stop();
+        Console.WriteLine("Time elapsed: {0} ms", stopwatch.ElapsedMilliseconds);
+        
     }
     
 }

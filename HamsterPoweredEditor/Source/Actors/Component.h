@@ -5,18 +5,19 @@
 #include "Core/HamsterPoweredEngine.h"
 #include "json.hpp"
 #include "Core/Timestep.h"
+#include "Core/JSONConversions.h"
 
-#define COMPONENT_GEN() \
-void Serialize(nlohmann::json& j) override; \
-void Deserialize(nlohmann::json& j) override;
+#include "Component.generated.h"
 
 class GameObject;
 class Component;
 
+SERIALIZEDCLASS
 
 class Component
 {
 public:
+   
     Component(GameObject* owner) : Owner(owner) {}
     Component(const Component& other) = delete;
     Component& operator=(const Component& other) = delete;

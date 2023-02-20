@@ -18,6 +18,7 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "ResourceManagement/ShaderGraph.h"
 
 #include "UI/ImFileDialog.h"
 
@@ -69,11 +70,26 @@ void App::Begin()
 	Renderer::Init();
 	Renderer::SetClearColor(glm::vec4(0.09f, 0.09f, 0.12f, 1.0f));
 
+	Node::InitializeNodes("Resources/Nodes.json");
+
+	ShaderGraph graph;
+	auto n1 = graph.AddNode(Node::nodes["TestNode"]);
+	auto n2 = graph.AddNode(Node::nodes["GregNode"]);
+	graph.Connect(n2, "input", n1, "float");
+	auto shader = graph.Build();
+	std::cout << shader << std::endl;
+	
+	
 	//Initialise editor. At a later point this can be skipped and the window should show the framebuffer.
 	//Currently the framebuffer custom set and is only shown in the Viewport widget, so this must be left on for now.
 	
 	EditorLayer = new ImGuiLayer(window);
 	EditorLayer->Begin();
+
+
+	
+	
+	
 	
 	//LoadScene<Scene>();
 	LoadScene("Resources/Scenes/3DScene.json");
@@ -131,6 +147,7 @@ void App::Update()
 
 void App::Quit()
 {
+	
 	window->Quit();
 
 }

@@ -10,6 +10,8 @@
 #include "Actors/CameraController.h"
 #include "Actors/GameObject.h"
 
+#include "Physics.h"
+
 class Actor;
 class Quad;
 class Scene
@@ -90,7 +92,8 @@ private:
     std::queue<std::pair<HP::UUID, HP::UUID>> m_parentChildQueue;
     double m_fixedUpdateAccumulator = 0.0;
     double m_fixedUpdateInterval = 1.0 / 120.0;
-
+    
+    
     std::vector<GameObject> m_gameObjects;
     
     

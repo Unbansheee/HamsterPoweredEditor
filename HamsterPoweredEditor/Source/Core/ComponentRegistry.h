@@ -1,22 +1,21 @@
 ﻿#pragma once
 #include <map>
+#include <string>
 #include <vector>
 
-#include "SerializedProperties.h"
 
 struct RegisteredComponent
 {
-    std::vector<SerializedProperty> properties;
-    //component constructor function
+    std::string name;
     void* (*constructor)();
     
 };
 
 class ComponentRegistry
 {
-public:
-    //register a component name with a constructor function for instantiating it
-    static void RegisterComponent(const std::string& className, void* (*constructor)())
+public: 
+    template <typename T>
+    static void RegisterComponent(const std::string& className)
     {
         //check if already registered
         if (m_registry.find(className) != m_registry.end())
@@ -26,10 +25,9 @@ public:
         
         RegisteredComponent component;
 
-        std::vector<SerializedProperty> properties;
-        properties = SerializedProperties::GetProperties(className);
-        component.constructor = constructor;
-        component.properties = properties;
+
+        
+        component.name = className;
         m_registry[className] = component;
         
     }

@@ -1,12 +1,14 @@
 ﻿#pragma once
 #include "Component.h"
 #include "Rendering/DynamicMesh.h"
+#include "MeshComponent.generated.h"
+
+SERIALIZEDCLASS
 
 class MeshComponent : public Component
 {
 public:
-
-    COMPONENT_GEN()
+    GENERATED()
     
     MeshComponent(GameObject* owner) : Component(owner)
     {
@@ -32,6 +34,6 @@ public:
     //void DeserializeCustom(nlohmann::json& j) override { LoadMesh(m_MeshPath); }
 
 protected:
-    REFLECT DynamicMesh m_Mesh;
-    REFLECT std::string m_MeshPath;
+    DynamicMesh m_Mesh;
+    SERIALIZEDVAR std::string m_MeshPath;
 };

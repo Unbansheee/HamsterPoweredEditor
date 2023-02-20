@@ -1,5 +1,4 @@
 ﻿#include "Spinner.h"
-#include "Core/JSONConversions.h"
 
 void Spinner::Update(Timestep ts)
 {
@@ -26,7 +25,7 @@ void Spinner::OnDestroy()
 nlohmann::json Spinner::Serialize()
 {
     auto j = Actor::Serialize();
-    j["RotationSpeed"] = rotationSpeed;
+    //j["RotationSpeed"] = rotationSpeed;
     return j;
     
 }
@@ -34,7 +33,7 @@ nlohmann::json Spinner::Serialize()
 void Spinner::Deserialize(nlohmann::json& j)
 {
     Actor::Deserialize(j);
-    rotationSpeed = j["RotationSpeed"];
+    //rotationSpeed = j["RotationSpeed"];
 }
 
 void Spinner::OnInspectorGUI()

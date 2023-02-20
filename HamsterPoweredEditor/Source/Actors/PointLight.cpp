@@ -1,5 +1,5 @@
 ﻿#include "PointLight.h"
-#include "Core/JSONConversions.h"
+
 
 PointLight::PointLight()
 {
@@ -37,7 +37,7 @@ void PointLight::OnDestroy()
 nlohmann::json PointLight::Serialize()
 {
     auto j = Actor::Serialize();
-    j["Color"] = m_Light.color;
+    //j["Color"] = m_Light.color;
     j["Intensity"] = m_Light.intensity;
     j["Radius"] = m_Light.radius;
     return j;
@@ -46,7 +46,7 @@ nlohmann::json PointLight::Serialize()
 void PointLight::Deserialize(nlohmann::json& j)
 {
     Actor::Deserialize(j);
-    m_Light.color = j["Color"];
+    //m_Light.color = j["Color"];
     m_Light.intensity = j["Intensity"];
     m_Light.radius = j["Radius"];
     
