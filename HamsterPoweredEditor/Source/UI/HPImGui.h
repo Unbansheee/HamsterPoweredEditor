@@ -117,5 +117,9 @@ namespace ImGui
         }
         return edited;
     }
+
+    inline ImVec2 Add(ImVec2 a, ImVec2 b) {
+        return ImVec2(a.x + b.x, a.y + b.y);
+    }
     
 }

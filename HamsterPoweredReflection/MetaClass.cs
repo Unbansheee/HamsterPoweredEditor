@@ -17,6 +17,7 @@ public class MetaClass
     public List<MetaFunction> Functions = new List<MetaFunction>();
     public List<MetaVar> Vars = new List<MetaVar>();
     public List<string> ParentClasses = new List<string>();
+    public string Category;
 
     public string HeaderPath;
     
@@ -29,6 +30,14 @@ public class MetaClass
         HeaderPath = HeaderPath.Split("Source/")[1];
 
         var currentAccess = Access.Private;
+        
+        // Get category entry from SERIALIZEDCLASS(Category = "CategoryName")
+        var categoryMatch = Regex.Match(headerSource, @"SERIALIZEDCLASS\(Category\s*=\s*""(.*)""\)");
+        if (categoryMatch.Success)
+        {
+            Category = categoryMatch.Groups[1].Value;
+        }
+        else Category = "Default";
         
         // Get name of class. Ensure there is no semicolon at the end of the line. Don't look for the first {, as it may be on the next line. 
         var nameMatch = Regex.Match(headerSource, @"\bclass\s+(\w+)\b(?!\s*;)");

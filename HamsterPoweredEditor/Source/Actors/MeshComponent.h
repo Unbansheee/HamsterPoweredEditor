@@ -3,7 +3,7 @@
 #include "Rendering/DynamicMesh.h"
 #include "MeshComponent.generated.h"
 
-SERIALIZEDCLASS
+SERIALIZEDCLASS(Category = "3D")
 
 class MeshComponent : public Component
 {
@@ -12,12 +12,12 @@ public:
     
     MeshComponent(GameObject* owner) : Component(owner)
     {
-        m_Mesh.Load("Resources/Meshes/Monkey.obj");
+        LoadMesh("Resources/Meshes/Monkey.obj");
     }
 
     MeshComponent(GameObject* owner, const std::string& meshPath) : Component(owner)
     {
-        m_Mesh.Load(meshPath);
+        LoadMesh(meshPath);
     }
 
     void LoadMesh(const std::string& meshPath)
@@ -31,9 +31,12 @@ public:
 
     void OnInspectorGUI() override;
 
-    //void DeserializeCustom(nlohmann::json& j) override { LoadMesh(m_MeshPath); }
+    void DeserializeCustom(nlohmann::json& j) override { LoadMesh(m_MeshPath); }
+    //void SerializeCustom(nlohmann::json& j) override { j["MeshPath"] = m_MeshPath; }
 
 protected:
     DynamicMesh m_Mesh;
     SERIALIZEDVAR std::string m_MeshPath;
 };
+
+#undef GENERATED

@@ -5,7 +5,7 @@
 #include "Component.h"
 #include "NameComponent.generated.h"
 
-SERIALIZEDCLASS
+SERIALIZEDCLASS(Category = "Core")
 
 class NameComponent : public Component
 {
@@ -15,18 +15,18 @@ public:
     COMPONENT_CONSTRUCTOR(NameComponent, Component)
     {
         SetName("Unnamed Object");
-        std::cout << "NameComponent constructor" << std::endl;
+        m_initialized = true;
     }
 
     NameComponent(GameObject* owner, const std::string& name) : Component(owner)
     {
         SetName(name);
-        std::cout << "NameComponent constructor" << std::endl;
+        m_initialized = true;
     }
 
     ~NameComponent()
     {
-        std::cout << "NameComponent destructor" << std::endl;
+
     }
 
     void SetName(const std::string& name)
@@ -47,3 +47,5 @@ private:
     SERIALIZEDVAR std::string m_name;
     
 };
+
+#undef GENERATED

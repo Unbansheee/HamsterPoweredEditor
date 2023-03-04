@@ -5,17 +5,23 @@
 #include "Component.h"
 
 
+class TransformComponent;
+
 class GameObject
 {
 private:
-    
+    Scene* m_Scene;
     
     
 public:
     friend class Scene;
     
+    
     GameObject();
+    ~GameObject();
 
+    virtual void Begin();
+    virtual void FixedUpdate(double ts);
     virtual void Update(Timestep ts);
     virtual void SetupComponents();
     virtual void Render();
@@ -31,10 +37,19 @@ public:
     void RemoveChild(GameObject* child);
     void RemoveAllChildren();
     void RemoveFromParent();
+    TransformComponent* GetTransform();
 
     void Serialize(nlohmann::json& j);
     void Deserialize(nlohmann::json& j);
+
+    Scene* GetScene() const { return m_Scene; }
     
+
+    // operator ==
+    bool operator==(const GameObject& other) const
+    {
+        return id == other.id;
+    }
     
     // Add component with custom constructor
     template <typename T, typename... Args>
@@ -42,6 +57,11 @@ public:
     {
         T* component = new T(this, std::forward<Args>(args)...);
         components.push_back(component);
+        if (initialized)
+        {
+            component->Begin();
+            component->m_initialized = true;
+        }
         return component;
     }
 
@@ -51,8 +71,7 @@ public:
     {
         for (Component* component : components)
         {
-            T* casted = dynamic_cast<T*>(component);
-            if (casted)
+            if (T* casted = dynamic_cast<T*>(component))
             {
                 return casted;
             }
@@ -77,5 +96,10 @@ public:
     }
 
     std::vector<Component*> components = {};
+    int id = -1;
+
+    static inline int nextId = 0;
+    bool initialized = false;
+    TransformComponent* transform = nullptr;
 
 };

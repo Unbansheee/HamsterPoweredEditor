@@ -9,3 +9,4 @@ void Serialize(nlohmann::json& j) override{ \
 	j["Type"] = "Collider"; \
 	j["m_Active"] = m_Active; \
 } 
+

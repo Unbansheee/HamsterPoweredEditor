@@ -10,7 +10,7 @@
 #include "Component.h"
 #include "TransformComponent.generated.h"
 
-SERIALIZEDCLASS
+SERIALIZEDCLASS(Category = "Core")
 
 class TransformComponent : public Component
 {
@@ -39,17 +39,19 @@ public:
     void RemoveChild(TransformComponent* child);
     void RemoveFromParent();
     void RemoveAllChildren();
+
+    void DeserializeCustom(nlohmann::json& j) override;
     
 
-    const glm::vec3& GetWorldPosition() const;
-    const glm::vec3& GetWorldRotation() const;
-    const glm::vec3& GetWorldScale() const;
+    glm::vec3 GetWorldPosition() const;
+    glm::vec3 GetWorldRotation() const;
+    glm::vec3 GetWorldScale() const;
 
-    const glm::vec3& GetLocalPosition() const;
-    const glm::vec3& GetLocalRotation() const;
-    const glm::vec3& GetLocalScale() const;
+    glm::vec3 GetLocalPosition() const;
+    glm::vec3 GetLocalRotation() const;
+    glm::vec3 GetLocalScale() const;
 
-    const glm::mat4& GetWorldTransform() const;
+    glm::mat4 GetWorldTransform() const;
 
 private:
     void UpdateTransform();
@@ -69,3 +71,5 @@ private:
 
     
 };
+
+#undef GENERATED

@@ -77,7 +77,7 @@ void App::Begin()
 	auto n2 = graph.AddNode(Node::nodes["GregNode"]);
 	graph.Connect(n2, "input", n1, "float");
 	auto shader = graph.Build();
-	std::cout << shader << std::endl;
+	//std::cout << shader << std::endl;
 	
 	
 	//Initialise editor. At a later point this can be skipped and the window should show the framebuffer.
@@ -92,7 +92,7 @@ void App::Begin()
 	
 	
 	//LoadScene<Scene>();
-	LoadScene("Resources/Scenes/3DScene.json");
+	LoadScene("Resources/Scenes/Default.json");
 }
 
 
@@ -111,14 +111,10 @@ void App::Update()
 	if (m_currentScene)
 	{
 		m_currentScene->Update(timestep);
-
-		if (Input::WasKeyPressed(Keyboard::R))
-		{
-			Shader::ReloadAllShaders();
-		}
+		
 		
 		//RENDER SCENE
-		Renderer::BeginScene(*m_currentScene->m_editorCamera->GetCamera());
+		Renderer::BeginScene(*m_currentScene->m_cameraController->GetCamera());
 		m_currentScene->Render();
 		Renderer::Render();
 		Renderer::EndScene();
@@ -161,7 +157,7 @@ float App::GetTime()
 void App::LoadScene(const std::string& path)
 {
 	//Load a scene from a file
-	EditorLayer->m_SelectedActor = nullptr;
+	EditorLayer->m_SelectedGameObject = nullptr;
 	delete m_currentScene;
 	m_currentScene = new Scene();
 	m_currentScene->DeserializeScene(path);
@@ -171,7 +167,7 @@ void App::LoadScene(const std::string& path)
 
 void App::NewScene()
 {
-	EditorLayer->m_SelectedActor = nullptr;
+	EditorLayer->m_SelectedGameObject = nullptr;
 	delete m_currentScene;
 	m_currentScene = new Scene();
 	m_currentScene->Begin();

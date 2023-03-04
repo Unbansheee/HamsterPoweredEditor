@@ -9,6 +9,7 @@ public class Parser
     private string SourceDirectory { get; set; }
     private string OutputDirectory { get; set; }
     
+
     public Parser(string sourceFolder, string outputFolder)
     {
         SourceDirectory = sourceFolder;
@@ -20,14 +21,14 @@ public class Parser
         classes.Clear();
 
         var files = RetrieveHeaders(SourceDirectory);
-        
 
-        
-        //Parse all files in parallel
-        Parallel.ForEach(files, filePath =>
+
+        //Parse all files
+        foreach(var filePath in files)
         {
             Console.WriteLine("Parsing " + filePath);
             var file = File.ReadAllText(filePath);
+            
 
             if (file.Contains("SERIALIZEDCLASS"))
             {
@@ -38,7 +39,7 @@ public class Parser
                     WriteToJSON(metaClass, OutputDirectory);
                 }
             }
-        });
+        };
         
         
         
@@ -54,12 +55,17 @@ public class Parser
     private List<string> RetrieveHeaders(string path)
     {
         List<string> files = new List<string>();
+
         foreach (string filePath in Directory.GetFiles(path, "*.h", SearchOption.AllDirectories))
         {
-            if (!filePath.Contains(".generated")) files.Add(filePath);
+            if (!filePath.Contains(".generated"))
+            {
+                files.Add(filePath);
+            }
         }
         return files;
     }
+    
 
 
 

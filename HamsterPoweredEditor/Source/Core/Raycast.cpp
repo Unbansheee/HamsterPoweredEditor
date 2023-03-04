@@ -2,14 +2,13 @@
 
 #include "App.h"
 #include "Scene.h"
-#include "Actors/ClothActor.h"
-#include "Actors/DynamicMeshActor.h"
+
 
 Raycast::Raycast(const glm::vec3& origin, const glm::vec3& direction, Hit& hit, float maxDistance)
 {
     // Get actors from the scene
-    auto actors = App::Instance().m_currentScene->GetActorsOfClass<DynamicMeshActor>();
 
+    /*
     for (auto actor : actors)
     {
         if (!actor->TraceEnabled) continue;
@@ -102,5 +101,6 @@ Raycast::Raycast(const glm::vec3& origin, const glm::vec3& direction, Hit& hit, 
         }
         
     }
+    */
     
 }

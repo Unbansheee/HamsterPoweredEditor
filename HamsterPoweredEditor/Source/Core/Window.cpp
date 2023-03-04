@@ -58,7 +58,7 @@ Window::Window(std::string title, int _width, int _height) : m_Title(title), m_W
 
     glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xoffset, double yoffset)
         {
-            Input::m_MouseScrollDelta = yoffset;
+            Input::m_MouseScrollDelta = (float)yoffset;
         });
     
     Input::SetContext(this);

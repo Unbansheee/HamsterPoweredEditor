@@ -9,3 +9,4 @@ void Serialize(nlohmann::json& j) override{ \
 	j["Type"] = "PointLightComponent"; \
 	j["m_PointLight"] = m_PointLight; \
 } 
+

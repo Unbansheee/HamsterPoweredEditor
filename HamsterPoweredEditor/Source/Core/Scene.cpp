@@ -4,23 +4,10 @@
 #include <iostream>
 
 #include "Timer.h"
-#include "Actors/AnimatedQuad.h"
-#include "Actors/Hexagon.h"
 
-#include "Actors/Actor.h"
-#include "Actors/Quad.h"
-#include "Actors/TextLabel.h"
-#include "Actors/MeshActor.h"
 #include "json.hpp"
-#include "Actors/ClothActor.h"
-#include "Actors/DirectionalLight.h"
-#include "Actors/DynamicMeshActor.h"
 #include "Actors/NameComponent.h"
-#include "Actors/PointLight.h"
-#include "Actors/RimLitActor.h"
-#include "Actors/ShinyMesh.h"
-#include "Actors/SkyboxActor.h"
-#include "Actors/Spinner.h"
+#include "Actors/TransformComponent.h"
 
 
 class RimLitActor;
@@ -28,10 +15,13 @@ class RimLitActor;
 Scene::Scene()
 {
     //Temporary editor camera. This should be moved to Scene or UI Layer later
-    m_editorCamera = new CameraController(CameraController::CameraType::ORTHO, (float)Renderer::GetViewportSize().x / (float)Renderer::GetViewportSize().x);
-    m_editorCamera->SetPosition(glm::vec3(0.0f, 0.0f, 3.0f));
-    m_editorCamera->SetName("Editor Camera");
-    m_editorCamera->SetZoom(2.5f);
+    m_editorCamera.SetupComponents();
+    m_editorCamera.Begin();
+    m_cameraController = m_editorCamera.AddComponent<CameraController>();
+    m_editorCamera.GetTransform()->SetWorldPosition(glm::vec3(0.0f, 0.0f, 3.0f));
+    m_editorCamera.GetComponent<NameComponent>()->SetName("Editor Camera");
+    m_cameraController->SetZoom(2.5f);
+    m_cameraController->SetCameraType(CameraController::CameraType::PERSPECTIVE);
 
     m_gameObjects.reserve(1024);
 
@@ -42,12 +32,9 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-    for (auto& actor : m_actors)
-    { 
-        delete actor;
-    }
 
-    delete m_editorCamera;
+
+    //delete m_editorCamera;
     
 }
 
@@ -61,17 +48,14 @@ void Scene::Update(Timestep ts)
 
         
         m_fixedUpdateAccumulator -= m_fixedUpdateInterval;
-        for (auto& actor : m_actors)
+        
+        for (GameObject& gameobject : m_gameObjects)
         {
-            actor->FixedUpdate(m_fixedUpdateInterval);
+            gameobject.FixedUpdate(m_fixedUpdateInterval);
         }
     }
     
-    m_editorCamera->Update(ts);
-    for (Actor* actor : m_actors)
-    {
-        actor->Update(ts);
-    }
+    m_editorCamera.Update(ts);
 
     for (GameObject& gameObject : m_gameObjects)
     {
@@ -83,10 +67,6 @@ void Scene::Update(Timestep ts)
 
 void Scene::Render()
 {
-    for (Actor* actor : m_actors)
-    {
-        actor->Draw();
-    }
 
     for (GameObject& gameObject : m_gameObjects)
     {
@@ -97,17 +77,21 @@ void Scene::Render()
 
 void Scene::Begin()
 {
-    
-    for (Actor* actor : m_actors)
+
+    for (GameObject& gameObject : m_gameObjects)
     {
-        actor->Begin();
+        gameObject.Begin();
     }
+
+    m_initialized = true;
     
 }
 
-void Scene::DestroyActor(Actor* actor)
+
+
+void Scene::DestroyObject(GameObject* object)
 {
-    m_actorsToDestroy.push_back(actor);
+    m_objectsToDestroy.push_back(object);
 }
 
 void Scene::SetColour(glm::vec4 colour)
@@ -121,6 +105,11 @@ GameObject& Scene::SpawnObject()
     auto& object = m_gameObjects.emplace_back();
     object.SetupComponents();
     object.GetComponent<NameComponent>()->SetName("New Object");
+    object.m_Scene = this;
+    if (m_initialized)
+    {
+        object.Begin();
+    }
     return object;
 }
 
@@ -128,18 +117,15 @@ void Scene::SerializeScene(const std::string& filepath)
 {
     
     nlohmann::json j;
-    j["EditorCamera"] = m_editorCamera->Serialize();
+    nlohmann::json cam;
+    m_editorCamera.Serialize(cam);
+    
+    j["EditorCamera"] = cam;
 
     j["SceneColour"] = m_sceneColour;
     j["AmbientIntensity"] = Renderer::m_AmbientLightStrength;
     j["RenderMode"] = Renderer::GetRenderMode();
     
-    j["Actors"] = nlohmann::json::array();
-    for (Actor* actor : m_actors)
-    {
-        nlohmann::json actorJson = actor->Serialize();
-        j["Actors"].push_back(actorJson);
-    }
 
     j["GameObjects"] = nlohmann::json::array();
     for (GameObject& gameObject : m_gameObjects)
@@ -163,7 +149,7 @@ void Scene::DeserializeScene(const std::string& filepath)
 
     if (j.contains("EditorCamera"))
     {
-        m_editorCamera->Deserialize(j["EditorCamera"]);
+        m_editorCamera.Deserialize(j["EditorCamera"]);
     }
 
     if (j.contains("SceneColour"))
@@ -182,75 +168,7 @@ void Scene::DeserializeScene(const std::string& filepath)
         Renderer::m_AmbientLightStrength = j["AmbientIntensity"];
     }
     
-
-     for (auto& actorJson : j["Actors"])
-    {
-        std::string actorType = actorJson["ActorType"];
-        Actor* actor = nullptr;
-        if (actorType == "Actor")
-        {
-            actor = SpawnActor<Actor>();
-        }
-        else if (actorType == "Quad")
-        {
-            actor = SpawnActor<Quad>();
-        }
-        else if (actorType == "AnimatedQuad")
-        {
-            actor = SpawnActor<AnimatedQuad>();
-        }
-        else if (actorType == "Hexagon")
-        {
-            actor = SpawnActor<Hexagon>();
-        }
-        else if (actorType == "Mesh" || actorType == "MeshActor")
-        {
-            actor = SpawnActor<MeshActor>();
-        }
-        else if (actorType == "TextLabel")
-        {
-            actor = SpawnActor<TextLabel>();
-        }
-         else if (actorType == "DirLight")
-         {
-             actor = SpawnActor<DirLight>();
-         }
-         else if (actorType == "PointLight")
-         {
-             actor = SpawnActor<PointLight>();
-         }
-         else if (actorType == "Spinner")
-         {
-             actor = SpawnActor<Spinner>();
-         }
-         else if (actorType == "ClothActor")
-         {
-             actor = SpawnActor<ClothActor>();
-         }
-         else if (actorType == "DynamicMeshActor")
-         {
-             actor = SpawnActor<DynamicMeshActor>();
-         }
-         else if (actorType == "SkyboxActor")
-         {
-             actor = SpawnActor<SkyboxActor>();
-         }
-         else if (actorType == "ShinyMesh")
-         {
-             actor = SpawnActor<ShinyMesh>();
-         }
-         else if (actorType == "RimLitActor")
-         {
-             actor = SpawnActor<RimLitActor>();
-         }
-
-        else
-        {
-            std::cout << "Unknown actor type: {0}" << actorType << std::endl;
-            continue;
-        }
-        actor->Deserialize(actorJson);
-    }
+    
 
     for (auto gameObjectJson : j["GameObjects"])
     {
@@ -258,33 +176,11 @@ void Scene::DeserializeScene(const std::string& filepath)
         auto test = object.components;
         object.Deserialize(gameObjectJson);
     }
-
     
-    while (m_parentChildQueue.size() > 0)
-    {
-        Actor* parent = GetActorByID(m_parentChildQueue.front().first);
-        Actor* child = GetActorByID(m_parentChildQueue.front().second);
-        if (parent && child)
-        {
-            parent->AddChild(child);
-        }
-        m_parentChildQueue.pop();
-    }
     
     
 }
 
-Actor* Scene::GetActorByID(const HP::UUID& id)
-{
-    for (Actor* actor : m_actors)
-    {
-        if (actor->GetID() == id)
-        {
-            return actor;
-        }
-    }
-    return nullptr;
-}
 
 
 void Scene::SetParentChild(const HP::UUID& parentID, const HP::UUID& childID)
@@ -295,13 +191,12 @@ void Scene::SetParentChild(const HP::UUID& parentID, const HP::UUID& childID)
 
 void Scene::DeferredDestroy()
 {
-    for (int i = 0; i < m_actorsToDestroy.size(); i++)
+
+    for (int i = 0; i < m_objectsToDestroy.size(); i++)
     {
-        auto it = std::find(m_actors.begin(), m_actors.end(), m_actorsToDestroy[i]);
-        m_actorsToDestroy[i]->DetachFromParent();
-        delete *it;
-        m_actors.erase(it);
-        
+        auto it = std::find(m_gameObjects.begin(), m_gameObjects.end(), *m_objectsToDestroy[i]);
+        m_objectsToDestroy[i]->RemoveFromParent();
+        m_gameObjects.erase(it);
     }
-    m_actorsToDestroy.clear();
+    m_objectsToDestroy.clear();
 }

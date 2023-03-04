@@ -9,7 +9,8 @@
 
 TransformComponent::TransformComponent(GameObject* owner) : Component(owner)
 {
-
+    UpdateTransform();
+    m_initialized = true;
     
 }
 
@@ -198,40 +199,46 @@ void TransformComponent::RemoveAllChildren()
     isDirty = true;
 }
 
-const glm::vec3& TransformComponent::GetWorldPosition() const
+void TransformComponent::DeserializeCustom(nlohmann::json& j)
+{
+    Component::DeserializeCustom(j);
+    UpdateTransform();
+}
+
+glm::vec3 TransformComponent::GetWorldPosition() const
 {
     return glm::vec3(GetWorldTransform() * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 }
 
-const glm::vec3& TransformComponent::GetWorldRotation() const
+glm::vec3 TransformComponent::GetWorldRotation() const
 {
     // get rotation quaternion against world transform
     glm::quat rotation = glm::quat_cast(GetWorldTransform());
     return glm::eulerAngles(rotation);
 }
 
-const glm::vec3& TransformComponent::GetWorldScale() const
+glm::vec3 TransformComponent::GetWorldScale() const
 {
     // get scale against world transform
     return glm::vec3(glm::length(GetWorldTransform()[0]), glm::length(GetWorldTransform()[1]), glm::length(GetWorldTransform()[2]));
 }
 
-const glm::vec3& TransformComponent::GetLocalPosition() const
+glm::vec3 TransformComponent::GetLocalPosition() const
 {
     return LocalPosition;
 }
 
-const glm::vec3& TransformComponent::GetLocalRotation() const
+glm::vec3 TransformComponent::GetLocalRotation() const
 {
     return LocalRotation;
 }
 
-const glm::vec3& TransformComponent::GetLocalScale() const
+glm::vec3 TransformComponent::GetLocalScale() const
 {
     return LocalScale;
 }
 
-const glm::mat4& TransformComponent::GetWorldTransform() const
+glm::mat4 TransformComponent::GetWorldTransform() const
 {
     if (m_Parent)
     {

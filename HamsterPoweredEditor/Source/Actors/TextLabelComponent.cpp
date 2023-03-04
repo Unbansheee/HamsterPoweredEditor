@@ -1,20 +1,19 @@
-﻿#include "TextLabel.h"
+﻿#include "TextLabelComponent.h"
 
 #include <glm/ext/matrix_clip_space.hpp>
 
+#include "TransformComponent.h"
 #include "Core/App.h"
 #include "Core/Input.h"
 #include "Core/Window.h"
 #include "UI/HPImGui.h"
-
 
 unsigned int indices[3 * 2] = {
     0, 1, 2,   // first triangle
     0, 2, 3    // second triangle
 };  
 
-TextLabel::TextLabel(const std::string& text, const std::string& fontPath, int fontSize, const glm::vec3& color,
-                     const glm::vec3& position)
+TextLabelComponent::TextLabelComponent(GameObject* owner) : Component(owner)
 {
     VertexBufferLayout layout = {
         {ShaderDataType::Float3, "Position"},
@@ -22,12 +21,6 @@ TextLabel::TextLabel(const std::string& text, const std::string& fontPath, int f
         {ShaderDataType::Float2, "TexCoord"},
         {ShaderDataType::Float, "TextureID"}
     };
-
-    m_BaseColor = color;
-    m_Text = text;
-    m_FontSize = fontSize;
-    m_FontPath = fontPath;
-    m_Font = Font::LoadFont(fontPath, fontSize);
 
 
     m_Projection = glm::ortho(0.0f, (float)App::Instance().window->GetWidth(), 0.0f, (float)App::Instance().window->GetHeight());
@@ -42,71 +35,24 @@ TextLabel::TextLabel(const std::string& text, const std::string& fontPath, int f
     m_VAO->SetIndexBuffer(m_IBO);
     
     
-    SetText(text);
-    SetCurrentColor(color);
-    SetPosition(position);
-    
     m_Initialized = true;
-
-    SetRenderSettings({GL_TRIANGLES, true, true, false, true});
+    
 
     m_VAO->Unbind();
     m_VBO->Unbind();
     m_IBO->Unbind();
 }
 
-void TextLabel::SetText(const std::string& text)
+void TextLabelComponent::Begin()
 {
-    m_Text = text;
-    UpdateBuffers();
+    Component::Begin();
+    m_Font = Font::LoadFont(m_FontPath, m_FontSize);
 }
 
-void TextLabel::SetCurrentColor(const glm::vec3& color)
+void TextLabelComponent::Update(Timestep ts)
 {
-    m_Color = color;
-    UpdateBuffers();
-}
+    Component::Update(ts);
 
-void TextLabel::SetBaseColor(const glm::vec3& color)
-{
-    m_BaseColor = color;
-}
-
-void TextLabel::SetHoverColor(const glm::vec3& color)
-{
-    m_HoverColor = color;
-}
-
-void TextLabel::SetClickColor(const glm::vec3& color)
-{
-    m_PressedColor = color;
-}
-
-void TextLabel::SetFont(Font* font)
-{
-    m_Font = font;
-    UpdateBuffers();
-
-}
-
-Font* TextLabel::GetFont() const
-{
-    return m_Font;
-}
-
-void TextLabel::Begin()
-{
-}
-
-void TextLabel::OnDestroy()
-{
-}
-
-void TextLabel::Update(Timestep ts)
-{
-    Actor::Update(ts);
-
-    
     glm::vec2 MousePosAbsolute = Input::GetMousePositionAbsolute();
     glm::vec2 viewportSize = Renderer::GetViewportSize();
     glm::vec2 viewportLocationAbsolute = Renderer::GetViewportPosition();
@@ -140,13 +86,11 @@ void TextLabel::Update(Timestep ts)
     }
     else SetCurrentColor(m_BaseColor);
     
-    
+    auto transform = Owner->GetComponent<TransformComponent>();
     
     if (m_Dragging)
     {
-        if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {SetScale(GetScale() * 1.1f); mouseoffset *= 1.1f; }
-        if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {SetScale(GetScale() * 0.9f); mouseoffset *= 0.9f; }
-        SetPosition({ mousePosInViewport.x - mouseoffset.x, mousePosInViewport.y - mouseoffset.y, 0.0f });
+        transform->SetLocalPosition({ mousePosInViewport.x - mouseoffset.x, mousePosInViewport.y - mouseoffset.y, 0.0f });
         SetCurrentColor(m_PressedColor);
     }
     if (!Input::IsMouseButtonDown(Mouse::Left) && m_Dragging)
@@ -160,28 +104,30 @@ void TextLabel::Update(Timestep ts)
     if (m_sideScroll)
     {
         // Scrolling text
-        SetPosition({ GetPosition().x + m_scrollSpeed.x * ts.GetSeconds(), GetPosition().y + m_scrollSpeed.y * ts.GetSeconds(), GetPosition().z });
-        if (GetPosition().y > Renderer::GetViewportSize().y)
-            SetPosition({ GetPosition().x, -m_bounds.height, GetPosition().z });
-        if (GetPosition().x > Renderer::GetViewportSize().x)
-            SetPosition({ -m_bounds.width, GetPosition().y, GetPosition().z });
+        transform->SetLocalPosition({ transform->GetLocalPosition().x + m_scrollSpeed.x * ts.GetSeconds(), transform->GetLocalPosition().y + m_scrollSpeed.y * ts.GetSeconds(), transform->GetLocalPosition().z });
+        if (transform->GetLocalPosition().y > Renderer::GetViewportSize().y)
+            transform->SetLocalPosition({ transform->GetLocalPosition().x, -m_bounds.height, transform->GetLocalPosition().z });
+        if (transform->GetLocalPosition().x > Renderer::GetViewportSize().x)
+            transform->SetLocalPosition({ -m_bounds.width, transform->GetLocalPosition().y, transform->GetLocalPosition().z });
     }
 }
 
-void TextLabel::Draw()
+void TextLabelComponent::Render(const glm::mat4& transform)
 {
-    Actor::Draw();
+    Component::Render(transform);
 
+    auto transformComponent = Owner->GetComponent<TransformComponent>();
+    
     m_Projection = glm::ortho(0.0f, Renderer::GetViewportSize().x, 0.0f, Renderer::GetViewportSize().y);
     m_Shader->Bind();
     m_Shader->SetUniformMat4f("ProjectionMat", m_Projection);
 
-    m_bounds.x = GetPosition().x;
-    m_bounds.y = GetPosition().y;
-    m_bounds.height = m_unscaledBounds.height * GetScale().y;
-    m_bounds.width = m_unscaledBounds.width * GetScale().x;
+    m_bounds.x = transformComponent->GetLocalPosition().x;
+    m_bounds.y = transformComponent->GetLocalPosition().y;
+    m_bounds.height = m_unscaledBounds.height * transformComponent->GetLocalScale().y;
+    m_bounds.width = m_unscaledBounds.width * transformComponent->GetLocalScale().x;
 
-    glm::mat4 scaleTransform = m_transform;
+    glm::mat4 scaleTransform = transformComponent->GetWorldTransform();
     if (!m_Dragging && mouseOverlapping && m_scaleBounce)
     {
 
@@ -192,13 +138,12 @@ void TextLabel::Draw()
     }
     m_Shader->Unbind();
     
-    Renderer::Submit(m_Shader, m_VAO, scaleTransform, textures, m_renderSettings);
-    
+    Renderer::Submit(m_Shader, m_VAO, scaleTransform, textures, m_RenderSettings);
 }
 
-void TextLabel::OnInspectorGUI()
+void TextLabelComponent::OnInspectorGUI()
 {
-    Actor::OnInspectorGUI();
+    Component::OnInspectorGUI();
     if (ImGui::InputText("Text", &m_Text))
     {
         SetText(m_Text);
@@ -236,9 +181,18 @@ void TextLabel::OnInspectorGUI()
     
 }
 
-void TextLabel::UpdateBuffers()
+void TextLabelComponent::SerializeCustom(nlohmann::json& j)
 {
-    
+    Component::SerializeCustom(j);
+}
+
+void TextLabelComponent::DeserializeCustom(nlohmann::json& j)
+{
+    Component::DeserializeCustom(j);
+}
+
+void TextLabelComponent::UpdateBuffers()
+{
     float maxwidth = 0.f, maxheight = 0.f;
     glm::vec3 CharacterOrigin = {0, 0, 0};
     textures.clear();
@@ -252,8 +206,8 @@ void TextLabel::UpdateBuffers()
         Font::FontChar FontCharacter = m_Font->GetChar(*TextCharacter);
         float PosX = CharacterOrigin.x + FontCharacter.Bearing.x;
         float PosY = CharacterOrigin.y - (FontCharacter.texture->GetHeight() - FontCharacter.Bearing.y);
-        float Width = FontCharacter.texture->GetWidth();
-        float Height = FontCharacter.texture->GetHeight();
+        float Width = (float)FontCharacter.texture->GetWidth();
+        float Height = (float)FontCharacter.texture->GetHeight();
 
         int texindex = 0;
         for (int i = 0; i < textures.size(); i++)
@@ -267,7 +221,7 @@ void TextLabel::UpdateBuffers()
         if (texindex == 0)
         {
             textures.push_back(FontCharacter.texture);
-            texindex = textures.size() - 1;
+            texindex = (int)textures.size() - 1;
         }
         
         float vertices[4][9] = {
@@ -302,52 +256,36 @@ void TextLabel::UpdateBuffers()
     m_unscaledBounds.width = maxwidth;
 }
 
-TextLabel::~TextLabel()
+void TextLabelComponent::SetText(const std::string& text)
 {
+    m_Text = text;
+    UpdateBuffers();
 }
 
-nlohmann::json TextLabel::Serialize()
+void TextLabelComponent::SetCurrentColor(const glm::vec3& color)
 {
-    auto json = Actor::Serialize();
-    json["Text"] = m_Text;
-    json["FontPath"] = m_FontPath;
-    json["ScreenSpace"] = m_ScreenSpace;
-    json["BaseColor"] = m_BaseColor;
-    json["HoverColor"] = m_HoverColor;
-    json["PressedColor"] = m_PressedColor;
-    json["ScaleBounce"] = m_scaleBounce;
-    json["ScrollText"] = m_sideScroll;
-    json["ScrollSpeed"] = m_scrollSpeed;
-    return json;
+    m_Color = color;
+    UpdateBuffers();
 }
 
-void TextLabel::Deserialize(nlohmann::json& j)
+void TextLabelComponent::SetBaseColor(const glm::vec3& color)
 {
-    Actor::Deserialize(j);
-    m_Text = j["Text"];
-    SetText(m_Text);
-    m_FontPath = j["FontPath"];
-    SetFont(Font::LoadFont(m_FontPath, 100));
-    m_ScreenSpace = j["ScreenSpace"];
-    m_BaseColor = j["BaseColor"];
-    m_HoverColor = j["HoverColor"];
-    m_PressedColor = j["PressedColor"];
-    if (j.contains("ScaleBounce"))
-    {
-        m_scaleBounce = j["ScaleBounce"];
-    }
-    if (j.contains("ScrollText"))
-    {
-        m_sideScroll = j["ScrollText"];
-    }
-    if (j.contains("ScrollSpeed"))
-    {
-        m_scrollSpeed = j["ScrollSpeed"];
-    }
-
-    
+    m_BaseColor = color;
 }
 
-void TextLabel::FixedUpdate(double ts)
+void TextLabelComponent::SetHoverColor(const glm::vec3& color)
 {
+    m_HoverColor = color;
+}
+
+void TextLabelComponent::SetClickColor(const glm::vec3& color)
+{
+    m_PressedColor = color;
+}
+
+void TextLabelComponent::SetFont(Font* font)
+{
+    m_Font = font;
+    UpdateBuffers();
+
 }

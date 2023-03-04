@@ -15,3 +15,4 @@ void Serialize(nlohmann::json& j) override{ \
 	j["LocalScale"] = LocalScale; \
 	j["m_lockedScale"] = m_lockedScale; \
 } 
+

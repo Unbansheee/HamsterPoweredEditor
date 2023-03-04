@@ -9,3 +9,4 @@ void Serialize(nlohmann::json& j) override{ \
 	j["Type"] = "BoxCollider"; \
 	j["m_Size"] = m_Size; \
 } 
+

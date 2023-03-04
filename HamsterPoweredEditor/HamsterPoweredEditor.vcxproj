@@ -126,6 +126,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)Source\;$(ProjectDir)include\imgui\;$(ProjectDir)include\;$(ProjectDir)vendor\;$(ProjectDir)include\gsl\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,6 +155,7 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessToFile>false</PreprocessToFile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -168,9 +170,9 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
       <Command>xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Debug\Resources"
 xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Command>
     </PostBuildEvent>
-    <PreLinkEvent>
+    <PreBuildEvent>
       <Command>$(SolutionDir)HamsterPoweredReflection\bin\Release\net6.0\HamsterPoweredReflection.exe</Command>
-    </PreLinkEvent>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="include\imgui\imgui.cpp" />
@@ -182,28 +184,19 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClCompile Include="include\imgui\imgui_tables.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="include\imgui\imnodes.cpp" />
-    <ClCompile Include="Source\Actors\Actor.cpp" />
-    <ClCompile Include="Source\Actors\AnimatedQuad.cpp" />
-    <ClCompile Include="Source\Actors\ClothActor.cpp" />
+    <ClCompile Include="Source\Actors\AnimatedSpriteComponent.cpp" />
+    <ClCompile Include="Source\Actors\ClothComponent.cpp" />
     <ClCompile Include="Source\Actors\Component.cpp" />
+    <ClCompile Include="Source\Actors\DirectionalLightComponent.cpp" />
     <ClCompile Include="Source\Actors\GameObject.cpp" />
     <ClCompile Include="Source\Actors\MeshComponent.cpp" />
     <ClCompile Include="Source\Actors\NameComponent.cpp" />
     <ClCompile Include="Source\Actors\PointLightComponent.cpp" />
     <ClCompile Include="Source\Actors\ProceduralMeshComponent.cpp" />
-    <ClCompile Include="Source\Actors\RimLitActor.cpp" />
-    <ClCompile Include="Source\Actors\ShinyMesh.cpp" />
-    <ClCompile Include="Source\Actors\SkyboxActor.cpp" />
-    <ClCompile Include="Source\Actors\DirectionalLight.cpp" />
-    <ClCompile Include="Source\Actors\DynamicMeshActor.cpp" />
-    <ClCompile Include="Source\Actors\Hexagon.cpp" />
-    <ClCompile Include="Source\Actors\MeshActor.cpp" />
-    <ClCompile Include="Source\Actors\Object.cpp" />
     <ClCompile Include="Source\Actors\CameraController.cpp" />
-    <ClCompile Include="Source\Actors\PointLight.cpp" />
-    <ClCompile Include="Source\Actors\Quad.cpp" />
-    <ClCompile Include="Source\Actors\Spinner.cpp" />
-    <ClCompile Include="Source\Actors\TextLabel.cpp" />
+    <ClCompile Include="Source\Actors\SkyboxComponent.cpp" />
+    <ClCompile Include="Source\Actors\SpriteComponent.cpp" />
+    <ClCompile Include="Source\Actors\TextLabelComponent.cpp" />
     <ClCompile Include="Source\Actors\TransformComponent.cpp" />
     <ClCompile Include="Source\Core\App.cpp" />
     <ClCompile Include="Source\Core\BoxCollider.cpp" />
@@ -261,28 +254,19 @@ xcopy /E /Y "$(ProjectDir)Resources" "$(SolutionDir)x64\Release\Resources"</Comm
     <ClInclude Include="include\imgui\imstb_truetype.h" />
     <ClInclude Include="include\PerlinNoise.hpp" />
     <ClInclude Include="include\stb_image\stb_image.h" />
-    <ClInclude Include="Source\Actors\Actor.h" />
-    <ClInclude Include="Source\Actors\AnimatedQuad.h" />
-    <ClInclude Include="Source\Actors\ClothActor.h" />
+    <ClInclude Include="Source\Actors\AnimatedSpriteComponent.h" />
+    <ClInclude Include="Source\Actors\ClothComponent.h" />
     <ClInclude Include="Source\Actors\Component.h" />
+    <ClInclude Include="Source\Actors\DirectionalLightComponent.h" />
     <ClInclude Include="Source\Actors\GameObject.h" />
     <ClInclude Include="Source\Actors\MeshComponent.h" />
     <ClInclude Include="Source\Actors\NameComponent.h" />
     <ClInclude Include="Source\Actors\PointLightComponent.h" />
     <ClInclude Include="Source\Actors\ProceduralMeshComponent.h" />
-    <ClInclude Include="Source\Actors\RimLitActor.h" />
-    <ClInclude Include="Source\Actors\ShinyMesh.h" />
-    <ClInclude Include="Source\Actors\SkyboxActor.h" />
-    <ClInclude Include="Source\Actors\DirectionalLight.h" />
-    <ClInclude Include="Source\Actors\DynamicMeshActor.h" />
-    <ClInclude Include="Source\Actors\Hexagon.h" />
-    <ClInclude Include="Source\Actors\MeshActor.h" />
-    <ClInclude Include="Source\Actors\Object.h" />
     <ClInclude Include="Source\Actors\CameraController.h" />
-    <ClInclude Include="Source\Actors\PointLight.h" />
-    <ClInclude Include="Source\Actors\Quad.h" />
-    <ClInclude Include="Source\Actors\Spinner.h" />
-    <ClInclude Include="Source\Actors\TextLabel.h" />
+    <ClInclude Include="Source\Actors\SkyboxComponent.h" />
+    <ClInclude Include="Source\Actors\SpriteComponent.h" />
+    <ClInclude Include="Source\Actors\TextLabelComponent.h" />
     <ClInclude Include="Source\Actors\TransformComponent.h" />
     <ClInclude Include="Source\Core\App.h" />
     <ClInclude Include="Source\Core\BoxCollider.h" />

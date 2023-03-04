@@ -463,4 +463,5 @@ void ImGuiLayer::Save()
 void ImGuiLayer::Load()
 {
 	ifd::FileDialog::Instance().Open("OpenScene", "Open Scene", "Scene (*.json;*.scene){.json,.scene}", false, "Resources/Scenes");
+	m_SelectedGameObject = nullptr;
 }

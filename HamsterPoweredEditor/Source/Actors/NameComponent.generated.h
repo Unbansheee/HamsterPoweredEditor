@@ -9,3 +9,4 @@ void Serialize(nlohmann::json& j) override{ \
 	j["Type"] = "NameComponent"; \
 	j["m_name"] = m_name; \
 } 
+

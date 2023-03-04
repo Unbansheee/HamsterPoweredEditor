@@ -65,7 +65,7 @@ GLIndexBuffer::GLIndexBuffer(uint32_t* indices, uint32_t count, uint32_t drawMod
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, m_DrawMode);
 }
 
-GLIndexBuffer::GLIndexBuffer(const std::vector<uint32_t>& indices, uint32_t drawMode) : m_Count(indices.size()), m_DrawMode(drawMode)
+GLIndexBuffer::GLIndexBuffer(const std::vector<uint32_t>& indices, uint32_t drawMode) : m_Count((uint32_t)indices.size()), m_DrawMode(drawMode)
 {
     glCreateBuffers(1, &m_RendererID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
@@ -99,5 +99,5 @@ void GLIndexBuffer::UpdateData(uint32_t* indices, uint32_t count, uint32_t offse
 void GLIndexBuffer::UpdateData(const std::vector<uint32_t>& indices, uint32_t offset)
 {
     glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, indices.size() * sizeof(uint32_t), indices.data());
-    m_Count = (offset / sizeof(uint32_t)) + indices.size();
+    m_Count = (offset / sizeof(uint32_t)) + (uint32_t)indices.size();
 }

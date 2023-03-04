@@ -3,7 +3,7 @@
 #include "Physics.h"
 #include "Collider.generated.h"
 
-SERIALIZEDCLASS
+SERIALIZEDCLASS(Category = "Physics")
 
 //Collider for physx to use
 class Collider : public Component
@@ -24,7 +24,7 @@ public:
 
 
     //Setters
-
+ 
 
     SERIALIZEDFUNCTION void SetActorLocation(const glm::vec3& location);
     SERIALIZEDFUNCTION void SetActorRotation(const glm::vec3& rotation);
@@ -37,3 +37,4 @@ protected:
     
     
 };
+#undef GENERATED

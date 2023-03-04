@@ -8,7 +8,6 @@
 #include "Core/Window.h"
 
 class Timestep;
-class Actor;
 class GameObject;
 
 enum resizeDirection {
@@ -50,7 +49,6 @@ public:
 	bool wantsToResize = false;
 	int mouseRel[2];
 	resizeDirection resizeDir = RESIZE_NONE;
-	Actor* m_SelectedActor = nullptr;
 	GameObject* m_SelectedGameObject = nullptr;
 };
 

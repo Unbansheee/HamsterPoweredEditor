@@ -1,9 +1,8 @@
 ﻿#pragma once
 #include "Component.h"
-#include "PointLight.h"
 #include "PointLightComponent.generated.h"
 
-SERIALIZEDCLASS
+SERIALIZEDCLASS(Category = "Lights")
 
 class PointLightComponent : public Component
 {
@@ -33,3 +32,5 @@ public:
 private:
     SERIALIZEDVAR PointLightData m_PointLight;
 };
+
+#undef GENERATED

@@ -3,6 +3,9 @@
 #include <string>
 #include <vector>
 
+#include "ComponentRegistry.generated.h"
+#include "Scene.h"
+
 
 struct RegisteredComponent
 {
@@ -28,9 +31,12 @@ public:
 
         
         component.name = className;
+        component.constructor = &GameObject::AddComponent<T>();
         m_registry[className] = component;
         
     }
+
+    //GENERATED_REGISTRY()
 
     inline static std::map<std::string, RegisteredComponent> m_registry;
     

@@ -45,6 +45,7 @@ void Node::InitializeNodes(std::string jsonPath)
     }
 
     // print out all the nodes
+    /*
     for (auto& node : nodes)
     {
         std::cout << node.second->name() << std::endl;
@@ -59,4 +60,5 @@ void Node::InitializeNodes(std::string jsonPath)
             std::cout << output.name << " " << output.type << std::endl;
         }
     }
+    */
 }

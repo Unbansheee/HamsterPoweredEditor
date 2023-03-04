@@ -16,9 +16,9 @@ void MeshComponent::Render(const glm::mat4& transform)
 void MeshComponent::OnInspectorGUI()
 {
     Component::OnInspectorGUI();
-    std::string path = m_Mesh.GetPath();
+    std::string path = m_MeshPath;
     if (ImGui::OpenFilePath("Mesh", path, "Open File", "Image File (*.obj;*.fbx;){.obj,.fbx},.*", "Resources/Meshes"))
     {
-        m_Mesh.Load(path);
+        LoadMesh(path);
     }
 }

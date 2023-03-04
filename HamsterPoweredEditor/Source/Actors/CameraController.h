@@ -1,10 +1,15 @@
 ﻿#pragma once
-#include "Actor.h"
+#include "Component.h"
 #include "Rendering/OrthographicCamera.h"
+#include "CameraController.generated.h"
 
+SERIALIZEDCLASS(Category = "Rendering")
 //Perspective camera rotation is currently broken
-class CameraController : public Actor
+class CameraController : public Component
 {
+    GENERATED()
+
+    
 public:
     enum class CameraType
     {
@@ -14,11 +19,11 @@ public:
     
 public:
     CameraController(CameraType type, float aspectRatio);
+    CameraController(GameObject* owner);
     void SetCameraType(CameraType type);
     void HandleMouseMovement(float x, float y);
     void Update(Timestep ts) override;
     void Begin() override;
-    void OnDestroy() override;
     float GetZoom() const { return m_CameraType == CameraType::ORTHO ? m_OrthoZoom : m_Zoom; }
     void SetZoom(float zoom);
     void Move(glm::vec3 offset);
@@ -33,18 +38,21 @@ public:
 protected:
     void OnInspectorGUI() override;
 public:
-    nlohmann::json Serialize() override;
-    void Deserialize(nlohmann::json& j) override;
+
+    void DeserializeCustom(nlohmann::json& j) override;
+    void SerializeCustom(nlohmann::json& j) override;
     void FixedUpdate(double ts) override;
 
 private:
-    float yaw = 0.0f;
-    float pitch = 0.0f;
-    CameraType m_CameraType;
-    float dt = 0;
-    float m_Zoom = 75.f;
-    float m_OrthoZoom = 2.5f;
+    SERIALIZEDVAR float yaw = 0.0f;
+    SERIALIZEDVAR float pitch = 0.0f;
+    SERIALIZEDVAR CameraType m_CameraType;
+    SERIALIZEDVAR float dt = 0;
+    SERIALIZEDVAR float m_Zoom = 75.f;
+    SERIALIZEDVAR float m_OrthoZoom = 2.5f;
     float m_AspectRatio;
-    float m_PerspMoveSpeed = 1.f;
+    SERIALIZEDVAR float m_PerspMoveSpeed = 1.f;
     View* m_Camera;
 };
+
+#undef GENERATED

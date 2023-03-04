@@ -4,8 +4,8 @@
 
 #include <glm/ext/matrix_projection.hpp>
 
-#include "Actors/MeshActor.h"
-#include "Actors/SkyboxActor.h"
+#include "Actors/SkyboxComponent.h"
+#include "Actors/TransformComponent.h"
 #include "Core/App.h"
 #include "Core/Raycast.h"
 #include "Core/Timer.h"
@@ -49,6 +49,7 @@ void Renderer::EndScene()
     m_PointLights.clear();
     m_DirectionalLights.clear();
     m_RenderObjects.clear();
+    m_Skybox = nullptr;
 }
 
 void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform, const std::vector<Texture*>& textures, const RenderSettings& settings, const std::function<void(std::shared_ptr<Shader>)>& uniforms)
@@ -66,6 +67,17 @@ void Renderer::Submit(const DirectionalLightData& light)
 {
     m_DirectionalLights.push_back(light);
 }
+
+void Renderer::SubmitSkybox(SkyboxComponent* skybox)
+{
+    m_Skybox = skybox;
+}
+
+void Renderer::RemoveSkybox(SkyboxComponent* skybox)
+{
+    if (m_Skybox == skybox) m_Skybox = nullptr;
+}
+
 
 void Renderer::SetRenderMode(RenderMode mode)
 {
@@ -107,6 +119,35 @@ void Renderer::Render()
     for (auto& object : m_RenderObjects)
     {
         renderMap[object.shader].push_back(object);
+    }
+
+    if (m_Skybox)
+    {
+        GLint OldCullFaceMode;
+        glGetIntegerv(GL_CULL_FACE_MODE, &OldCullFaceMode);
+        GLint OldDepthFuncMode;
+        glGetIntegerv(GL_DEPTH_FUNC, &OldDepthFuncMode);
+
+        glCullFace(GL_FRONT);
+        glDepthFunc(GL_LEQUAL);
+
+    
+        auto shader = m_Skybox->m_Mesh.GetShader();
+        shader->Bind();
+    
+        shader->SetUniformMat4f("u_ViewProjection", m_Skybox->Owner->GetScene()->GetCameraController()->GetCamera()->GetViewProjectionMatrix());
+        shader->SetUniformMat4f("u_Transform", m_Skybox->Owner->GetComponent<TransformComponent>()->GetWorldTransform());
+        shader->SetUniform1i("u_Skybox", 32);
+        shader->SetUniform1f("u_SkyboxBrightness", m_Skybox->brightness);
+        if (m_Skybox->cubemap) m_Skybox->cubemap->Bind(32);
+        m_Skybox->m_Mesh.GetVAO()->Bind();
+        glDrawElements(GL_TRIANGLES, (GLsizei)m_Skybox->m_Mesh.GetIndices().size(), GL_UNSIGNED_INT, nullptr);
+        m_Skybox->m_Mesh.GetVAO()->Unbind();
+        if (m_Skybox->cubemap) m_Skybox->cubemap->Unbind();
+        m_Skybox->m_Mesh.GetShader()->Unbind();
+
+        glCullFace(OldCullFaceMode);
+        glDepthFunc(OldDepthFuncMode);
     }
 
     for (auto& [shader, objects] : renderMap)
@@ -166,7 +207,7 @@ void Renderer::Render()
             }
             shader->SetUniform1i("DirLightCount", (int)m_DirectionalLights.size());
 
-            auto skybox =  App::Instance().m_currentScene->GetActorOfClass<SkyboxActor>();
+            auto skybox =  m_Skybox;
             if (skybox)
             {
                 if (skybox->cubemap) skybox->cubemap->Bind(32);

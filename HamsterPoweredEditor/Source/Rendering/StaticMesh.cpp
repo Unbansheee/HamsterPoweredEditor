@@ -109,6 +109,11 @@ void StaticMesh::SetShader(std::shared_ptr<Shader> shader)
     m_shader = shader;
 }
 
+Texture* StaticMesh::GetTexture(int slot)
+{
+    return m_textures[slot];
+}
+
 const Vertex& StaticMesh::GetClosestPoint(const glm::vec3& point)
 {
     float minDistance = std::numeric_limits<float>::max();
@@ -249,7 +254,7 @@ void StaticMesh::CopyNodesWithMeshes(aiNode* node, aiMatrix4x4 accumulatedTransf
         //transform = node->mTransformation * accTransform;
     }
 
-    for (int i = 0; i < node->mNumChildren; i++)
+    for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
         CopyNodesWithMeshes(node->mChildren[i], transform);
     }

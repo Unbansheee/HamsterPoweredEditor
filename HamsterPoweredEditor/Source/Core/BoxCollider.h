@@ -3,7 +3,7 @@
 #include "glm/glm.hpp"
 #include "BoxCollider.generated.h"
 
-SERIALIZEDCLASS
+SERIALIZEDCLASS(Category = "Physics")
 
 class BoxCollider : public Collider
 {
@@ -31,3 +31,5 @@ protected:
     
     
 };
+
+#undef GENERATED
