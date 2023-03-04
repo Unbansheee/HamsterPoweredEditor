@@ -4,28 +4,21 @@
 #include <glm/gtx/quaternion.hpp>
 
 #include "imgui.h"
+#include "TransformComponent.h"
 #include "Core/App.h"
 #include "Core/Input.h"
 #include "Core/Window.h"
 #include "Rendering/PerspectiveCamera.h"
 
 
-CameraController::CameraController(CameraType type, float aspectRatio) : m_CameraType(type), m_AspectRatio(aspectRatio)
-    
+CameraController::CameraController(GameObject* owner) : Component(owner)
 {
-    if (type == CameraType::ORTHO)
-    {
-        m_Camera = new OrthographicCamera(-m_AspectRatio * m_OrthoZoom, m_AspectRatio * m_OrthoZoom, -m_OrthoZoom, m_OrthoZoom);
-    }
-    else
-    {
-        m_Camera = new PerspectiveCamera(glm::radians(m_Zoom), m_AspectRatio, 1.f, 10000.0f);
-    }
-    
+    m_Camera = new PerspectiveCamera(glm::radians(m_Zoom), m_AspectRatio, 1.f, 10000.0f);
 }
 
 void CameraController::SetCameraType(CameraType type)
 {
+    auto transform = Owner->GetTransform();
     if (type == m_CameraType)
         return;
     delete m_Camera;
@@ -33,13 +26,13 @@ void CameraController::SetCameraType(CameraType type)
     if (type == CameraType::ORTHO)
     {
         m_Camera = new OrthographicCamera(-m_AspectRatio * m_OrthoZoom, m_AspectRatio * m_OrthoZoom, -m_OrthoZoom, m_OrthoZoom);
-        SetRotation(0.f, 0.f, 0.f);
+        transform->SetWorldRotation({0.f, 0.f, 0.f});
         SetZoom(GetZoom());
     }
     else
     {
         m_Camera = new PerspectiveCamera(glm::radians(m_Zoom), m_AspectRatio, 1.f, 10000.0f);
-        SetRotation(0.f, 0.f, 0.f);
+        transform->SetWorldRotation({0.f, 0.f, 0.f});
         
         
     }
@@ -48,11 +41,12 @@ void CameraController::SetCameraType(CameraType type)
 
 void CameraController::HandleMouseMovement(float x, float y)
 {
+    auto transform = Owner->GetTransform();
     if (abs(x) > 0 || abs(y) > 0)
     {
         if (m_CameraType == CameraType::ORTHO)
         {
-            SetPosition(GetPosition() + glm::vec3(x * 0.0028f * m_OrthoZoom, y * 0.0028f * m_OrthoZoom, 0.f));
+            transform->SetWorldPosition(transform->GetWorldPosition() + glm::vec3(x * 0.0028f * m_OrthoZoom, y * 0.0028f * m_OrthoZoom, 0.f));
         }
         else
         {
@@ -76,9 +70,10 @@ void CameraController::HandleMouseMovement(float x, float y)
 
 void CameraController::Update(Timestep ts)
 {
+    auto transform = Owner->GetTransform();
     dt =  ts.GetSeconds();
-    m_Camera->SetPosition(GetPosition());
-    m_Camera->SetRotation(GetRotation());
+    m_Camera->SetPosition(transform->GetWorldPosition());
+    m_Camera->SetRotation(transform->GetWorldRotation());
 
     if (Input::WasKeyPressed(Keyboard::F1))
     {
@@ -108,11 +103,9 @@ void CameraController::Update(Timestep ts)
 
 void CameraController::Begin()
 {
+    Resize(Renderer::GetViewportSize().x, Renderer::GetViewportSize().y);
 }
 
-void CameraController::OnDestroy()
-{
-}
 
 void CameraController::SetZoom(float zoom)
 {
@@ -131,6 +124,7 @@ void CameraController::SetZoom(float zoom)
 
 void CameraController::Move(glm::vec3 direction)
 {
+    auto transform = Owner->GetTransform();
     if (m_CameraType == CameraType::ORTHO)
     {
         return;
@@ -141,7 +135,7 @@ void CameraController::Move(glm::vec3 direction)
         glm::vec3 forwardMotion = cam->cameraFront * dt * -direction.x;
         glm::vec3 rightMotion = glm::cross(cam->cameraFront, {0, 1, 0}) * dt * -direction.y;
         glm::vec3 upMotion = m_Camera->GetUpVector() * dt * -direction.z;
-        SetPosition(GetPosition() + ((forwardMotion + rightMotion + upMotion) * m_PerspMoveSpeed));
+        transform->SetLocalPosition(transform->GetLocalPosition() + ((forwardMotion + rightMotion + upMotion) * m_PerspMoveSpeed));
     }
     
 }
@@ -161,6 +155,7 @@ void CameraController::Resize(float width, float height)
 
 void CameraController::OnInspectorGUI()
 {
+    Component::OnInspectorGUI();
     if (ImGui::CollapsingHeader("Camera"))
     {
         if (ImGui::RadioButton("Perspective", m_CameraType == CameraType::PERSPECTIVE))
@@ -217,26 +212,12 @@ void CameraController::OnInspectorGUI()
     
 }
 
-nlohmann::json CameraController::Serialize()
-{
-    nlohmann::json j =  Actor::Serialize();
-    j["CameraType"] = m_CameraType;
-    j["Zoom"] = m_Zoom;
-    j["OrthoZoom"] = m_OrthoZoom;
-    j["PerspMoveSpeed"] = m_PerspMoveSpeed;
-    j["Yaw"] = yaw;
-    j["Pitch"] = pitch;
-    return j;
-}
 
-void CameraController::Deserialize(nlohmann::json& j)
+void CameraController::DeserializeCustom(nlohmann::json& j)
 {
-    Actor::Deserialize(j);
-    m_Zoom = j["Zoom"];
-    m_OrthoZoom = j["OrthoZoom"];
-    m_PerspMoveSpeed = j["PerspMoveSpeed"];
-
-    SetCameraType(j["CameraType"]);
+    Component::DeserializeCustom(j);
+    
+    SetCameraType(m_CameraType);
     if (m_CameraType == CameraType::ORTHO)
     {
         SetZoom(m_OrthoZoom);
@@ -246,10 +227,22 @@ void CameraController::Deserialize(nlohmann::json& j)
         SetZoom(m_Zoom);
         dynamic_cast<PerspectiveCamera*>(m_Camera)->yaw = j["Yaw"];
         dynamic_cast<PerspectiveCamera*>(m_Camera)->pitch = j["Pitch"];
-        yaw = j["Yaw"];
-        pitch = j["Pitch"];
     }
     Resize(Renderer::GetViewportSize().x, Renderer::GetViewportSize().y);
+}
+
+void CameraController::SerializeCustom(nlohmann::json& j)
+{
+    Component::SerializeCustom(j);
+    if (m_CameraType == CameraType::ORTHO)
+    {
+        //SetZoom(m_OrthoZoom);
+    }
+    else
+    {
+        j["Yaw"] = dynamic_cast<PerspectiveCamera*>(m_Camera)->yaw;
+        j["Pitch"] = dynamic_cast<PerspectiveCamera*>(m_Camera)->pitch;
+    }
 }
 
 void CameraController::FixedUpdate(double ts)

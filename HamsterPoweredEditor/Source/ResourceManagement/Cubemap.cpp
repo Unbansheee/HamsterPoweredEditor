@@ -47,7 +47,7 @@ Cubemap::Cubemap(const std::string& path)
                     unsigned int ylocationR = faceSize;
                     unsigned int xlocationR = faceSize * 2;
                     unsigned int indexR = (ylocationR + y) * width * nrChannels + (xlocationR + x) * nrChannels + i;
-                    assert(indexR < dataSize, "Index out of bounds");
+                    assert(indexR < dataSize);
                     right.push_back(data[indexR]);
 
                     unsigned int ylocationL = faceSize;

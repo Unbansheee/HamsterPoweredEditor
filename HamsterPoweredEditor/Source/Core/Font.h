@@ -27,6 +27,7 @@ public:
     int GetSize() { return m_size; };
 private:
     friend class TextLabel;
+    friend class TextLabelComponent;
     
     Font(const std::string& path, int size);
     ~Font();

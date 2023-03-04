@@ -6,12 +6,11 @@
 #include "App.h"
 #include "Window.h"
 
-
 int main()
 {
 	
 	App::Instance().Begin();
-
+	
 	//Update loop
 	while (App::Instance().window->IsOpen())
 	{

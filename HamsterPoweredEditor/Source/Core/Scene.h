@@ -8,8 +8,11 @@
 #include <vector>
 
 #include "Actors/CameraController.h"
+#include "Actors/GameObject.h"
 
-class Actor;
+#include "Physics.h"
+#include "UUID.h"
+
 class Quad;
 class Scene
 {
@@ -19,54 +22,20 @@ public:
     void Update(Timestep ts);
     void Render();
     void Begin();
-    void DestroyActor(Actor* actor);
+    void DestroyObject(GameObject* object);
     void SetColour(glm::vec4 colour);
-    CameraController* GetCameraController() { return m_editorCamera; }
+    CameraController* GetCameraController() { return m_cameraController; }
     const std::string& GetPath() const { return m_filepath; }
     
-    const std::vector<Actor*>& GetActors() const { return m_actors; }
+    std::vector<GameObject>& GetGameObjects() { return m_gameObjects; }
 
-    template <typename T>
-    std::vector<T*> GetActorsOfClass()
-    {
-        std::vector<T*> actors;
-        for (auto actor : m_actors)
-        {
-            if (dynamic_cast<T*>(actor))
-            {
-                actors.push_back(dynamic_cast<T*>(actor));
-            }
-        }
-        return actors;
-    }
-
-    template <typename T>
-    T* GetActorOfClass()
-    {
-        for (auto actor : m_actors)
-        {
-            if (dynamic_cast<T*>(actor))
-            {
-                return dynamic_cast<T*>(actor);
-            }
-        }
-        return nullptr;
-    }
+    GameObject& SpawnObject();
     
-    template<typename T, typename... Args>
-    T* SpawnActor(Args... args)
-    {
-        T* actor = new T(args...);
-        actor->m_scene = this;
-        actor->UpdateTransform();
-        m_actors.emplace_back(actor);
-        return actor;
-    }
+
 
     void SerializeScene(const std::string& filepath);
     void DeserializeScene(const std::string& filepath);
 
-    Actor* GetActorByID(const HP::UUID& id);
     void SetParentChild(const HP::UUID& parentID, const HP::UUID& childID);
     
 private:
@@ -77,17 +46,22 @@ private:
     friend class Viewport;
     void DeferredDestroy();
     
-    std::vector<Actor*> m_actors;
-    std::vector<Actor*> m_actorsToDestroy;
+    std::vector<GameObject*> m_objectsToDestroy;
     std::string m_name;
     std::string m_filepath;
-    CameraController* m_editorCamera;
+    GameObject m_editorCamera;
+    CameraController* m_cameraController;
     glm::vec4 m_sceneColour = { 0.1f, 0.1f, 0.1f, 1.0f };
     std::queue<std::pair<HP::UUID, HP::UUID>> m_parentChildQueue;
     double m_fixedUpdateAccumulator = 0.0;
     double m_fixedUpdateInterval = 1.0 / 120.0;
     
     
+    std::vector<GameObject> m_gameObjects;
+    
+    
     std::shared_ptr<Quad> quad1;
     std::shared_ptr<Quad> quad2;
+
+    bool m_initialized = false;
 };

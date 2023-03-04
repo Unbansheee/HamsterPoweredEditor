@@ -1,0 +1,7 @@
+#define REFLECT
+#define GENERATE_REFLECTION
+
+#define SERIALIZEDCLASS(Category)
+
+#define SERIALIZEDVAR
+#define SERIALIZEDFUNCTION

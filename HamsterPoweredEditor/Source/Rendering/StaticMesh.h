@@ -21,6 +21,8 @@ public:
     void Load(const std::string& path);
     void Clear();
     void SetShader(std::shared_ptr<Shader> shader);
+    Texture* GetTexture(int slot = 0);
+    const std::string& GetPath() const {return m_path;}
     const std::shared_ptr<Shader>& GetShader() const {return m_shader;}
     const Vertex& GetClosestPoint(const glm::vec3& point);
     Texture* SetTexture(const std::string& path, int slot = 0);
@@ -31,6 +33,9 @@ public:
     
     const std::vector<Vertex>& GetVertices() const { return m_vertices; }
     const std::vector<uint32_t>& GetIndices() const { return m_indices; }
+
+    void SetRenderSettings(const RenderSettings& settings) { m_renderSettings = settings; }
+    const RenderSettings& GetRenderSettings() const { return m_renderSettings; }
 
     void Cube();
     
@@ -51,5 +56,6 @@ protected:
     RenderSettings m_renderSettings;
     
     void CopyNodesWithMeshes(aiNode* node, aiMatrix4x4 accumulatedTransform);
+    
 
 };

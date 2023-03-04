@@ -1,0 +1,3 @@
+[submodule "HamsterPoweredEditor/include/PhysX"]
+	path = HamsterPoweredEditor/include/PhysX
+	url = https://github.com/NVIDIA-Omniverse/PhysX

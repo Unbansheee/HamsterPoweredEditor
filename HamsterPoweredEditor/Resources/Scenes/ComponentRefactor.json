@@ -1,0 +1,364 @@
+{
+    "AmbientIntensity": 0.5,
+    "EditorCamera": {
+        "Components": [
+            {
+                "Type": "NameComponent",
+                "m_name": "Editor Camera"
+            },
+            {
+                "LocalPosition": [
+                    -6.780703544616699,
+                    0.23917044699192047,
+                    7.3930487632751465
+                ],
+                "LocalRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "LocalScale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Type": "TransformComponent",
+                "m_lockedScale": true
+            },
+            {
+                "Pitch": -1.5,
+                "Type": "CameraController",
+                "Yaw": 126.0,
+                "dt": 0.0020694732666015625,
+                "m_CameraType": 1,
+                "m_OrthoZoom": 2.5,
+                "m_PerspMoveSpeed": 3.653235912322998,
+                "m_Zoom": 38.20000076293945,
+                "pitch": -1.5,
+                "yaw": 126.0
+            }
+        ]
+    },
+    "GameObjects": [
+        {
+            "Components": [
+                {
+                    "Type": "NameComponent",
+                    "m_name": "Monkey"
+                },
+                {
+                    "LocalPosition": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "LocalRotation": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "LocalScale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Type": "TransformComponent",
+                    "m_lockedScale": true
+                },
+                {
+                    "Type": "MeshComponent",
+                    "m_MeshPath": "Resources/Meshes/MonkeySmooth.obj"
+                }
+            ]
+        },
+        {
+            "Components": [
+                {
+                    "Type": "NameComponent",
+                    "m_name": "Light"
+                },
+                {
+                    "LocalPosition": [
+                        -0.699999988079071,
+                        -0.8999999761581421,
+                        1.0
+                    ],
+                    "LocalRotation": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "LocalScale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Type": "TransformComponent",
+                    "m_lockedScale": true
+                },
+                {
+                    "Type": "PointLightComponent",
+                    "m_PointLight": {
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Intensity": 1.7000000476837158,
+                        "Position": [
+                            -0.699999988079071,
+                            -0.8999999761581421,
+                            1.0
+                        ],
+                        "Radius": 4.699999809265137
+                    }
+                }
+            ]
+        },
+        {
+            "Components": [
+                {
+                    "Type": "NameComponent",
+                    "m_name": "Sprite"
+                },
+                {
+                    "LocalPosition": [
+                        -2.0,
+                        0.0,
+                        0.0
+                    ],
+                    "LocalRotation": [
+                        90.0,
+                        0.0,
+                        0.0
+                    ],
+                    "LocalScale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Type": "TransformComponent",
+                    "m_lockedScale": true
+                },
+                {
+                    "Type": "SpriteComponent",
+                    "m_TexturePath": "Resources/Textures/Crate.png"
+                }
+            ]
+        },
+        {
+            "Components": [
+                {
+                    "Type": "NameComponent",
+                    "m_name": "AnimatedSprite"
+                },
+                {
+                    "LocalPosition": [
+                        -4.0,
+                        0.0,
+                        0.0
+                    ],
+                    "LocalRotation": [
+                        90.0,
+                        0.0,
+                        0.0
+                    ],
+                    "LocalScale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Type": "TransformComponent",
+                    "m_lockedScale": true
+                },
+                {
+                    "Type": "AnimatedSpriteComponent",
+                    "m_TexturePath": "Resources/Textures/Fire.png",
+                    "m_animationTime": 0.01873016357421875,
+                    "m_columns": 10,
+                    "m_currentFrame": 41,
+                    "m_fps": 30.0,
+                    "m_frameCount": 60,
+                    "m_rows": 6,
+                    "m_spriteHeight": 64,
+                    "m_spriteWidth": 64
+                }
+            ]
+        },
+        {
+            "Components": [
+                {
+                    "Type": "NameComponent",
+                    "m_name": "DirectionalLight"
+                },
+                {
+                    "LocalPosition": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "LocalRotation": [
+                        96.0,
+                        -44.0,
+                        7.0
+                    ],
+                    "LocalScale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Type": "TransformComponent",
+                    "m_lockedScale": true
+                },
+                {
+                    "Type": "DirectionalLightComponent",
+                    "m_Light": [
+                        [
+                            -0.6946583986282349,
+                            -0.7153992056846619,
+                            -0.07519151270389557
+                        ],
+                        [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "Components": [
+                {
+                    "Type": "NameComponent",
+                    "m_name": "Floor"
+                },
+                {
+                    "LocalPosition": [
+                        0.0,
+                        -1.5,
+                        0.0
+                    ],
+                    "LocalRotation": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "LocalScale": [
+                        8.199999809265137,
+                        8.19999885559082,
+                        8.19999885559082
+                    ],
+                    "Type": "TransformComponent",
+                    "m_lockedScale": true
+                },
+                {
+                    "Type": "SpriteComponent",
+                    "m_TexturePath": "Resources/Textures/Brick.jpg"
+                }
+            ]
+        },
+        {
+            "Components": [
+                {
+                    "Type": "NameComponent",
+                    "m_name": "Skybox"
+                },
+                {
+                    "LocalPosition": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "LocalRotation": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "LocalScale": [
+                        100000.0,
+                        100000.0,
+                        100000.0
+                    ],
+                    "Type": "TransformComponent",
+                    "m_lockedScale": true
+                },
+                {
+                    "Type": "SkyboxComponent",
+                    "brightness": 1.0,
+                    "cubemapPath": "Resources/Textures/Skybox/Hilltop.png",
+                    "m_MeshPath": "Resources/Meshes/Monkey.obj"
+                }
+            ]
+        },
+        {
+            "Components": [
+                {
+                    "Type": "NameComponent",
+                    "m_name": "Text"
+                },
+                {
+                    "LocalPosition": [
+                        190.0,
+                        600.0,
+                        0.0
+                    ],
+                    "LocalRotation": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "LocalScale": [
+                        0.20000000298023224,
+                        0.20000000298023224,
+                        0.20000000298023224
+                    ],
+                    "Type": "TransformComponent",
+                    "m_lockedScale": true
+                },
+                {
+                    "Type": "TextLabelComponent",
+                    "m_BaseColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "m_Color": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "m_FontPath": "Resources/Fonts/Roboto-Regular.ttf",
+                    "m_FontSize": 100,
+                    "m_HoverColor": [
+                        0.0,
+                        1.0,
+                        0.0
+                    ],
+                    "m_PressedColor": [
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "m_ScreenSpace": true,
+                    "m_Text": "Using the new component framework!",
+                    "m_scaleBounce": false,
+                    "m_scaleBounceDelta": 1.0451127290725708,
+                    "m_scrollSpeed": [
+                        0.0,
+                        0.0
+                    ],
+                    "m_sideScroll": false
+                }
+            ]
+        }
+    ],
+    "RenderMode": 2,
+    "SceneColour": [
+        0.7217429876327515,
+        0.8430861830711365,
+        0.9405940771102905,
+        1.0
+    ]
+}

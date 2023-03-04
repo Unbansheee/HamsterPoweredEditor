@@ -12,6 +12,7 @@
 #include "Lights.h"
 #include "UI/RendererSettings.h"
 
+class SkyboxComponent;
 class Texture;
 
 struct RenderSettings
@@ -59,6 +60,8 @@ public:
     static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<GLVertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f), const std::vector<Texture*>& textures = {}, const RenderSettings& settings = RenderSettings(), const std::function<void(std::shared_ptr<Shader>)>& uniforms = {});
     static void Submit(const PointLightData& light);
     static void Submit(const DirectionalLightData& light);
+    static void SubmitSkybox(SkyboxComponent* skybox);
+    static void RemoveSkybox(SkyboxComponent* skybox);
     static void SetClearColor(const glm::vec4& color);
     static const glm::vec4& GetClearColor() {return clearColor;}
     static double AspectRatio();
@@ -112,7 +115,7 @@ private:
     static SceneData* m_SceneData;
     inline static glm::mat4 m_ProjectionMatrix;
     inline static glm::mat4 m_ViewMatrix;
-
+    inline static SkyboxComponent* m_Skybox;
 
 };
 

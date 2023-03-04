@@ -1,0 +1,31 @@
+#include "Actors/AnimatedSpriteComponent.h"
+#include "Actors/SpriteComponent.h"
+#include "Actors/TextLabelComponent.h"
+#include "Actors/ClothComponent.h"
+#include "Actors/MeshComponent.h"
+#include "Actors/SkyboxComponent.h"
+#include "Actors/NameComponent.h"
+#include "Actors/TransformComponent.h"
+#include "Actors/DirectionalLightComponent.h"
+#include "Actors/PointLightComponent.h"
+#include "Core/BoxCollider.h"
+#include "Core/Collider.h"
+#include "Actors/CameraController.h"
+#define GENERATED_REGISTRY() \
+public: \
+static void RegisterAll() \
+{ \
+	ComponentRegistry::RegisterComponent<AnimatedSpriteComponent>("AnimatedSpriteComponent"); \
+	ComponentRegistry::RegisterComponent<SpriteComponent>("SpriteComponent"); \
+	ComponentRegistry::RegisterComponent<TextLabelComponent>("TextLabelComponent"); \
+	ComponentRegistry::RegisterComponent<ClothComponent>("ClothComponent"); \
+	ComponentRegistry::RegisterComponent<MeshComponent>("MeshComponent"); \
+	ComponentRegistry::RegisterComponent<SkyboxComponent>("SkyboxComponent"); \
+	ComponentRegistry::RegisterComponent<NameComponent>("NameComponent"); \
+	ComponentRegistry::RegisterComponent<TransformComponent>("TransformComponent"); \
+	ComponentRegistry::RegisterComponent<DirectionalLightComponent>("DirectionalLightComponent"); \
+	ComponentRegistry::RegisterComponent<PointLightComponent>("PointLightComponent"); \
+	ComponentRegistry::RegisterComponent<BoxCollider>("BoxCollider"); \
+	ComponentRegistry::RegisterComponent<Collider>("Collider"); \
+	ComponentRegistry::RegisterComponent<CameraController>("CameraController"); \
+} \

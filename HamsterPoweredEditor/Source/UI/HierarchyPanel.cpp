@@ -5,17 +5,8 @@
 #include "Core/App.h"
 #include "ImGuiLayer.h"
 #include "imgui_internal.h"
-#include "Actors/AnimatedQuad.h"
-#include "Actors/ClothActor.h"
-#include "Actors/DirectionalLight.h"
-#include "Actors/DynamicMeshActor.h"
-#include "Actors/MeshActor.h"
-#include "Actors/PointLight.h"
-#include "Actors/RimLitActor.h"
-#include "Actors/ShinyMesh.h"
-#include "Actors/SkyboxActor.h"
-#include "Actors/Spinner.h"
-#include "Actors/TextLabel.h"
+#include "Actors/NameComponent.h"
+#include "Actors/TransformComponent.h"
 #include "Core/Scene.h"
 
 void HierarchyPanel::Init()
@@ -29,41 +20,41 @@ void HierarchyPanel::Begin()
     UIComponent::Begin();
 }
 
-void HierarchyPanel::RenderTree(Actor* actor, int& index)
+
+void HierarchyPanel::RenderTree(GameObject& gameObject, int& index)
 {
     index++;
-    ImGuiTreeNodeFlags showArrow = actor->GetChildren().size() > 0 ? 0 : ImGuiTreeNodeFlags_Leaf;
-    ImGuiTreeNodeFlags selected = actor == m_Parent->m_SelectedActor ? ImGuiTreeNodeFlags_Selected : 0;
+    ImGuiTreeNodeFlags showArrow = gameObject.GetComponent<TransformComponent>()->GetChildren().size() > 0 ? 0 : ImGuiTreeNodeFlags_Leaf;
+    ImGuiTreeNodeFlags selected = &gameObject == m_Parent->m_SelectedGameObject ? ImGuiTreeNodeFlags_Selected : 0;
     ImGuiTreeNodeFlags flags = showArrow | selected | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_DefaultOpen;
-    bool open = ImGui::TreeNodeEx((actor->GetName() + "##" + std::to_string(index)).c_str(), flags);
+    bool open = ImGui::TreeNodeEx((gameObject.GetComponent<NameComponent>()->GetName() + "##" + std::to_string(index)).c_str(), flags);
     
     //Handle click events before recursion
     if (ImGui::IsItemClicked())
     {
-        m_Parent->m_SelectedActor = actor;
+        m_Parent->m_SelectedGameObject = &gameObject;
     }
     if (ImGui::IsItemClicked(1))
     {
-        m_Parent->m_SelectedActor = actor;
+        m_Parent->m_SelectedGameObject = &gameObject;
         ImGui::OpenPopup("ContextMenu");
     }
 
     //Drag and drop logic
     if (ImGui::BeginDragDropSource())
     {
-        ImGui::SetDragDropPayload("ACTOR", &actor, sizeof(Actor*));
+        ImGui::SetDragDropPayload("GAMEOBJECT", &gameObject, sizeof(GameObject*));
         ImGui::EndDragDropSource();
     }
     if (ImGui::BeginDragDropTarget())
     {
-        const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ACTOR");
-        if (payload)
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAMEOBJECT"))
         {
-            Actor* draggedActor = *(Actor**)payload->Data;
+            GameObject* draggedActor = *static_cast<GameObject**>(payload->Data);
             //make sure item is not being dragged onto itself
-            if (draggedActor != actor && actor->GetParent() != draggedActor)
+            if (draggedActor != &gameObject && gameObject.GetParent() != draggedActor)
             {
-                if (draggedActor->GetParent() == actor)
+                if (draggedActor->GetParent() == &gameObject)
                 {
                     //Check for grandparent
                     if (draggedActor->GetParent()->GetParent())
@@ -74,30 +65,30 @@ void HierarchyPanel::RenderTree(Actor* actor, int& index)
                     else
                     {
                         //If there is no grandparent, become a root node
-                        draggedActor->DetachFromParent();
+                        draggedActor->RemoveFromParent();
                     }
                 }
                 else
                 {
-                    draggedActor->SetParent(actor);
+                    draggedActor->SetParent(&gameObject);
                 }
             }
             //set active selection
-            m_Parent->m_SelectedActor = actor;
+            m_Parent->m_SelectedGameObject = &gameObject;
         }
         ImGui::EndDragDropTarget();
     }
 
 
     //Context menu for selected item
-    if (actor == m_Parent->m_SelectedActor)
+    if (&gameObject == m_Parent->m_SelectedGameObject)
     {
         if (ImGui::BeginPopup("ContextMenu"))
         {
             if (ImGui::MenuItem("Delete"))
             {
-                actor->Destroy();
-                m_Parent->m_SelectedActor = nullptr;
+                gameObject.Destroy();
+                m_Parent->m_SelectedGameObject = nullptr;
             }
             ImGui::EndPopup();
         }
@@ -106,14 +97,12 @@ void HierarchyPanel::RenderTree(Actor* actor, int& index)
     //Recursive call for children
     if (open)
     {
-        for (auto child : actor->GetChildren())
+        for (auto child : gameObject.GetComponent<TransformComponent>()->GetChildren())
         {
-            RenderTree(child, index);
+            RenderTree(*child->GetOwner(), index);
         }
         ImGui::TreePop();
     }
-
-    
     
 }
 
@@ -130,15 +119,17 @@ void HierarchyPanel::Update(Timestep ts)
 
     ImGui::Separator();
     
-    if (ImGui::Button("Add Actor"))
+    if (ImGui::Button("Add Object"))
     {
         //Spawn context menu
-        ImGui::OpenPopup("AddActor");
+        //ImGui::OpenPopup("AddActor");
+        App::Instance().m_currentScene->SpawnObject();
     }
     
-    for (auto& i : App::Instance().m_currentScene->GetActors())
+    for (auto& i : App::Instance().m_currentScene->GetGameObjects())
     {
-        if (!i->GetParent())
+        
+        if (!i.GetParent())
         {
             RenderTree(i, index);
         }
@@ -147,92 +138,7 @@ void HierarchyPanel::Update(Timestep ts)
     //Clear selection when nothing is clicked
     if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(0))
     {
-        m_Parent->m_SelectedActor = nullptr;
-    }
-
-    if (ImGui::BeginPopup("AddActor"))
-    {
-        ImGui::Text("Add Actor");
-        ImGui::Separator();
-        if (ImGui::MenuItem("Empty Actor"))
-        {
-            m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<Actor>();
-        }
-
-        
-        if (ImGui::MenuItem("Text Label"))
-        {
-            m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<TextLabel>();
-        }
-
-        if (ImGui::BeginMenu("Mesh"))
-        {
-            if (ImGui::MenuItem("Static Mesh"))
-            {
-                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<MeshActor>();
-            }
-            if (ImGui::MenuItem("Dynamic Mesh"))
-            {
-                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<DynamicMeshActor>();
-            }
-            if (ImGui::MenuItem("Cloth Mesh"))
-            {
-                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<ClothActor>();
-            }
-            if (ImGui::MenuItem("Shiny Mesh"))
-            {
-                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<ShinyMesh>();
-            }
-            if (ImGui::MenuItem("Rim Lit Mesh"))
-            {
-                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<RimLitActor>();
-            }
-
-            ImGui::EndMenu();
-        }
-
-        if (ImGui::BeginMenu("Utility"))
-        {
-            if (ImGui::MenuItem("Spinner"))
-            {
-                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<Spinner>();
-            }
-            ImGui::EndMenu();
-        }
-
-        if (ImGui::BeginMenu("Sprites"))
-        {
-            if (ImGui::MenuItem("Sprite"))
-            {
-                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<Quad>();
-            }
-            if (ImGui::MenuItem("Animated Sprite"))
-            {
-                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<AnimatedQuad>();
-            }
-            ImGui::EndMenu();
-        }
-
-        if (ImGui::BeginMenu("Lights"))
-        {
-            if (ImGui::MenuItem("Directional Light"))
-            {
-                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<DirLight>();
-            }
-            if (ImGui::MenuItem("Point Light"))
-            {
-                m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<PointLight>();
-            }
-            ImGui::EndMenu();
-        }
-
-        if (ImGui::MenuItem("Skybox"))
-        {
-            m_Parent->m_SelectedActor = App::Instance().m_currentScene->SpawnActor<SkyboxActor>();
-        }
-
-        
-        ImGui::EndPopup();
+        m_Parent->m_SelectedGameObject = nullptr;
     }
     
 
@@ -240,16 +146,9 @@ void HierarchyPanel::Update(Timestep ts)
     
     if (ImGui::IsMouseReleased(0) && ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem) && !ImGui::IsDragDropPayloadBeingAccepted())
     {
-        auto payload = ImGui::GetDragDropPayload();
-        if (payload)
-        {
-            Actor* draggedActor = *(Actor**)payload->Data;
-            if (draggedActor)
-            {
-                draggedActor->DetachFromParent();
-            }
-        }
+
     }
+    
 }
 
 

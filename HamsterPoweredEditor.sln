@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HamsterPoweredEditor", "HamsterPoweredEditor\HamsterPoweredEditor.vcxproj", "{20A66900-5B03-44FE-B05A-8A3196145718}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HamsterPoweredReflection", "HamsterPoweredReflection\HamsterPoweredReflection.csproj", "{1120B2BA-7E14-4C93-A491-8C8BAAC7D84B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{20A66900-5B03-44FE-B05A-8A3196145718}.Release|x64.Build.0 = Release|x64
 		{20A66900-5B03-44FE-B05A-8A3196145718}.Release|x86.ActiveCfg = Release|Win32
 		{20A66900-5B03-44FE-B05A-8A3196145718}.Release|x86.Build.0 = Release|Win32
+		{1120B2BA-7E14-4C93-A491-8C8BAAC7D84B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1120B2BA-7E14-4C93-A491-8C8BAAC7D84B}.Debug|x64.Build.0 = Debug|Any CPU
+		{1120B2BA-7E14-4C93-A491-8C8BAAC7D84B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1120B2BA-7E14-4C93-A491-8C8BAAC7D84B}.Debug|x86.Build.0 = Debug|Any CPU
+		{1120B2BA-7E14-4C93-A491-8C8BAAC7D84B}.Release|x64.ActiveCfg = Release|Any CPU
+		{1120B2BA-7E14-4C93-A491-8C8BAAC7D84B}.Release|x64.Build.0 = Release|Any CPU
+		{1120B2BA-7E14-4C93-A491-8C8BAAC7D84B}.Release|x86.ActiveCfg = Release|Any CPU
+		{1120B2BA-7E14-4C93-A491-8C8BAAC7D84B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

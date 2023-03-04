@@ -1,0 +1,41 @@
+﻿
+{
+  "Nodes": [
+    {
+      "Code": "THIS IS A TEST NODE;",
+      "Inputs": [
+        {
+          "Default": 0,
+          "Name": "input",
+          "Type": "int"
+        }
+      ],
+      "Name": "TestNode",
+      "Outputs": [
+        {
+          "Default": 0,
+          "Name": "output",
+          "Type": "float"
+        }
+      ]
+    },
+    {
+      "Code": "HELLO MR GREGORY;",
+      "Inputs": [
+        {
+          "Default": 0,
+          "Name": "input",
+          "Type": "float"
+        }
+      ],
+      "Name": "GregNode",
+      "Outputs": [
+        {
+          "Default": 0,
+          "Name": "output",
+          "Type": "float"
+        }
+      ]
+    }
+  ]
+}
